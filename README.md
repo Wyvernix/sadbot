@@ -1,7 +1,7 @@
-sadbot
+Sad_Bot
 ======
 
-bot for Twitch
+Chat bot for Twitch.tv
 
 Features:
 
@@ -12,6 +12,7 @@ Features:
 
 ChangeLog is in changelog.txt
 
+****
 
 Commands
 --------
@@ -46,25 +47,23 @@ Automatically checks every 5 minutes, and on command. Will correct itself.
 
 "!quote" will return a random quote.
 
-"!quote add <quote>" will add quote to quote list.
+"!quote add (quote)" will add quote to quote list.
 
-"!quote remove <phrase>" will search for phrase, and will remove quote if found.
+"!quote remove (phrase)" will search for phrase, and will remove quote if found.
 
 "!quote list" will list all quotes to log file. DEBUG
 
-"!quote <quote>" will add quote to quote list.
+"!quote (quote)" will add quote to quote list.
 
-**!<botname>**
+**!(botname)**
 
-"!<botname>" >I am <botName> v<botVersion>! Now with coffee! Do !commands for more.
+"!(botname)" > "I am <botName> v<botVersion>! Now with coffee! Do !commands for more."
 
-"!<botname> command [add/remove/list]" manages commands. ~*Fancy*~
+"!(botname) command [add/remove/list]" manages commands. ~*Fancy*~
 
-"!<botname> user [info/list]" gives user info. Try to only use list in bot's channel.
+"!(botname) user [info/list]" gives user info. Try to only use list in bot's channel.
 
-"!<botname> permit <user>" will permit a user to one link?
-
-****
+"!(botname) permit (user)" will permit a user to one link?
 
 ****
 
@@ -91,6 +90,8 @@ More then 3 chars to trigger. If more then 40% symbols, will tempban/warn.
 
 Will globally instaban matches of ".*(vine|4).*(4|vine).*Google.*"
 
+****
+
 AI
 --
 
@@ -98,9 +99,9 @@ The AI is not an AI. It is a sentence generator triggered by mentioning the bot'
 
 Non-random triggers:
 
-  * hey hello hi
-  * do who why what where how whose is does
-  * do does
+  * hey, hello, hi
+  * do, who, why, what, where, how, whose, is, does
+  * do, does
   * are you
 
 AI will add any messages that are not command/spam to its database. AI builds sentences from database.
