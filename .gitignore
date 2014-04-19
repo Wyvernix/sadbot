@@ -14,7 +14,7 @@ hs_err_pid*
 .settings
 bin
 lib
-pirc/javadocs
+pirc
 save
 .project
 .classpath

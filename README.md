@@ -19,15 +19,15 @@ Commands
 
 **!help**
 
->lurk more.
+>"lurk more."
 
 **!hello**
 
->Welcome to the channel! Follow or die! R)
+>"Welcome to the channel! Follow or die! R)"
 
 **!wyvnet**
 
->Build server: wyv.mcph.co [1.7.4]
+>"Build server: wyv.mcph.co [1.7.4]"
 
 **!ip**
 
@@ -41,7 +41,7 @@ Automatically checks every 5 minutes, and on command. Will correct itself.
 
 **!commands**
 
->Bot commands: !hello, !ip, !help, !wyvnet, !quote, !command, and some secret ones.
+>"Bot commands: !hello, !ip, !help, !wyvnet, !quote, !command, and some secret ones."
 
 **!quote**
 
@@ -88,7 +88,7 @@ More then 3 chars to trigger. If more then 40% symbols, will tempban/warn.
 
 **VineFilter**
 
-Will globally instaban matches of ".*(vine|4).*(4|vine).*Google.*"
+Will globally instaban matches of "(vine|4) (4|vine) Google"
 
 ****
 
