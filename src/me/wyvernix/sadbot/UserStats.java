@@ -56,11 +56,21 @@ public class UserStats {
 		klow.put("chatLines", 0);
 		klow.put("contestWins", 0);
 		klow.put("lastSeen", Calendar.getInstance());
-		klow.put("int1", 0);
+		klow.put("int1", 0);	//warnings
 		klow.put("string1", "null");
 		
 		
 		return klow;
+	}
+	
+	public void addWarning(String user) {
+		Map<String,Object> ussr = users.get(user);
+		ussr.put("int1", (int)ussr.get("int1") + 1);
+		users.put(user, ussr);
+	}
+	
+	public int getWarnings(String user) {
+		return (int)users.get(user).get("int1");
 	}
 	
 	public String lastSeen(String user) {
@@ -121,6 +131,8 @@ public class UserStats {
 	}
 	
 	public Map<String,Object> getData(String user) {
-		return users.get("user");
+		return users.get(user);
 	}
+	
+	
 }

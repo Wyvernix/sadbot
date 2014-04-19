@@ -103,7 +103,7 @@ public class SadQuoteCommand implements BotCommand {
 			}
 		} else if (message.startsWith("list") && mods.contains(sender)) {
 			System.out.println(quotes.toString());
-			newGUI.appendToPane(newGUI.tPane, quotes.toString()+"\n", Color.BLACK);
+			newGUI.appendToPane(quotes.toString()+"\n", Color.BLACK);
 			bot.sendMessage(channel, "check the logs for quotes.");
 			
 		} else {

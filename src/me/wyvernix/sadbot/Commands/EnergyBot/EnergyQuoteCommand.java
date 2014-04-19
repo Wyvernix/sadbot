@@ -98,11 +98,17 @@ public class EnergyQuoteCommand implements BotCommand {
 			}
 		} else if (message.startsWith("list") && mods.contains(sender)) {
 			System.out.println(quotes.toString());
-			newGUI.appendToPane(newGUI.tPane, quotes.toString()+"\n", Color.BLACK);
+			newGUI.appendToPane(quotes.toString()+"\n", Color.BLACK);
 			bot.sendMessage(channel, "check the logs for quotes.");
 			
 		} else {
-			bot.sendMessage(channel, "You are a derp, "+sender+". Try !help");
+			if (!(message.charAt(0) == ".".charAt(0))){
+				quotes.add(message);
+				bot.sendMessage(channel, "Added quote: "+message);
+				saveData(quotes, "save\\energyQ.dat");
+				} else {
+					bot.sendMessage(channel, sender + " is derpy! BibleThump");
+				}
 		}
 	}
 	

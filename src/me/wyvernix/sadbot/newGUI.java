@@ -40,7 +40,7 @@ public class newGUI extends JFrame {
     	jsp.setPreferredSize(new Dimension(711, 246));
     	topPanel.add(jsp);
 
-        appendToPane(tPane, "Starting Program!                                                                                                 \n", Color.RED);
+        appendToPane("Starting Program!                                                                                                 \n", Color.RED);
 
         getContentPane().add(topPanel);
 
@@ -51,17 +51,17 @@ public class newGUI extends JFrame {
         setVisible(true);   
     }
 
-    public static void appendToPane(JTextPane tp, String msg, Color c) {
+    public static void appendToPane(String msg, Color c) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
 
-        int len = tp.getDocument().getLength();
-        tp.setCaretPosition(len);
-        tp.setCharacterAttributes(aset, false);
-        tp.replaceSelection(msg);
+        int len = tPane.getDocument().getLength();
+        tPane.setCaretPosition(len);
+        tPane.setCharacterAttributes(aset, false);
+        tPane.replaceSelection(msg);
     }
 
     public static void initGui() {

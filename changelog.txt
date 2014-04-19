@@ -1,3 +1,17 @@
+2.4.0
++ added MasterBot as template class
++ changed Sad_Bot to extend MasterBot class
++ changed EnergyBot to extend MasterBot class
++ Added ChatFilter for chat filters
+    added caps filter
+    added vine filter
+    added link filter
+    added symbol filter
+* moved commands and AI to their own methods
+* added shady1765 as override to modlist, because twitch is being lame
+* changed "user" to user in UserStats. im a derp.
+
+
 2.3.3
 + added list to !quote, but only outputs to log
 * user info will set username to lowercase before checking
