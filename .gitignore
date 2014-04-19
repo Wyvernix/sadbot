@@ -13,6 +13,7 @@ hs_err_pid*
 
 .settings
 bin
+lib
 pirc/javadocs
 save
 .project
