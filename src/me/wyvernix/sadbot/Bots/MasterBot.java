@@ -37,7 +37,7 @@ import org.jibble.jmegahal.JMegaHal;
 
 public class MasterBot extends PircBot {
 	private static final String botVersion = "2.4.0";
-	private static String botName = "Sad_Bot";
+	private String botName = "Sad_Bot";
 	protected String mainChan;
 	private Color inColor = Color.BLACK;
 	private Color outColor = Color.BLACK;
@@ -50,7 +50,7 @@ public class MasterBot extends PircBot {
 	private Timer timer = new Timer();
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
-	private static String BRAIN;
+	private String BRAIN;
 	JMegaHal hal = new JMegaHal();
 	
 	private void firstRun() {
