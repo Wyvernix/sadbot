@@ -1,8 +1,6 @@
 package me.wyvernix.sadbot.Commands;
 
-import java.util.ArrayList;
-
-import org.jibble.pircbot.PircBot;
+import me.wyvernix.sadbot.Bots.MasterBot;
 
 /**
  * This is the definition for all BotCommands. Anything
@@ -21,6 +19,6 @@ public interface BotCommand {
 	public String getCommandName();
 
 	// The method where each BotCommand implementor will handle the event
-	public void handleMessage(PircBot bot, String channel, String sender, String message, ArrayList<String> mods);
+	public void handleMessage(MasterBot bot, String channel, String sender, String message);
 
 }

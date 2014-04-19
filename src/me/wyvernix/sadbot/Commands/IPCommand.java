@@ -1,13 +1,12 @@
 package me.wyvernix.sadbot.Commands;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 
-import org.jibble.pircbot.PircBot;
 
 import me.wyvernix.sadbot.GSONic;
+import me.wyvernix.sadbot.Bots.MasterBot;
 
 public class IPCommand implements BotCommand {
 	private String mainChan = "sad_bot";
@@ -53,7 +52,7 @@ public class IPCommand implements BotCommand {
 		}
 	}
 	
-	public void handleMessage(PircBot bot, String channel, String sender, String message, ArrayList<String> mods) {
+	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		if (!isChecking) {
 		isChecking = true;
 		final String fixedChan = channel.replace("#", "");

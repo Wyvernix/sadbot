@@ -1,9 +1,6 @@
 package me.wyvernix.sadbot.Commands;
 
-import java.util.ArrayList;
-
-import org.jibble.pircbot.PircBot;
-
+import me.wyvernix.sadbot.Bots.MasterBot;
 
 public class LeaveCommand implements BotCommand {
 
@@ -11,7 +8,7 @@ public class LeaveCommand implements BotCommand {
 		return "leave";
 	}
 
-	public void handleMessage(PircBot bot, String channel, String sender, String message, ArrayList<String> mods) {
+	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		System.out.println("halp");
 		if (sender.equals("shady1765") || sender.equals("activeenergylive")) {
 			System.out.println("#"+bot.getName());

@@ -1,8 +1,6 @@
 package me.wyvernix.sadbot.Commands;
 
-import java.util.ArrayList;
-
-import org.jibble.pircbot.PircBot;
+import me.wyvernix.sadbot.Bots.MasterBot;
 
 /**
  * A simple time command. Tells the bot to give
@@ -16,7 +14,7 @@ public class WyvNetCommand implements BotCommand {
 		return "wyvnet";
 	}
 
-	public void handleMessage(PircBot bot, String channel, String sender, String message, ArrayList<String> mods) {
+	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		bot.sendMessage(channel, "Build server: wyv.mcph.co [1.7.4]");
 	}
 

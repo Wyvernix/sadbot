@@ -1,8 +1,6 @@
 package me.wyvernix.sadbot.Commands;
 
-import java.util.ArrayList;
-
-import org.jibble.pircbot.PircBot;
+import me.wyvernix.sadbot.Bots.MasterBot;
 
 public class JoinCommand implements BotCommand {
 
@@ -12,7 +10,7 @@ public class JoinCommand implements BotCommand {
 	}
 
 	@Override
-	public void handleMessage(PircBot bot, String channel, String sender, String message, ArrayList<String> mods) {
+	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		if (sender.equals("shady1765") || sender.equals("activeenergylive")){
 			final String[] mesBlock = message.split(" ");
 			bot.joinChannel("#" + mesBlock[0].toLowerCase());

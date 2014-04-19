@@ -1,10 +1,7 @@
 package me.wyvernix.sadbot.Commands.SadBot;
 
-import java.util.ArrayList;
-
+import me.wyvernix.sadbot.Bots.MasterBot;
 import me.wyvernix.sadbot.Commands.BotCommand;
-
-import org.jibble.pircbot.PircBot;
 
 
 public class SadCommands implements BotCommand {
@@ -17,7 +14,7 @@ public class SadCommands implements BotCommand {
 		return "!";
 	}
 
-	public void handleMessage(PircBot bot, String channel, String sender, String message, ArrayList<String> mods) {
+	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		bot.sendMessage(channel, "lol");
 	}
 

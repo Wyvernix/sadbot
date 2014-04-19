@@ -14,10 +14,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import me.wyvernix.sadbot.newGUI;
+import me.wyvernix.sadbot.Bots.MasterBot;
 import me.wyvernix.sadbot.Commands.BotCommand;
 
-
-import org.jibble.pircbot.PircBot;
 
 /**
  * A simple time command. Tells the bot to give
@@ -70,7 +69,7 @@ public class SadQuoteCommand implements BotCommand {
 	}
 
 	@Override
-	public void handleMessage(PircBot bot, String channel, String sender, String message, ArrayList<String> mods) {
+	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		if (message.length() < 1){
 			try{
 				bot.sendMessage(channel, quotes.get((int)(Math.random() * ((quotes.size() - 1) + 1))));
@@ -86,7 +85,7 @@ public class SadQuoteCommand implements BotCommand {
 			} else {
 				bot.sendMessage(channel, sender + " is trying to hack me! BibleThump");
 			}
-		} else if (message.startsWith("remove") && mods.contains(sender)) {
+		} else if (message.startsWith("remove") && bot.getMods().contains(sender)) {
 			Boolean foundQuote = false;
 			int sz = quotes.size();
 			String replaceMe = message.replace("remove ", "");
@@ -101,7 +100,7 @@ public class SadQuoteCommand implements BotCommand {
 			if (!foundQuote){
 				bot.sendMessage(channel, "I couldn't find anything with: "+ message.replace("add " , ""));
 			}
-		} else if (message.startsWith("list") && mods.contains(sender)) {
+		} else if (message.startsWith("list") && bot.getMods().contains(sender)) {
 			System.out.println(quotes.toString());
 			newGUI.appendToPane(quotes.toString()+"\n", Color.BLACK);
 			bot.sendMessage(channel, "check the logs for quotes.");

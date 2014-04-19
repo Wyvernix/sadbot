@@ -104,6 +104,10 @@ public class MasterBot extends PircBot {
 	void setFilters(List<ChatFilter> fil) {
 		filters = fil;
 	}
+	
+	public ArrayList<String> getMods() {
+		return mods;
+	}
 	//// end
 	////////////|commands|
 	private List<BotCommand> commands;
@@ -205,7 +209,7 @@ public class MasterBot extends PircBot {
 				// If the message starts with the command the BotCommand responds to, remove
 				// the command from the message and pass the event along to the BotCommand.
 				if(message.startsWith(command.getCommandName())) {
-					command.handleMessage(this, channel, sender, message.replace(command.getCommandName(), "").trim(), mods);
+					command.handleMessage(this, channel, sender, message.replace(command.getCommandName(), "").trim());
 					return;
 				}
 			}
@@ -319,7 +323,7 @@ public class MasterBot extends PircBot {
 			// If the message starts with the command the BotCommand responds to, remove
 			// the command from the message and pass the event along to the BotCommand.
 			if(message.startsWith(command.getCommandName())) { //maybe add global shady1765 override?
-				command.handleMessage(this, channel, sender, message.replace(command.getCommandName(), "").trim(), mods);
+				command.handleMessage(this, channel, sender, message.replace(command.getCommandName(), "").trim());
 				return;
 			}
 		}

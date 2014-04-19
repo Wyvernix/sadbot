@@ -3,6 +3,7 @@
 * decrement warnings every 5 mins
 * changed log stuff
 * changed startsWith("are you") to conatains(etc.) in AI
+* changed BotCommand format
 
 2.4.0
 + added MasterBot as template class
