@@ -17,7 +17,7 @@ public class CommandsCommand implements BotCommand {
 	}
 
 	public void handleMessage(PircBot bot, String channel, String sender, String message, ArrayList<String> mods) {
-		bot.sendMessage(channel, "Bot commands: !hello, !ip, !help, !wyvnet, !quote, !command, and some secret ones.");
+		bot.sendMessage(channel, "Bot commands: !hello, !ip, !help, !wyvnet, !quote, and some secret ones.");
 	}
 
 }

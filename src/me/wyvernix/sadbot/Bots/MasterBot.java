@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.text.AttributeSet;
@@ -526,7 +525,7 @@ public class MasterBot extends PircBot {
 	public void onJoin(String channel, String sender, String login, String hostname) {
 		if (channel.equals(mainChan)) {
 		if (sender.equals("activeenergylive")) {
-			sendMessage(channel, "hi active :3 i now have basic filters: caps and links. also, major infrastructure changes. i am still testing filters, so i will just log them :3");
+			sendMessage(channel, "hi active :3");
 		}
 		
 		if (userStats.isNew(sender)) {
@@ -685,7 +684,7 @@ public class MasterBot extends PircBot {
     public void tempBan(final String channel, final String name, String type, int time) {
         String line = "!! Issuing a tempBan on " + name + " in " + channel + " for " + type;
         log(line);
-        sendMessage(channel, "timeout "+name+" "+time*120);
+        sendMessage(channel, ".timeout "+name+" "+time*120);
     }
 	
 	private void appendToPane(String msg, Color c)
