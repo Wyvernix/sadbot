@@ -22,9 +22,9 @@ public class BotManager {
 		//debug!
 		sadbot.setVerbose(true);
 		
-		//connect to irc					dont lose this: ru88y4bf78v0xkwfz83k805my37po7r
+		//connect to irc
 		try {
-			sadbot.connect("199.9.253.210", 6667, "oauth:9oxcnze4kfmv161zlz3hnl48d4hsmqk");
+			sadbot.connect("199.9.253.210", 6667, args[0]);
 			
 			Thread.sleep(100);
 			//join channels
@@ -54,9 +54,9 @@ public class BotManager {
 		//debug!
 		energybot.setVerbose(true);
 		
-		//connect to irc					dont lose this: ru88y4bf78v0xkwfz83k805my37po7r
+		//connect to irc
 		try {
-			energybot.connect("199.9.253.199", 6667, "oauth:6mvg6l36ggtxifhjbkaxgddkwfqwnmx");
+			energybot.connect("199.9.253.199", 6667, args[1]);
 
 			Thread.sleep(100);
 			//join channels
