@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +48,7 @@ public class MasterBot extends PircBot {
 	private Map<String, Integer> chatters = new HashMap<String, Integer>(); 
 	private Map<String, Object> specialUsers = new HashMap<String, Object>();
 	private Timer timer = new Timer();
+	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
 	private static String BRAIN;
 	JMegaHal hal = new JMegaHal();
@@ -402,7 +406,7 @@ public class MasterBot extends PircBot {
 //				sendMessage(channel, hal.getSentence(cleanBlock[baja]));
 //			}
 			}
-		} else if (message.startsWith("are you")) {
+		} else if (message.contains("are you")) {
 			if (Math.random() <0.5){
 				sendMessage(channel, "yes");	
 			} else {
@@ -460,7 +464,7 @@ public class MasterBot extends PircBot {
 	}
 	
 	private void messageHandle(String channel, String sender, String message) {
-		log(message);
+		log(sender + ": " + message);
 		if (sender.equals(botName)) {
 			return;
 		}
@@ -524,13 +528,14 @@ public class MasterBot extends PircBot {
 	@Override
 	public void onJoin(String channel, String sender, String login, String hostname) {
 		if (channel.equals(mainChan)) {
-		if (sender.equals("activeenergylive")) {
-			sendMessage(channel, "hi active :3");
-		}
+//		if (sender.equals("activeenergylive")) {
+//			sendMessage(channel, "hi active :3");
+//		}
 		
 		if (userStats.isNew(sender)) {
 			userStats.add(sender);
 			System.out.println(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".");
+			appendToPane(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".", Color.black);
 			
 		} else {
 			userStats.updateLastSeen(sender);
@@ -687,8 +692,8 @@ public class MasterBot extends PircBot {
         sendMessage(channel, ".timeout "+name+" "+time*120);
     }
 	
-	private void appendToPane(String msg, Color c)
-    {
+	private void appendToPane(String msg, Color c) {
+		Date date = new Date();
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
@@ -698,7 +703,7 @@ public class MasterBot extends PircBot {
         int len = newGUI.tPane.getDocument().getLength();
         newGUI.tPane.setCaretPosition(len);
         newGUI.tPane.setCharacterAttributes(aset, false);
-        newGUI.tPane.replaceSelection(msg);
+        newGUI.tPane.replaceSelection(dateFormat.format(date) + " " + msg);
     }
 	
 	public void saveData(Object saveData2, String fileName) {

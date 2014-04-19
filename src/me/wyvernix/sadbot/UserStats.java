@@ -69,6 +69,14 @@ public class UserStats {
 		users.put(user, ussr);
 	}
 	
+	public void removeWarning(String user) {
+		Map<String,Object> ussr = users.get(user);
+		if ((int)ussr.get("int1") > 0) {
+			ussr.put("int1", (int)ussr.get("int1") - 1);
+			users.put(user, ussr);
+		}
+	}
+	
 	public int getWarnings(String user) {
 		return (int)users.get(user).get("int1");
 	}
@@ -102,15 +110,19 @@ public class UserStats {
 		int sz = viewers.size();
 		Map<String,Object> viewerStats;
 		for(int i = 0; i < sz; i++) {
-			if (users.get(viewers.get(i)) != null) {
-				viewerStats = users.get(viewers.get(i));
+			String user = viewers.get(i);
+			
+			if (users.get(user) != null) {
+				viewerStats = users.get(user);
 				
 				viewerStats.put("viewTime", (int)viewerStats.get("viewTime")+1);
-				if (chatters.get(viewers.get(i)) != null) {
-					viewerStats.put("chatLines", (int)viewerStats.get("chatLines") + chatters.get(viewers.get(i)));
+				if (chatters.get(user) != null) {
+					viewerStats.put("chatLines", (int)viewerStats.get("chatLines") + chatters.get(user));
 				}
 				
 				users.put(viewers.get(i), viewerStats);
+				
+				removeWarning(user);
 			}
 		}
 		

@@ -25,7 +25,7 @@ public class EnergyBot extends MasterBot {
 		sadCommands.add(new HelpCommand());
 		sadCommands.add(new HelloCommand());
 		sadCommands.add(new WyvNetCommand());
-		sadCommands.add(new IPCommand());
+		sadCommands.add(new IPCommand("activeenergylive"));
 		sadCommands.add(new CommandsCommand());
 		sadCommands.add(new EnergyQuoteCommand());
 		

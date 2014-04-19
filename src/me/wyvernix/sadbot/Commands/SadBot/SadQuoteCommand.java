@@ -63,7 +63,7 @@ public class SadQuoteCommand implements BotCommand {
 		new Timer().schedule(new TimerTask() {         
 		    @Override
 		    public void run() {  
-		    	System.out.println("Saving sadbot data...");
+		    	System.out.println("Saving sadbot quotes...");
 				saveData(quotes, quoteFile);
 		    }
 		}, 3000, 1000 * 60 * 5);

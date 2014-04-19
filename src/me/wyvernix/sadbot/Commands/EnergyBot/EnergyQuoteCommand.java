@@ -60,7 +60,7 @@ public class EnergyQuoteCommand implements BotCommand {
 		new Timer().schedule(new TimerTask() {         
 		    @Override
 		    public void run() {  
-		    	System.out.println("Saving sadbot data...");
+		    	System.out.println("Saving energybot quotes...");
 				saveData(quotes, quoteFile);
 		    }
 		}, 3000, 1000 * 60 * 5);

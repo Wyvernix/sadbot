@@ -15,11 +15,15 @@ public class IPCommand implements BotCommand {
 	private boolean isChecking = false;
 	private String response = "cake";
 	
-	public IPCommand(){
+	public IPCommand(String chan){
+		mainChan = chan;
+		mainChanStatus = GSONic.getStatus("https://api.twitch.tv/kraken/channels/" + mainChan);
+		getResponse();
 		new Timer().schedule(new TimerTask() {		 
 			@Override
 			public void run() {
 				mainChanStatus = GSONic.getStatus("https://api.twitch.tv/kraken/channels/" + mainChan);
+				System.out.println("Updated IP for "+mainChan);
 			}
 		}, 3000, 1000 * 60 * 15);
 	}

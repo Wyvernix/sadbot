@@ -9,7 +9,7 @@ import me.wyvernix.sadbot.Bots.MasterBot;
 
 public class SymbolFilter implements ChatFilter{
 	private Pattern[] symbolsPatterns = new Pattern[2];
-	private int symMin = 3, symPercent = 40;
+	private int symMin = 10, symPercent = 40;
 	
 	
 	public SymbolFilter() {

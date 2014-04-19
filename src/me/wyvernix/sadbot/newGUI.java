@@ -1,6 +1,9 @@
 package me.wyvernix.sadbot;
 
 import java.awt.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -15,6 +18,7 @@ import javax.swing.text.StyleContext;
 public class newGUI extends JFrame {
     private JPanel topPanel;
     public static JTextPane tPane;
+	private static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     public newGUI() {
     	super("SadBot x EnergyBot");
@@ -52,6 +56,8 @@ public class newGUI extends JFrame {
     }
 
     public static void appendToPane(String msg, Color c) {
+		Date date = new Date();
+
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
@@ -61,7 +67,7 @@ public class newGUI extends JFrame {
         int len = tPane.getDocument().getLength();
         tPane.setCaretPosition(len);
         tPane.setCharacterAttributes(aset, false);
-        tPane.replaceSelection(msg);
+        tPane.replaceSelection(dateFormat.format(date) + " " + msg);
     }
 
     public static void initGui() {
