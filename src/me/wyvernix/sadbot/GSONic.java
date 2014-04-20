@@ -86,9 +86,10 @@ public class GSONic {
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            newGUI.logError(e);
         } catch (IOException e) {
             e.printStackTrace();
-
+            newGUI.logError(e);
         } finally {
             try {
                 if (is != null) {
@@ -96,6 +97,7 @@ public class GSONic {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                newGUI.logError(e);
             }
         }
         return je;

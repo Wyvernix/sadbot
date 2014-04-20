@@ -39,12 +39,16 @@ public class BotManager {
 		} catch (NickAlreadyInUseException e) {
 			System.err.println("SOMEONE STEALS MAH USERNAME SADBOT");
 			e.printStackTrace();
+			newGUI.logError(e);
 		} catch (IOException e) {
 			e.printStackTrace();
+			newGUI.logError(e);
 		} catch (IrcException e) {
 			e.printStackTrace();
+			newGUI.logError(e);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			newGUI.logError(e);
 		}
 		
 		
@@ -69,12 +73,16 @@ public class BotManager {
 		} catch (NickAlreadyInUseException e) {
 			System.err.println("SOMEONE STEALS MAH USERNAME ENERGYBOT");
 			e.printStackTrace();
+			newGUI.logError(e);
 		} catch (IOException e) {
 			e.printStackTrace();
+			newGUI.logError(e);
 		} catch (IrcException e) {
 			e.printStackTrace();
+			newGUI.logError(e);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			newGUI.logError(e);
 		}
 		
 	}

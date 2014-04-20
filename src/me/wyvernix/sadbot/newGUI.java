@@ -1,6 +1,8 @@
 package me.wyvernix.sadbot;
 
 import java.awt.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,6 +70,12 @@ public class newGUI extends JFrame {
         tPane.setCaretPosition(len);
         tPane.setCharacterAttributes(aset, false);
         tPane.replaceSelection(dateFormat.format(date) + " " + msg);
+    }
+    
+    public static void logError(Exception e) {
+    	StringWriter sw = new StringWriter();
+    	e.printStackTrace(new PrintWriter(sw));
+    	appendToPane(sw.toString(), Color.RED);
     }
 
     public static void initGui() {

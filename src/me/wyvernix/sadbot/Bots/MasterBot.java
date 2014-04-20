@@ -341,6 +341,7 @@ public class MasterBot extends PircBot {
   				sendMessage(channel, "Nom nom words :3");
   			} catch (FileNotFoundException e) {
   				e.printStackTrace();
+  				newGUI.logError(e);
   			} catch (IOException e) {
   				e.printStackTrace();
   			}
