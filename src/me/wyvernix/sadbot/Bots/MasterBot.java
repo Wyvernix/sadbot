@@ -584,6 +584,7 @@ public class MasterBot extends PircBot {
 	
 	@Override
 	public void onUserList(String channel, User[] users)  {
+		if (channel.equals(mainChan)) {
 		for (User ussr : users) {
 			String sender = ussr.getNick();
 			if (userStats.isNew(sender)) {
@@ -597,6 +598,7 @@ public class MasterBot extends PircBot {
 			if (activeUsers.contains(sender) == false) {
 				activeUsers.add(sender);			
 			}
+		}
 		}
 	}
 	

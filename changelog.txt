@@ -1,4 +1,6 @@
 2.4.1
++ added raffle command
+* made bot check existing users and add them to userlist
 * Made IP preload IPs
 * decrement warnings every 5 mins
 * changed log stuff

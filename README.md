@@ -29,6 +29,10 @@ Commands
 
 >"Build server: wyv.mcph.co [1.7.4]"
 
+**!raffle**
+
+Returns random user in channel as winner. Removes mods from list. If use "mods" modifier, it will include mods in raffle.
+
 **!ip**
 
 Triggers: [hypixel] [hive] [mineplex] [single, ssp]
