@@ -69,6 +69,12 @@ public class UserStats {
 		users.put(user, ussr);
 	}
 	
+	public void addWin(String user) {
+		Map<String,Object> ussr = users.get(user);
+		ussr.put("contestWins", (int)ussr.get("contestWins") + 1);
+		users.put(user, ussr);
+	}
+	
 	public void removeWarning(String user) {
 		Map<String,Object> ussr = users.get(user);
 		if ((int)ussr.get("int1") > 0) {
@@ -109,8 +115,9 @@ public class UserStats {
 	public void updateStats(ArrayList<String> viewers, Map<String, Integer> chatters) {
 		int sz = viewers.size();
 		Map<String,Object> viewerStats;
+		String user;
 		for(int i = 0; i < sz; i++) {
-			String user = viewers.get(i);
+			user = viewers.get(i);
 			
 			if (users.get(user) != null) {
 				viewerStats = users.get(user);

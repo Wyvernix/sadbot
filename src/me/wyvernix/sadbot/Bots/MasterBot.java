@@ -37,12 +37,12 @@ import org.jibble.jmegahal.JMegaHal;
 
 public class MasterBot extends PircBot {
 	private static final String botVersion = "2.4.0";
-	private String botName = "Sad_Bot";
+	public String botName = "Sad_Bot";
 	protected String mainChan;
 	private Color inColor = Color.BLACK;
 	private Color outColor = Color.BLACK;
 	
-	protected ArrayList<String> mods = new ArrayList<String>();
+	private ArrayList<String> mods = new ArrayList<String>();
 	private ArrayList<String> activeUsers = new ArrayList<String>();
 	public UserStats userStats;
 	private Map<String, Integer> chatters = new HashMap<String, Integer>(); 
@@ -107,6 +107,9 @@ public class MasterBot extends PircBot {
 	
 	public ArrayList<String> getMods() {
 		return mods;
+	}
+	public ArrayList<String> getActiveUsers() {
+		return activeUsers;
 	}
 	//// end
 	////////////|commands|
@@ -284,7 +287,7 @@ public class MasterBot extends PircBot {
 				} else {
 					final String[] split = message.split(" ");
 					specialUsers.put(split[1].toLowerCase(), true);
-					sendMessage(channel, "Permitting user: "+split[1]+" for one break or 5 mins.");
+					sendMessage(channel, "Permitting user: "+split[1]+" for one [banType] or 5 mins.");
 					timer.schedule(new TimerTask() {          
 					    @Override
 					    public void run() {
@@ -524,6 +527,9 @@ public class MasterBot extends PircBot {
 	
 	@Override
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
+		if (activeUsers.contains(sender) == false) {
+				activeUsers.add(sender);
+		}
 		messageHandle(channel, sender, message);
 	}
 	
@@ -544,8 +550,8 @@ public class MasterBot extends PircBot {
 		} else {
 			userStats.updateLastSeen(sender);
 		}
-		if (!activeUsers.contains(sender)) {
-			activeUsers.add(sender);
+		if (activeUsers.contains(sender) == false) {
+			activeUsers.add(sender);			
 		}
 		}
 	}
@@ -573,6 +579,24 @@ public class MasterBot extends PircBot {
 				mods.remove(spaz[2]);				
 			}
 		}
+		}
+	}
+	
+	@Override
+	public void onUserList(String channel, User[] users)  {
+		for (User ussr : users) {
+			String sender = ussr.getNick();
+			if (userStats.isNew(sender)) {
+				userStats.add(sender);
+				System.out.println(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".");
+				appendToPane(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".", Color.black);
+				
+			} else {
+				userStats.updateLastSeen(sender);
+			}
+			if (activeUsers.contains(sender) == false) {
+				activeUsers.add(sender);			
+			}
 		}
 	}
 	
