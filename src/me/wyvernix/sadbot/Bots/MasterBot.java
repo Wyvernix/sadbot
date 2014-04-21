@@ -9,21 +9,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
-
-import javax.swing.text.AttributeSet;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 
 import me.wyvernix.sadbot.BotManager;
 import me.wyvernix.sadbot.UserStats;
@@ -48,7 +40,6 @@ public class MasterBot extends PircBot {
 	private Map<String, Integer> chatters = new HashMap<String, Integer>(); 
 	private Map<String, Object> specialUsers = new HashMap<String, Object>();
 	private Timer timer = new Timer();
-	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
 	private String BRAIN;
 	JMegaHal hal = new JMegaHal();
