@@ -546,7 +546,7 @@ public class MasterBot extends PircBot {
 		if (userStats.isNew(sender)) {
 			userStats.add(sender);
 			System.out.println(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".");
-			appendToPane(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".", Color.black);
+			appendToPane(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".\n", Color.black);
 			
 		} else {
 			userStats.updateLastSeen(sender);
@@ -724,17 +724,18 @@ public class MasterBot extends PircBot {
     }
 	
 	private void appendToPane(String msg, Color c) {
-		Date date = new Date();
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
-
-        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
-
-        int len = newGUI.tPane.getDocument().getLength();
-        newGUI.tPane.setCaretPosition(len);
-        newGUI.tPane.setCharacterAttributes(aset, false);
-        newGUI.tPane.replaceSelection(dateFormat.format(date) + " " + msg);
+		newGUI.appendToPane(msg, c);
+//		Date date = new Date();
+//        StyleContext sc = StyleContext.getDefaultStyleContext();
+//        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+//
+//        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+//        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+//
+//        int len = newGUI.tPane.getDocument().getLength();
+//        newGUI.tPane.setCaretPosition(len);
+//        newGUI.tPane.setCharacterAttributes(aset, false);
+//        newGUI.tPane.replaceSelection(dateFormat.format(date) + " " + msg);
     }
 	
 	public void saveData(Object saveData2, String fileName) {

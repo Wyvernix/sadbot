@@ -52,13 +52,18 @@ public class newGUI extends JFrame {
 
         pack();
         
-//        tPane.setEditable(false);
+        tPane.setEditable(false);
         
         setVisible(true);   
     }
 
+    private static int isUpdating = 0;
+    
     public static void appendToPane(String msg, Color c) {
-		Date date = new Date();
+		
+    	isUpdating++;
+    	
+    	Date date = new Date();
 
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
@@ -67,9 +72,18 @@ public class newGUI extends JFrame {
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
 
         int len = tPane.getDocument().getLength();
+
+        tPane.setEditable(true);
+        
         tPane.setCaretPosition(len);
         tPane.setCharacterAttributes(aset, false);
         tPane.replaceSelection(dateFormat.format(date) + " " + msg);
+        
+        isUpdating--;
+        
+        if (isUpdating == 0) {
+        	tPane.setEditable(false);
+        }
     }
     
     public static void logError(Exception e) {
