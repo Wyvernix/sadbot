@@ -34,10 +34,10 @@ public class SadBot extends MasterBot {
 		sadCommands.add(new RaffleCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
-		filters.add(new CapFilter());
+//		filters.add(new CapFilter());
 		filters.add(new VineFilter());
-		filters.add(new LinkFilter());
-		filters.add(new SymbolFilter());
+//		filters.add(new LinkFilter());
+//		filters.add(new SymbolFilter());
 		
 		setCommands(commands);
 		setSadCommands(sadCommands);

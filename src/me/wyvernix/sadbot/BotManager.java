@@ -105,6 +105,19 @@ public class BotManager {
 		newGUI.appendToPane("Shutting down...\n", Color.red);
 		energybot.disconnect();
 		sadbot.disconnect();
+		newGUI.alert("Stopping!");
+		
+		Runnable r = new Runnable() {
+            public void run() {
+    	    	try {
+    				Thread.sleep(3000);
+    			} catch (InterruptedException e) {
+    				e.printStackTrace();
+    			}
+    	    	System.exit(0);
+            }
+        };
+        new Thread(r).start();
 	}
 	
 	public static void reconnect() {
