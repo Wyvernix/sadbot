@@ -463,16 +463,10 @@ public class MasterBot extends PircBot {
 	}
 	
 	private void messageHandle(String channel, String sender, String message) {
-		log(sender + ": " + message);
-		if (sender.equals(botName)) {
-			return;
-		}
 		if (!chatters.containsKey(sender)) {
 			chatters.put(sender, 0);
 		}
 		chatters.put(sender, chatters.get(sender) + 1);
-		
-		message = message.trim();
 		
 		if (message.charAt(0) == "!".charAt(0)){ //is a command, handle it
 			messageCommand(channel, sender, message);
@@ -489,7 +483,7 @@ public class MasterBot extends PircBot {
 				messageAI(channel, sender, message);
 				return;
 			
-			} else if(channel.equalsIgnoreCase(mainChan)){	//save message to AI
+			} else {	//save message to AI
 		  		
 		  		
 		  		//TODO remove bad spam filter
@@ -519,10 +513,26 @@ public class MasterBot extends PircBot {
 	
 	@Override
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
-		if (activeUsers.contains(sender) == false) {
-				activeUsers.add(sender);
+		log(sender + ": " + message);
+		if (sender.equals(botName)) {
+			return;
 		}
-		messageHandle(channel, sender, message);
+		message = message.trim();
+		if(channel.equalsIgnoreCase(mainChan)) {
+			if (activeUsers.contains(sender) == false) {
+				activeUsers.add(sender);
+			}
+			messageHandle(channel, sender, message);
+		} else {
+			if (message.charAt(0) == "!".charAt(0)){ //is a command, handle it
+				messageCommand(channel, sender, message);
+				return;
+			} else if ((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
+				
+				messageAI(channel, sender, message);
+				return;
+			}
+		}
 	}
 	
 	
