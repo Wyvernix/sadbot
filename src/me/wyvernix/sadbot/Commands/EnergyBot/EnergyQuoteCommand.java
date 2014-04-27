@@ -123,5 +123,5 @@ public class EnergyQuoteCommand implements BotCommand {
 			e.printStackTrace();
 		}
 	}
-
+	public String toString() { return getCommandName(); }
 }

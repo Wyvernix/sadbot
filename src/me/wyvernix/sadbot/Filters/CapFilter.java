@@ -42,4 +42,6 @@ public class CapFilter implements ChatFilter {
 
         return caps;
     }
+	
+	public String toString() { return "CapFilter"; }
 }

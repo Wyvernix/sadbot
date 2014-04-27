@@ -24,5 +24,5 @@ public class LeaveCommand implements BotCommand {
 			}
 		}
 	}
-
+	public String toString() { return getCommandName(); }
 }

@@ -20,5 +20,7 @@ public interface BotCommand {
 
 	// The method where each BotCommand implementor will handle the event
 	public void handleMessage(MasterBot bot, String channel, String sender, String message);
-
+	
+	@Override
+	String toString();
 }

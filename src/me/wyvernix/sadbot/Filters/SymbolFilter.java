@@ -51,4 +51,5 @@ public class SymbolFilter implements ChatFilter{
         }
         return symbols;
     }
+	public String toString() { return "VineFilter"; }
 }

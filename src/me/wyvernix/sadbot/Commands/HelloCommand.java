@@ -17,5 +17,5 @@ public class HelloCommand implements BotCommand {
 	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		bot.sendMessage(channel, "Welcome to the channel! Follow or die! R)");
 	}
-
+	public String toString() { return getCommandName(); }
 }

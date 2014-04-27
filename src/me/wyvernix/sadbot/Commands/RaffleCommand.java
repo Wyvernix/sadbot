@@ -37,4 +37,5 @@ public class RaffleCommand implements BotCommand {
 			bot.sendMessage(channel, "cake is winrar! uhh... ok then. go cake. (mods are excluded unless use' mods' modifier)");
 		}
 	}
+	public String toString() { return getCommandName(); }
 }

@@ -39,7 +39,7 @@ public class MasterBot extends PircBot {
 	public UserStats userStats;
 	private Map<String, Integer> chatters = new HashMap<String, Integer>(); 
 	private Map<String, Object> specialUsers = new HashMap<String, Object>();
-	private Timer timer = new Timer();
+	public Timer timer = new Timer();
 	
 	private String BRAIN;
 	JMegaHal hal = new JMegaHal();
@@ -102,6 +102,13 @@ public class MasterBot extends PircBot {
 	public ArrayList<String> getActiveUsers() {
 		return activeUsers;
 	}
+	public Map<String, Object> getSpecialUsers() {
+		return specialUsers;
+	}
+
+	public void setSpecialUsers(Map<String, Object> specialUsers) {
+		this.specialUsers = specialUsers;
+	}
 	//// end
 	////////////|commands|
 	private List<BotCommand> commands;
@@ -114,6 +121,9 @@ public class MasterBot extends PircBot {
 	public void  init() {
 		userStats = new UserStats(botName);
 		System.out.println("Starting " + botName + ".");
+		appendToPane("Starting "+botName+"\n", inColor);
+		appendToPane("Commands: "+sadCommands.toString()+ "\n", inColor);
+		appendToPane("Chat filters: "+filters.toString()+"\n", inColor);
 		
 		//////////////////////////|load commands|
 		//load ccommands

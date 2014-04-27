@@ -17,5 +17,5 @@ public class JoinCommand implements BotCommand {
 			bot.sendMessage(channel, "Joining " + mesBlock[0]+"'s channel.");
 		}
 	}
-
+	public String toString() { return getCommandName(); }
 }

@@ -10,6 +10,7 @@ import me.wyvernix.sadbot.Commands.HelpCommand;
 import me.wyvernix.sadbot.Commands.IPCommand;
 import me.wyvernix.sadbot.Commands.JoinCommand;
 import me.wyvernix.sadbot.Commands.LeaveCommand;
+import me.wyvernix.sadbot.Commands.PermitCommand;
 import me.wyvernix.sadbot.Commands.RaffleCommand;
 import me.wyvernix.sadbot.Commands.WyvNetCommand;
 import me.wyvernix.sadbot.Commands.SadBot.SadQuoteCommand;
@@ -32,11 +33,12 @@ public class SadBot extends MasterBot {
 		sadCommands.add(new CommandsCommand());
 		sadCommands.add(new SadQuoteCommand());
 		sadCommands.add(new RaffleCommand());
+		sadCommands.add(new PermitCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 //		filters.add(new CapFilter());
 		filters.add(new VineFilter());
-//		filters.add(new LinkFilter());
+		filters.add(new LinkFilter());
 //		filters.add(new SymbolFilter());
 		
 		setCommands(commands);

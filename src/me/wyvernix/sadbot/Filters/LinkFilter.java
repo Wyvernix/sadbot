@@ -72,4 +72,5 @@ public class LinkFilter implements ChatFilter {
 //        }
         return false;
     }
+	public String toString() { return "LinkFilter"; }
 }

@@ -25,4 +25,5 @@ public class VineFilter implements ChatFilter {
       
       
 	}
+	public String toString() { return "VineFilter"; }
 }

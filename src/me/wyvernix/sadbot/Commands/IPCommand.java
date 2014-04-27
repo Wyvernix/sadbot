@@ -81,4 +81,5 @@ public class IPCommand implements BotCommand {
 		isChecking = false;
 	}
 	}
+	public String toString() { return getCommandName(); }
 }

@@ -122,4 +122,5 @@ public class SadQuoteCommand implements BotCommand {
 			e.printStackTrace();
 		}
 	}
+	public String toString() { return getCommandName(); }
 }
