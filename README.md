@@ -47,6 +47,10 @@ Automatically checks every 5 minutes, and on command. Will correct itself.
 
 >"Bot commands: !hello, !ip, !help, !wyvnet, !quote, !command, and some secret ones."
 
+**!permit**
+
+Will permit a user against one occurrence of a ban.
+
 **!quote**
 
 "!quote" will return a random quote.
@@ -74,7 +78,7 @@ Automatically checks every 5 minutes, and on command. Will correct itself.
 Filters
 -------
 
-Triggers are hard-coded for now. I will work on getting a setter working later. The tempban/warn system will warn on first trigger, then add 2 minutes every time.
+Triggers are hard-coded for now. I will work on getting a setter working later. The tempban/warn system will warn on first trigger, then add 1 minute every time.
 
 **CapFilter**
 

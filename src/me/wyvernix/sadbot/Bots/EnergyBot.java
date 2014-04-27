@@ -29,6 +29,7 @@ public class EnergyBot extends MasterBot {
 		sadCommands.add(new CommandsCommand());
 		sadCommands.add(new EnergyQuoteCommand());
 		sadCommands.add(new RaffleCommand());
+		sadCommands.add(new PermitCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 		filters.add(new CapFilter());

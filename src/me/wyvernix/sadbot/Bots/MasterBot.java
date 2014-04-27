@@ -731,7 +731,7 @@ public class MasterBot extends PircBot {
     public void tempBan(final String channel, final String name, String type, int time) {
         String line = "!! Issuing a tempBan on " + name + " in " + channel + " for " + type;
         log(line);
-        sendMessage(channel, ".timeout "+name+" "+time*120);
+        sendMessage(channel, ".timeout "+name+" "+time*60);
     }
 	
 	private void appendToPane(String msg, Color c) {
