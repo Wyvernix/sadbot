@@ -14,6 +14,16 @@ ChangeLog is in changelog.txt
 
 ****
 
+To Use:
+-------
+1. Look at the SadBot.java or EnergyBot.java class.
+2. Delete one, and edit the other to fill your needs.
+3. Fix BotManager.java class
+4. (optional) edit newGUI.java to change name of window 
+
+
+****
+
 Commands
 --------
 
