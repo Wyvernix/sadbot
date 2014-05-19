@@ -2,12 +2,6 @@ package me.wyvernix.sadbot.Commands;
 
 import me.wyvernix.sadbot.Bots.MasterBot;
 
-/**
- * A simple time command. Tells the bot to give
- * the current time when it is given "time".
- *
- * @author AMcBain ( http://www.asmcbain.net/ ) @ 2009
- */
 public class HelloCommand implements BotCommand {
 
 	public String getCommandName() {

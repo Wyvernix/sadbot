@@ -17,12 +17,6 @@ import me.wyvernix.sadbot.newGUI;
 import me.wyvernix.sadbot.Bots.MasterBot;
 import me.wyvernix.sadbot.Commands.BotCommand;
 
-/**
- * A simple time command. Tells the bot to give
- * the current time when it is given "time".
- *
- * @author AMcBain ( http://www.asmcbain.net/ ) @ 2009
- */
 public class EnergyQuoteCommand implements BotCommand {
 	private ArrayList<String> quotes = new ArrayList<String>();
 	
