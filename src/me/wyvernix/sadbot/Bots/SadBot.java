@@ -10,6 +10,7 @@ import me.wyvernix.sadbot.Commands.HelpCommand;
 import me.wyvernix.sadbot.Commands.IPCommand;
 import me.wyvernix.sadbot.Commands.JoinCommand;
 import me.wyvernix.sadbot.Commands.LeaveCommand;
+import me.wyvernix.sadbot.Commands.LinkFilterCommand;
 import me.wyvernix.sadbot.Commands.RaffleCommand;
 import me.wyvernix.sadbot.Commands.WyvNetCommand;
 import me.wyvernix.sadbot.Commands.SadBot.SadQuoteCommand;
@@ -34,11 +35,12 @@ public class SadBot extends MasterBot {
 		sadCommands.add(new SadQuoteCommand());
 		sadCommands.add(new RaffleCommand());
 //		sadCommands.add(new PermitCommand());
+		sadCommands.add(new LinkFilterCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
+		//Link filter is on by default
 //		filters.add(new CapFilter());
 		filters.add(new VineFilter());
-//		filters.add(new LinkFilter());
 //		filters.add(new SymbolFilter());
 		
 		setCommands(commands);
@@ -50,6 +52,11 @@ public class SadBot extends MasterBot {
 		//Color.GREEN.darker()
 		init();
 	}
+	
+//	@Override
+//	protected boolean checkLinkFilter(String channel, String sender, String message) {
+//		return false;
+//	}
 }
 
 

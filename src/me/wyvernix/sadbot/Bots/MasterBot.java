@@ -1,14 +1,7 @@
 package me.wyvernix.sadbot.Bots;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +12,11 @@ import java.util.regex.Pattern;
 
 import me.wyvernix.sadbot.BotManager;
 import me.wyvernix.sadbot.UserStats;
+import me.wyvernix.sadbot.Util;
 import me.wyvernix.sadbot.newGUI;
 import me.wyvernix.sadbot.Commands.BotCommand;
 import me.wyvernix.sadbot.Filters.ChatFilter;
+import me.wyvernix.sadbot.Filters.LinkFilter;
 
 import org.jibble.pircbot.*;
 import org.jibble.jmegahal.JMegaHal;
@@ -36,16 +31,17 @@ public class MasterBot extends PircBot {
 	
 	private ArrayList<String> mods = new ArrayList<String>();
 	private ArrayList<String> activeUsers = new ArrayList<String>();
+	private ArrayList<String> newBuffer = new ArrayList<String>();
 	public UserStats userStats;
 	private Map<String, Integer> chatters = new HashMap<String, Integer>(); 
 	private Map<String, Object> specialUsers = new HashMap<String, Object>();
 	public Timer timer = new Timer();
+	public LinkFilter linkFilter;
 	
-	private String BRAIN;
 	JMegaHal hal = new JMegaHal();
 	
 	private void firstRun() {
-		System.err.println("Couldn't find the brain ("+ BRAIN +") so will use default data");
+		System.err.println("Couldn't find the brain so will use default data");
 		hal.add("Hello World");
 		hal.add("Can I have some coffee?");
 		hal.add("Please slap me");
@@ -113,13 +109,14 @@ public class MasterBot extends PircBot {
 	////////////|commands|
 	private List<BotCommand> commands;
 	private List<BotCommand> sadCommands;
-	private Map<String,String> ccommands = new HashMap<String,String>();
-    private List<ChatFilter> filters;
+	private Map<String,String> ccommands;
+    public List<ChatFilter> filters;
 	/////////////END
 	
 	@SuppressWarnings("unchecked")
 	public void  init() {
 		userStats = new UserStats(botName);
+		linkFilter = new LinkFilter(botName);
 		System.out.println("Starting " + botName + ".");
 		appendToPane("Starting "+botName+"\n", inColor);
 		appendToPane("Commands: "+sadCommands.toString()+ "\n", inColor);
@@ -128,53 +125,21 @@ public class MasterBot extends PircBot {
 		//////////////////////////|load commands|
 		//load ccommands
 //		ccommands.put("Commands", "lol");
-		ObjectInputStream inp = null;
-		final String commandsFile= "save\\"+botName+"Commands.dat";
-		try {
-			final File file = new File(commandsFile);
-		    inp = new ObjectInputStream(new FileInputStream(file));
-		    ccommands = (Map<String,String>) inp.readObject();
-		} catch (FileNotFoundException e) {
-			System.err.println("Couldn't find the data ("+ commandsFile +") so will fix?");
-			saveData(ccommands, commandsFile);
-		} catch (IOException e) {
-			System.err.println("Couldn't find the data ("+ commandsFile +") so will fix?");
-			saveData(ccommands, commandsFile);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			if(inp != null) {
-				try {
-					inp.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
+		
+		ccommands = (Map<String, String>) Util.load(botName+"Commands.dat");
+		if (ccommands == null) {
+			ccommands = new HashMap<String,String>();
 		}
+		
 		//////////////////////END
 		
 		
 		// load brain
-		BRAIN = "save\\"+botName+".ser";
-		ObjectInputStream in = null;
-		try {
-			final File file = new File(BRAIN);
-		    in = new ObjectInputStream(new FileInputStream(file));
-			hal = (JMegaHal) in.readObject();
-		} catch (FileNotFoundException e) {
+		
+		
+		hal = (JMegaHal) Util.load(botName+".ser");
+		if (hal == null) {
 			firstRun();
-		} catch (IOException e) {
-			firstRun();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
 		}
 
 		this.setName(botName);
@@ -236,13 +201,13 @@ public class MasterBot extends PircBot {
 					if (split[1].equals("add") && (message.length() > "command add".length())) {
 						ccommands.put(split[2], message.replace("command add "+split[2]+" ", "").trim());
 						sendMessage(channel, "Command: !"+ split[2] + " > " + message.replace("command add "+split[2]+" ", "").trim());
-						saveData(ccommands, "save\\"+botName+"Commands.dat");
+						Util.save(ccommands, botName+"Commands.dat");
 						return;
 					} else if (split[1].equals("remove") && (message.length() > "command remove".length())) {
 						if (ccommands.get(split[2]) != null) {
 						ccommands.remove(split[2]);
 						sendMessage(channel, "Removed command: !" + split[2]);
-						saveData(ccommands, "save\\"+botName+"Commands.dat");
+						Util.save(ccommands, botName+"Commands.dat");
 						return;
 						} else {
 							sendMessage(channel, "I cannot find the command '!" + split[2] + "' (use !command remove cake)");
@@ -335,17 +300,10 @@ public class MasterBot extends PircBot {
 		if (message.startsWith("add") && sender.equals("shady1765")) { //this is for me only. don't want other people to mess up bot. later i may add custom String
 			try {
 				hal.addDocument("https://dl.dropboxusercontent.com/u/26842546/getsmart.txt");
-  				// save the new data
-  				ObjectOutput out = new ObjectOutputStream(new FileOutputStream(BRAIN));
-  				out.writeObject(hal);
-  				out.close();
-  				sendMessage(channel, "Nom nom words :3");
-  			} catch (FileNotFoundException e) {
-  				e.printStackTrace();
-  				newGUI.logError(e);
-  			} catch (IOException e) {
-  				e.printStackTrace();
-  			}
+				Util.save(hal, botName+".ser");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return;
 		}
 	}
@@ -468,7 +426,18 @@ public class MasterBot extends PircBot {
 					return true;
 				}
 			}
+    		
+    		return checkLinkFilter(channel, sender, message);
         }
+		return false;
+	}
+	
+	protected boolean checkLinkFilter(String channel, String sender, String message) {
+		String returnStr = linkFilter.handleMessage(this, channel, sender, message, mods, specialUsers);
+		if (returnStr!=null) {
+			log(returnStr);
+			return true;
+		}
 		return false;
 	}
 	
@@ -505,16 +474,7 @@ public class MasterBot extends PircBot {
 		  			// add the new data to the brain
 //		  			sendMessage(channel, "not found: " + message);
 		  			hal.add(message.replace("\"", ""));
-		  			try {
-		  				// save the new data
-		  				ObjectOutput out = new ObjectOutputStream(new FileOutputStream(BRAIN));
-		  				out.writeObject(hal);
-		  				out.close();
-		  			} catch (FileNotFoundException e) {
-		  				e.printStackTrace();
-		  			} catch (IOException e) {
-		  				e.printStackTrace();
-		  			}
+		  			Util.save(hal, botName+".ser");
 //		  		}
 			}
 		}
@@ -524,13 +484,19 @@ public class MasterBot extends PircBot {
 	@Override
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
 		log(sender + ": " + message);
-		if (sender.equals(botName)) {
+		if (sender.equalsIgnoreCase(botName)) {
 			return;
 		}
 		message = message.trim();
 		if(channel.equalsIgnoreCase(mainChan)) {
 			if (activeUsers.contains(sender) == false) {
 				activeUsers.add(sender);
+			}
+			if (newBuffer.contains(sender)) {
+				newBuffer.remove(sender);
+				userStats.add(sender);
+				System.out.println(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".");
+				appendToPane(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".\n", Color.black);
 			}
 			messageHandle(channel, sender, message);
 		} else {
@@ -555,9 +521,7 @@ public class MasterBot extends PircBot {
 //		}
 		
 		if (userStats.isNew(sender)) {
-			userStats.add(sender);
-			System.out.println(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".");
-			appendToPane(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".\n", Color.black);
+			newBuffer.add(sender);
 			
 		} else {
 			userStats.updateLastSeen(sender);
@@ -574,6 +538,9 @@ public class MasterBot extends PircBot {
 			activeUsers.remove(sender);
 			userStats.updateLastSeen(sender);
 		}
+		if (newBuffer.contains(sender)) {
+			newBuffer.remove(sender);
+		}
 	}
 	
 	
@@ -586,11 +553,13 @@ public class MasterBot extends PircBot {
 			if (!mods.contains(spaz[2])) {
 				mods.add(spaz[2]);
 			}
-		} else if (spaz[1].equals("-o")) {
-			if (mods.contains(spaz[2])) {
-				mods.remove(spaz[2]);				
-			}
 		}
+		//write mod list in permanent marker... twitch is terrible with mod orders
+//		else if (spaz[1].equals("-o")) {
+//			if (mods.contains(spaz[2])) {
+//				mods.remove(spaz[2]);				
+//			}
+//		}
 		}
 	}
 	
@@ -600,10 +569,7 @@ public class MasterBot extends PircBot {
 		for (User ussr : users) {
 			String sender = ussr.getNick();
 			if (userStats.isNew(sender)) {
-				userStats.add(sender);
-				System.out.println(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".");
-				appendToPane(botName+": Added viewer: "+sender+" on "+userStats.lastSeen(sender)+".", Color.black);
-				
+				newBuffer.add(sender);
 			} else {
 				userStats.updateLastSeen(sender);
 			}
@@ -748,18 +714,6 @@ public class MasterBot extends PircBot {
 //        newGUI.tPane.setCharacterAttributes(aset, false);
 //        newGUI.tPane.replaceSelection(dateFormat.format(date) + " " + msg);
     }
-	
-	public void saveData(Object saveData2, String fileName) {
-		try {
-			ObjectOutput out = new ObjectOutputStream(new FileOutputStream(fileName));
-			out.writeObject(saveData2);
-			out.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public void leaveServer() throws InterruptedException {
 		if (this.isConnected()) {

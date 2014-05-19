@@ -8,7 +8,6 @@ import me.wyvernix.sadbot.Commands.*;
 import me.wyvernix.sadbot.Commands.EnergyBot.EnergyQuoteCommand;
 import me.wyvernix.sadbot.Filters.CapFilter;
 import me.wyvernix.sadbot.Filters.ChatFilter;
-import me.wyvernix.sadbot.Filters.LinkFilter;
 import me.wyvernix.sadbot.Filters.SymbolFilter;
 import me.wyvernix.sadbot.Filters.VineFilter;
 
@@ -30,11 +29,12 @@ public class EnergyBot extends MasterBot {
 		sadCommands.add(new EnergyQuoteCommand());
 		sadCommands.add(new RaffleCommand());
 		sadCommands.add(new PermitCommand());
+		sadCommands.add(new LinkFilterCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
+		//Link filter is on by default
 		filters.add(new CapFilter());
 		filters.add(new VineFilter());
-		filters.add(new LinkFilter());
 		filters.add(new SymbolFilter());
 		
 		setCommands(commands);

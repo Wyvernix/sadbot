@@ -55,7 +55,7 @@ Automatically checks every 5 minutes, and on command. Will correct itself.
 
 **!commands**
 
->"Bot commands: !hello, !ip, !help, !wyvnet, !quote, !command, and some secret ones."
+>"Bot commands: !hello, !ip, !help, !wyvnet, !quote, and some secret ones. Check the wiki."
 
 **!permit**
 
@@ -73,9 +73,15 @@ Will permit a user against one occurrence of a ban.
 
 "!quote (quote)" will add quote to quote list.
 
+**!link**
+
+!link (add/remove)
+
+!link list" will output list in bot's channel
+
 **!(botname)**
 
-"!(botname)" > "I am <botName> v<botVersion>! Now with coffee! Do !commands for more."
+"!(botname)" >> "I am <botName> v<botVersion>! Now with coffee! Do !commands for more."
 
 "!(botname) command [add/remove/list]" manages commands. ~*Fancy*~
 

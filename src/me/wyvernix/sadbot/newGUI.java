@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 public class newGUI extends JFrame {
     private JPanel topPanel;
     public static JTextPane tPane;
+    private static JScrollPane jsp;
 	private static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private static JTextArea txtrAlertsGoHere;
 
@@ -41,26 +42,28 @@ public class newGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);            
 
-        EmptyBorder eb = new EmptyBorder(new Insets(10, 10, 10, 10));
+        EmptyBorder eb = new EmptyBorder(new Insets(10, 10, 0, 10));
 
         
 
         getContentPane().add(topPanel);
 
         pack();
-        
-                tPane = new JTextPane();  
-                tPane.setBorder(eb);
-                
-                //tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-                tPane.setMargin(new Insets(5, 5, 5, 5));
                 
                     	JPanel container = new JPanel();
-                    	//    	container.setPreferredSize(new Dimension(350, 256));
-                    	    	container.add(tPane);
-                    	    	JScrollPane jsp = new JScrollPane(container);
+                    	    	jsp = new JScrollPane(container);
+                    	    	
+                    	    	        tPane = new JTextPane();
+                    	    	        container.add(tPane);
+                    	    	        tPane.setBorder(eb);
+                    	    	        
+                    	    	        //tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+//                    	    	        tPane.setMargin(new Insets(5, 5, 0, 5));
+                    	    	        
+                    	    	        tPane.setEditable(false);
                     	    	jsp.getVerticalScrollBar().setUnitIncrement(12);
                     	    	jsp.getHorizontalScrollBar().setUnitIncrement(12);
+                    	    	
                     	    	
                     	    	JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
                     	    	tabbedPane.setPreferredSize(new Dimension(136, 250));
@@ -69,7 +72,7 @@ public class newGUI extends JFrame {
                     	    	JPanel panel = new JPanel();
                     	    	tabbedPane.addTab("Controls", null, panel, null);
                     	    	
-                    	    	JLabel lblNewLabel = new JLabel("~ CAKE ~");
+                    	    	JLabel lblNewLabel = new JLabel("~ buttons ~");
                     	    	panel.add(lblNewLabel);
                     	    	
                     	    	JButton btnShutdown = new JButton("Shutdown");
@@ -102,8 +105,6 @@ public class newGUI extends JFrame {
                     	    	panel.add(txtrAlertsGoHere);
                     	    	jsp.setPreferredSize(new Dimension(650, 250));
                     	    	topPanel.add(jsp);
-                    	    	
-                    	    	tPane.setEditable(false);
         
                     	    	
                     	    	appendToPane("Starting Program!                                                                                                 \n", Color.RED);
@@ -136,6 +137,9 @@ public class newGUI extends JFrame {
         
         if (isUpdating == 0) {
         	tPane.setEditable(false);
+        	JScrollBar sb = jsp.getVerticalScrollBar();
+        	sb.setValue(sb.getMaximum());
+        	
         }
     }
     
