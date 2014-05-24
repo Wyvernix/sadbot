@@ -536,10 +536,11 @@ public class MasterBot extends PircBot {
 	public void onPart(String channel, String sender, String login, String hostname) {
 		if (activeUsers.contains(sender)) {
 			activeUsers.remove(sender);
-			userStats.updateLastSeen(sender);
-		}
-		if (newBuffer.contains(sender)) {
-			newBuffer.remove(sender);
+			if (newBuffer.contains(sender)) {
+				newBuffer.remove(sender);
+			} else {
+				userStats.updateLastSeen(sender);
+			}
 		}
 	}
 	

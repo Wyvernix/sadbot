@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.*;
@@ -25,9 +26,49 @@ public class newGUI extends JFrame {
     private static JScrollPane jsp;
 	private static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private static JTextArea txtrAlertsGoHere;
+	private DefaultListModel<String> sbUsers = new DefaultListModel<String>();
+	private DefaultListModel<String> ebUsers = new DefaultListModel<String>();
 
+	private Font proFont = new Font("ProFontWindows", Font.PLAIN, 12);
+	
     public newGUI() {
     	super("SadBot x EnergyBot");
+    	
+    	////////////
+    	
+    	UIManager.put("Button.font", proFont);
+    	UIManager.put("ToggleButton.font", proFont);
+    	UIManager.put("RadioButton.font", proFont);
+    	UIManager.put("CheckBox.font", proFont);
+    	UIManager.put("ColorChooser.font", proFont);
+    	UIManager.put("ComboBox.font", proFont);
+    	UIManager.put("Label.font", proFont);
+    	UIManager.put("List.font", proFont);
+    	UIManager.put("MenuBar.font", proFont);
+    	UIManager.put("MenuItem.font", proFont);
+    	UIManager.put("RadioButtonMenuItem.font", proFont);
+    	UIManager.put("CheckBoxMenuItem.font", proFont);
+    	UIManager.put("Menu.font", proFont);
+    	UIManager.put("PopupMenu.font", proFont);
+    	UIManager.put("OptionPane.font", proFont);
+    	UIManager.put("Panel.font", proFont);
+    	UIManager.put("ProgressBar.font", proFont);
+    	UIManager.put("ScrollPane.font", proFont);
+    	UIManager.put("Viewport.font", proFont);
+    	UIManager.put("TabbedPane.font", proFont);
+    	UIManager.put("Table.font", proFont);
+    	UIManager.put("TableHeader.font", proFont);
+    	UIManager.put("TextField.font", proFont);
+    	UIManager.put("PasswordField.font", proFont);
+    	UIManager.put("TextArea.font", proFont);
+    	UIManager.put("TextPane.font", proFont);
+    	UIManager.put("EditorPane.font", proFont);
+    	UIManager.put("TitledBorder.font", proFont);
+    	UIManager.put("ToolBar.font", proFont);
+    	UIManager.put("ToolTip.font", proFont);
+    	UIManager.put("Tree.font", proFont);
+    	
+    	/////////////
     	
     	ImageIcon img = new ImageIcon("res\\img\\ico.png");
     	
@@ -40,9 +81,7 @@ public class newGUI extends JFrame {
     	topPanel = new JPanel();        
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);            
-
-        EmptyBorder eb = new EmptyBorder(new Insets(10, 10, 0, 10));
+        setLocationRelativeTo(null);
 
         
 
@@ -50,29 +89,35 @@ public class newGUI extends JFrame {
 
         pack();
                 
-                    	JPanel container = new JPanel();
-                    	    	jsp = new JScrollPane(container);
+                    	    	
                     	    	
                     	    	        tPane = new JTextPane();
-                    	    	        container.add(tPane);
-                    	    	        tPane.setBorder(eb);
+                    	    	        tPane.setToolTipText("Nothing to see here");
                     	    	        
                     	    	        //tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 //                    	    	        tPane.setMargin(new Insets(5, 5, 0, 5));
                     	    	        
                     	    	        tPane.setEditable(false);
+                    	    	        
+                    	    	jsp = new JScrollPane(tPane);
+                    	    	
+                    	    	
+                    	    	jsp.setAutoscrolls(true);
+                    	    	tPane.setAutoscrolls(true);
+                    	    	
                     	    	jsp.getVerticalScrollBar().setUnitIncrement(12);
                     	    	jsp.getHorizontalScrollBar().setUnitIncrement(12);
                     	    	
                     	    	
                     	    	JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+//                    	    	tabbedPane.setFont(new Font("ProFontWindows", Font.PLAIN, 12));
                     	    	tabbedPane.setPreferredSize(new Dimension(136, 250));
                     	    	topPanel.add(tabbedPane);
                     	    	
                     	    	JPanel panel = new JPanel();
                     	    	tabbedPane.addTab("Controls", null, panel, null);
                     	    	
-                    	    	JLabel lblNewLabel = new JLabel("~ buttons ~");
+                    	    	JLabel lblNewLabel = new JLabel("~ COMMANDS~");
                     	    	panel.add(lblNewLabel);
                     	    	
                     	    	JButton btnShutdown = new JButton("Shutdown");
@@ -85,6 +130,7 @@ public class newGUI extends JFrame {
                     	    	panel.add(btnShutdown);
                     	    	
                     	    	JButton btnReconnect = new JButton("Reconnect");
+                    	    	btnReconnect.setToolTipText("Reconnect Bots");
                     	    	btnReconnect.addActionListener(new ActionListener() {
                     	    		public void actionPerformed(ActionEvent e) {
                     	    			BotManager.reconnect();
@@ -97,50 +143,61 @@ public class newGUI extends JFrame {
                     	    	
                     	    	txtrAlertsGoHere = new JTextArea();
                     	    	txtrAlertsGoHere.setEditable(false);
-                    	    	txtrAlertsGoHere.setFont(new Font("Monospaced", Font.BOLD, 16));
+                    	    	txtrAlertsGoHere.setFont(new Font("ProFontWindows", Font.BOLD, 16));
                     	    	txtrAlertsGoHere.setWrapStyleWord(true);
                     	    	txtrAlertsGoHere.setLineWrap(true);
                     	    	txtrAlertsGoHere.setPreferredSize(new Dimension(100, 100));
                     	    	txtrAlertsGoHere.setText("ALERTS GO HERE :3");
                     	    	panel.add(txtrAlertsGoHere);
+                    	    	
+                    	    	
+                    	    	
+                    	    	sbUsers.addElement("one");
+                    	    	
+                    	    	
+                    	    	JList sadbotUsers = new JList(sbUsers);
+                    	    	
+                    	    	JList energybotUsers = new JList(ebUsers);
+                    	    	
+//                    	    	JScrollPane sscroll = new JScrollPane(sadbotUsers);
+//                    	    	JScrollPane escroll = new JScrollPane(energybotUsers);
+                    	    	
+                    	    	JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, sadbotUsers, energybotUsers);
+                    	    	tabbedPane.addTab("Stats", null, splitPane, null);
+                    	    	
+                    	    	
+                    	    	
                     	    	jsp.setPreferredSize(new Dimension(650, 250));
+                    	    	jsp.setSize(650, 250);
                     	    	topPanel.add(jsp);
         
                     	    	
-                    	    	appendToPane("Starting Program!                                                                                                 \n", Color.RED);
+                    	    	appendToPane("Starting Program!\n", Color.RED);
         setVisible(true);   
+        sbUsers.addElement("bananas");
     }
-
-    private static int isUpdating = 0;
     
     public static void appendToPane(String msg, Color c) {
-		
-    	isUpdating++;
-    	
     	Date date = new Date();
 
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
-        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+//        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "ProFontWindows");
+//        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
 
-        int len = tPane.getDocument().getLength();
+//        int len = tPane.getDocument().getLength();
 
         tPane.setEditable(true);
         
-        tPane.setCaretPosition(len);
+        tPane.setCaretPosition(tPane.getDocument().getLength());
         tPane.setCharacterAttributes(aset, false);
         tPane.replaceSelection(dateFormat.format(date) + " " + msg);
         
-        isUpdating--;
+//        tPane.setText(tPane.getText() + "\n" + dateFormat.format(date) + " " + msg);
+//        tPane.setCaretPosition(tPane.getDocument().getLength());
         
-        if (isUpdating == 0) {
-        	tPane.setEditable(false);
-        	JScrollBar sb = jsp.getVerticalScrollBar();
-        	sb.setValue(sb.getMaximum());
-        	
-        }
+        tPane.setEditable(false);
     }
     
     public static void logError(Exception e) {
