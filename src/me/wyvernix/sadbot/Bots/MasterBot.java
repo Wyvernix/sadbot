@@ -164,6 +164,7 @@ public class MasterBot extends PircBot {
 		    	System.out.println("Updated "+botName+" Stats.");
 				userStats.updateStats(activeUsers, chatters);
 				chatters.clear();
+				Util.save(hal, botName+".ser");
 		    }
 		}, 3000, 1000 * 60 * 5);
 	}
@@ -474,7 +475,6 @@ public class MasterBot extends PircBot {
 		  			// add the new data to the brain
 //		  			sendMessage(channel, "not found: " + message);
 		  			hal.add(message.replace("\"", ""));
-		  			Util.save(hal, botName+".ser");
 //		  		}
 			}
 		}
@@ -491,6 +491,7 @@ public class MasterBot extends PircBot {
 		if(channel.equalsIgnoreCase(mainChan)) {
 			if (activeUsers.contains(sender) == false) {
 				activeUsers.add(sender);
+				manageUserList(true, sender);
 			}
 			if (newBuffer.contains(sender)) {
 				newBuffer.remove(sender);

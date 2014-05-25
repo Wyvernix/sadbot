@@ -6,7 +6,6 @@ import java.util.List;
 
 import me.wyvernix.sadbot.newGUI;
 import me.wyvernix.sadbot.Commands.*;
-import me.wyvernix.sadbot.Commands.EnergyBot.EnergyQuoteCommand;
 import me.wyvernix.sadbot.Filters.CapFilter;
 import me.wyvernix.sadbot.Filters.ChatFilter;
 import me.wyvernix.sadbot.Filters.SymbolFilter;
@@ -27,7 +26,7 @@ public class EnergyBot extends MasterBot {
 		sadCommands.add(new WyvNetCommand());
 		sadCommands.add(new IPCommand("activeenergylive"));
 		sadCommands.add(new CommandsCommand());
-		sadCommands.add(new EnergyQuoteCommand());
+		sadCommands.add(new QuoteCommand("energyQ.dat"));
 		sadCommands.add(new RaffleCommand());
 		sadCommands.add(new PermitCommand());
 		sadCommands.add(new LinkFilterCommand());

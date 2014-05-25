@@ -13,9 +13,9 @@ import me.wyvernix.sadbot.Commands.IPCommand;
 import me.wyvernix.sadbot.Commands.JoinCommand;
 import me.wyvernix.sadbot.Commands.LeaveCommand;
 import me.wyvernix.sadbot.Commands.LinkFilterCommand;
+import me.wyvernix.sadbot.Commands.QuoteCommand;
 import me.wyvernix.sadbot.Commands.RaffleCommand;
 import me.wyvernix.sadbot.Commands.WyvNetCommand;
-import me.wyvernix.sadbot.Commands.SadBot.SadQuoteCommand;
 import me.wyvernix.sadbot.Filters.ChatFilter;
 import me.wyvernix.sadbot.Filters.VineFilter;
 
@@ -34,7 +34,7 @@ public class SadBot extends MasterBot {
 		sadCommands.add(new WyvNetCommand());
 		sadCommands.add(new IPCommand("shady1765"));
 		sadCommands.add(new CommandsCommand());
-		sadCommands.add(new SadQuoteCommand());
+		sadCommands.add(new QuoteCommand("sadQ.dat"));
 		sadCommands.add(new RaffleCommand());
 //		sadCommands.add(new PermitCommand());
 		sadCommands.add(new LinkFilterCommand());
