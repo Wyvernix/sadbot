@@ -5,12 +5,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.*;
-
-import javax.swing.border.*;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -26,12 +23,14 @@ public class newGUI extends JFrame {
     private static JScrollPane jsp;
 	private static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private static JTextArea txtrAlertsGoHere;
-	private DefaultListModel<String> sbUsers = new DefaultListModel<String>();
-	private DefaultListModel<String> ebUsers = new DefaultListModel<String>();
+	public static DefaultListModel<String> sbUsers = new DefaultListModel<String>();
+	public static DefaultListModel<String> ebUsers = new DefaultListModel<String>();
+	public static JSplitPane splitPane;
 
 	private Font proFont = new Font("ProFontWindows", Font.PLAIN, 12);
 	
-    public newGUI() {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public newGUI() {
     	super("SadBot x EnergyBot");
     	
     	////////////
@@ -152,18 +151,20 @@ public class newGUI extends JFrame {
                     	    	
                     	    	
                     	    	
-                    	    	sbUsers.addElement("one");
                     	    	
                     	    	
-                    	    	JList sadbotUsers = new JList(sbUsers);
+                    	    	
+								JList sadbotUsers = new JList(sbUsers);
                     	    	
                     	    	JList energybotUsers = new JList(ebUsers);
                     	    	
-//                    	    	JScrollPane sscroll = new JScrollPane(sadbotUsers);
-//                    	    	JScrollPane escroll = new JScrollPane(energybotUsers);
+                    	    	JScrollPane sscroll = new JScrollPane(sadbotUsers);
+                    	    	JScrollPane escroll = new JScrollPane(energybotUsers);
                     	    	
-                    	    	JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, sadbotUsers, energybotUsers);
-                    	    	tabbedPane.addTab("Stats", null, splitPane, null);
+                    	    	splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, sscroll, escroll);
+                    	    	splitPane.setDividerSize(2);
+                    	    	splitPane.setResizeWeight(0.5);
+                    	    	tabbedPane.addTab("Users", null, splitPane, null);
                     	    	
                     	    	
                     	    	
@@ -174,7 +175,7 @@ public class newGUI extends JFrame {
                     	    	
                     	    	appendToPane("Starting Program!\n", Color.RED);
         setVisible(true);   
-        sbUsers.addElement("bananas");
+        
     }
     
     public static void appendToPane(String msg, Color c) {

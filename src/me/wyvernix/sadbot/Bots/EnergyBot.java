@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.wyvernix.sadbot.newGUI;
 import me.wyvernix.sadbot.Commands.*;
 import me.wyvernix.sadbot.Commands.EnergyBot.EnergyQuoteCommand;
 import me.wyvernix.sadbot.Filters.CapFilter;
@@ -47,11 +48,18 @@ public class EnergyBot extends MasterBot {
 		init();
 	}
 	
-	
-	
-	
-	
-	
+	@Override
+	protected void manageUserList(boolean mode, String user) {
+		if (mode) {
+			//add user
+			newGUI.ebUsers.addElement(user);
+			newGUI.splitPane.setResizeWeight(0.5);
+		} else {
+			//remove user
+			newGUI.ebUsers.removeElement(user);
+			newGUI.splitPane.setResizeWeight(0.5);
+		}
+	}
 	
 	
 //	private static final String botVersion = "2.3.3";

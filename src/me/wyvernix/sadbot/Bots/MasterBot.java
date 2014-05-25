@@ -527,7 +527,8 @@ public class MasterBot extends PircBot {
 			userStats.updateLastSeen(sender);
 		}
 		if (activeUsers.contains(sender) == false) {
-			activeUsers.add(sender);			
+			activeUsers.add(sender);
+			manageUserList(true, sender);
 		}
 		}
 	}
@@ -536,11 +537,20 @@ public class MasterBot extends PircBot {
 	public void onPart(String channel, String sender, String login, String hostname) {
 		if (activeUsers.contains(sender)) {
 			activeUsers.remove(sender);
+			manageUserList(false, sender);
 			if (newBuffer.contains(sender)) {
 				newBuffer.remove(sender);
 			} else {
 				userStats.updateLastSeen(sender);
 			}
+		}
+	}
+	
+	protected void manageUserList(boolean mode, String user) {
+		if (mode) {
+			//add user
+		} else {
+			//remove user
 		}
 	}
 	
@@ -575,7 +585,8 @@ public class MasterBot extends PircBot {
 				userStats.updateLastSeen(sender);
 			}
 			if (activeUsers.contains(sender) == false) {
-				activeUsers.add(sender);			
+				activeUsers.add(sender);
+				manageUserList(true, sender);
 			}
 		}
 		}

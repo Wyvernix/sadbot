@@ -3,6 +3,8 @@ package me.wyvernix.sadbot.Bots;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.wyvernix.sadbot.newGUI;
 import me.wyvernix.sadbot.Commands.BotCommand;
 import me.wyvernix.sadbot.Commands.CommandsCommand;
 import me.wyvernix.sadbot.Commands.HelloCommand;
@@ -53,10 +55,23 @@ public class SadBot extends MasterBot {
 		init();
 	}
 	
-//	@Override
-//	protected boolean checkLinkFilter(String channel, String sender, String message) {
-//		return false;
-//	}
+	@Override
+	protected void manageUserList(boolean mode, String user) {
+		if (mode) {
+			//add user
+			newGUI.sbUsers.addElement(user);
+			newGUI.splitPane.setResizeWeight(0.5);
+		} else {
+			//remove user
+			newGUI.sbUsers.removeElement(user);
+			newGUI.splitPane.setResizeWeight(0.5);
+		}
+	}
+	
+	@Override
+	protected boolean checkLinkFilter(String channel, String sender, String message) {
+		return false;
+	}
 }
 
 
