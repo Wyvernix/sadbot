@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import me.wyvernix.sadbot.BotManager;
+import me.wyvernix.sadbot.JMegaMegaHal;
 import me.wyvernix.sadbot.UserStats;
 import me.wyvernix.sadbot.Util;
 import me.wyvernix.sadbot.newGUI;
@@ -19,7 +20,7 @@ import me.wyvernix.sadbot.Filters.ChatFilter;
 import me.wyvernix.sadbot.Filters.LinkFilter;
 
 import org.jibble.pircbot.*;
-import org.jibble.jmegahal.JMegaHal;
+//import org.jibble.jmegahal.JMegaHal;
 
 
 public class MasterBot extends PircBot {
@@ -38,10 +39,37 @@ public class MasterBot extends PircBot {
 	public Timer timer = new Timer();
 	public LinkFilter linkFilter;
 	
-	JMegaHal hal = new JMegaHal();
+	private JMegaMegaHal hal;
 	
 	private void firstRun() {
 		System.err.println("Couldn't find the brain so will use default data");
+		hal = new JMegaMegaHal();
+//		{
+//			/**
+//			 * 
+//			 */
+//			private static final long serialVersionUID = 1L;
+//			public static final String ENDY_CHARS = ".!?\n\r";
+//			
+//			@Override
+//			public void addDocument(String uri) throws IOException {
+//		        BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(uri).openStream()));
+//		        StringBuffer buffer = new StringBuffer();
+//		        int ch = 0;
+//		        while ((ch = reader.read()) != -1) {
+//		            buffer.append((char) ch);
+//		            if (ENDY_CHARS.indexOf((char) ch) >= 0) {
+//		                String sentence = buffer.toString();
+//		                sentence = sentence.replace('\r', ' ');
+//		                sentence = sentence.replace('\n', ' ');
+//		                add(sentence);
+//		                buffer = new StringBuffer();
+//		            }
+//		        }
+//		        add(buffer.toString());
+//		        reader.close();
+//		    }
+//		};
 		hal.add("Hello World");
 		hal.add("Can I have some coffee?");
 		hal.add("Please slap me");
@@ -137,7 +165,7 @@ public class MasterBot extends PircBot {
 		// load brain
 		
 		
-		hal = (JMegaHal) Util.load(botName+".ser");
+		hal = (JMegaMegaHal) Util.load(botName+".ser");
 		if (hal == null) {
 			firstRun();
 		}
@@ -302,6 +330,7 @@ public class MasterBot extends PircBot {
 			try {
 				hal.addDocument("https://dl.dropboxusercontent.com/u/26842546/getsmart.txt");
 				Util.save(hal, botName+".ser");
+				this.sendMessage(channel, "nom nom words :3");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -484,7 +513,7 @@ public class MasterBot extends PircBot {
 	@Override
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
 		log(sender + ": " + message);
-		if (sender.equalsIgnoreCase(botName)) {
+		if (sender.equalsIgnoreCase(botName.toLowerCase())) {
 			return;
 		}
 		message = message.trim();
