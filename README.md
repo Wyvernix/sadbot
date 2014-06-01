@@ -12,6 +12,8 @@ Features:
 
 ChangeLog is in changelog.txt
 
+[Best SadBot Quotes](https://dl.dropboxusercontent.com/u/26842546/best%20sadbot%20quotes.txt "Best SadBot Quotes")
+
 ****
 
 To Use:
