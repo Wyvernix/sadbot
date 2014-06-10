@@ -41,9 +41,15 @@ Commands
 
 >"Build server: wyv.mcph.co [1.7.4]"
 
-**!raffle**
+**!winner**
 
 Returns random user in channel as winner. Removes mods from list. If use "mods" modifier, it will include mods in raffle.
+
+**!raffle**
+
+"!raffle" Enters raffle (is its open)
+
+"!raffle (open | close)" whatever
 
 **!ip**
 

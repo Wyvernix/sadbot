@@ -27,9 +27,10 @@ public class EnergyBot extends MasterBot {
 		sadCommands.add(new IPCommand("activeenergylive"));
 		sadCommands.add(new CommandsCommand());
 		sadCommands.add(new QuoteCommand("energyQ.dat"));
-		sadCommands.add(new RaffleCommand());
+		sadCommands.add(new WinnerCommand());
 		sadCommands.add(new PermitCommand());
 		sadCommands.add(new LinkFilterCommand());
+		sadCommands.add(new RaffleCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 		//Link filter is on by default

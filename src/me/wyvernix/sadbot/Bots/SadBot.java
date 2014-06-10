@@ -15,6 +15,7 @@ import me.wyvernix.sadbot.Commands.LeaveCommand;
 import me.wyvernix.sadbot.Commands.LinkFilterCommand;
 import me.wyvernix.sadbot.Commands.QuoteCommand;
 import me.wyvernix.sadbot.Commands.RaffleCommand;
+import me.wyvernix.sadbot.Commands.WinnerCommand;
 import me.wyvernix.sadbot.Commands.WyvNetCommand;
 import me.wyvernix.sadbot.Filters.ChatFilter;
 import me.wyvernix.sadbot.Filters.VineFilter;
@@ -35,9 +36,10 @@ public class SadBot extends MasterBot {
 		sadCommands.add(new IPCommand("shady1765"));
 		sadCommands.add(new CommandsCommand());
 		sadCommands.add(new QuoteCommand("sadQ.dat"));
-		sadCommands.add(new RaffleCommand());
+		sadCommands.add(new WinnerCommand());
 //		sadCommands.add(new PermitCommand());
 		sadCommands.add(new LinkFilterCommand());
+		sadCommands.add(new RaffleCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 		//Link filter is on by default
