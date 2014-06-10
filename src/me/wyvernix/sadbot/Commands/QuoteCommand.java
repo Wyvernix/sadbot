@@ -25,22 +25,40 @@ public class QuoteCommand implements BotCommand {
 	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		if (message.length() < 1){
 			try{
-				bot.sendMessage(channel, quotes.get((int)(Math.random() * ((quotes.size() - 1) + 1))));
+				int qt = (int) (Math.random() * ((quotes.size() - 1) + 1));
+				bot.sendMessage(channel, "Quote #"+ (new Integer(qt+1)).toString() + ": "+ quotes.get(qt));
 			} catch (IndexOutOfBoundsException e){
 				//ok. there are no quotes
 				bot.sendMessage(channel, "huh. there aren't any quotes. try !quote add \"debx2 is derpy\" -Shady");					
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (message.startsWith("add")) {
+		} else if (message.startsWith("add ")) {
 			if (!(message.replace("add ", "").charAt(0) == ".".charAt(0))){
 			quotes.add(message.replace("add " , ""));
-			bot.sendMessage(channel, "Added quote: "+message.replace("add " , ""));
+			bot.sendMessage(channel, "Added quote #"+ (new Integer(quotes.size())) +": "+message.replace("add " , ""));
 			Util.save(quotes, quoteFile);
 			} else {
 				bot.sendMessage(channel, sender + " is trying to hack me! BibleThump");
 			}
-		} else if (message.startsWith("remove") && bot.getMods().contains(sender)) {
+		} else if (message.startsWith("remove ") && bot.getMods().contains(sender)) {
+			String[] spaz = message.split(" ");
+			if (spaz[1].matches("^[0-9]*$")) {
+				try {
+					int qt = Integer.parseInt(spaz[1]) - 1;
+				quotes.get(qt); //test if exists
+				
+				bot.sendMessage(channel, "Removed: " + quotes.get(qt));
+				quotes.remove(qt);
+				Util.save(quotes, quoteFile);
+				return;
+				
+				} catch (IndexOutOfBoundsException e) {
+					//doesnt exist, continue. maybe it was part of quote...
+				}
+				
+			}
+			
 			boolean foundQuote = false;
 			int sz = quotes.size();
 			String replaceMe = message.replace("remove ", "");
@@ -54,7 +72,7 @@ public class QuoteCommand implements BotCommand {
 				}
 			}
 			if (!foundQuote){
-				bot.sendMessage(channel, "I couldn't find anything with: "+ message.replace("add " , ""));
+				bot.sendMessage(channel, "I couldn't find anything with: "+ message.replace("remove " , ""));
 			}
 		} else if (message.startsWith("list") && bot.getMods().contains(sender)) {
 			System.out.println(quotes.toString());
@@ -62,10 +80,15 @@ public class QuoteCommand implements BotCommand {
 			bot.sendMessage(channel, "check the logs for quotes.");
 			
 		} else {
-			if (!(message.charAt(0) == ".".charAt(0))){
-				quotes.add(message);
-				bot.sendMessage(channel, "Added quote: "+message);
-				Util.save(quotes, quoteFile);
+			String[] spaz = message.split(" ");
+			if (spaz[0].matches("^[0-9]*$")) {
+				try{
+					bot.sendMessage(channel, quotes.get(Integer.parseInt(spaz[0]) - 1));
+				} catch (IndexOutOfBoundsException e){
+					bot.sendMessage(channel, "quote doesn't exist! :3");					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			} else {
 				bot.sendMessage(channel, sender + " is derpy! BibleThump");
 			}

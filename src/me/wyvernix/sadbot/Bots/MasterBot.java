@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import me.wyvernix.sadbot.BotManager;
+import me.wyvernix.sadbot.GSONic;
 import me.wyvernix.sadbot.JMegaMegaHal;
 import me.wyvernix.sadbot.UserStats;
 import me.wyvernix.sadbot.Util;
@@ -486,8 +487,19 @@ public class MasterBot extends PircBot {
 			if (checkSpam(channel, sender, message)) {
 				return;
 			}
-			
-			if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
+			if (message.contains("/?") && message.contains("v=")) {
+				System.out.println("match yt");
+				int vid = message.indexOf("v=");
+				String videoid = message.substring(vid+2, vid+13);
+				
+				String response = GSONic.getYoutube(videoid);
+				if (response != null) {
+					sendMessage(channel, "YouTube video linked: '" + response);
+				} else {
+					System.out.println("vid not found");
+				}
+				
+			} else if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
 				
 				messageAI(channel, sender, message);
 				return;

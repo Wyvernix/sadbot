@@ -3,7 +3,8 @@ package me.wyvernix.sadbot;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
-
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import com.google.gson.*;
 
 
@@ -101,6 +102,66 @@ public class GSONic {
             }
         }
         return je;
+    }
+    
+    public static String getYoutube(String videotag) {
+    	String title = "null";
+    	String user = "null";
+    	Document doc;
+		try {
+//			System.out.println(videotag);
+//			System.out.println("http://www.youtube.com/watch?v="+videotag);
+			//http://www.youtube.com/watch?v=A67ZkAd1wmI
+			//http://www.youtube.com/watch?v=A67ZkAd1w
+//			String url = "http://www.latijnengrieks.com/vertaling.php?id=5368";
+//			Document document = Jsoup.parse(new URL(url).openStream(), "ISO-8859-1", url);
+//			Element paragraph = document.select("div.kader p").first();
+//
+//			for (Node node : paragraph.childNodes()) {
+//			    if (node instanceof TextNode) {
+//			        System.out.println(((TextNode) node).text().trim());
+//			    }
+//			}
+			String url = "http://www.youtube.com/watch?v="+videotag;
+			
+			doc = Jsoup.parse(loadHtml(url));
+			
+			title = doc.select("span[id=eow-title]").first().attr("title");
+			user = doc.select("a[class*=g-hovercard]").first().ownText();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+		if (title.equals("null")) {
+			return null;
+		}
+		
+    	return title + "' by " + user;
+    	//<h1 id="watch-headline-title" class="yt">
+    	//<span title="Caramell - Caramelldansen (English Version) Official" dir="ltr" class="watch-title long-title yt-uix-expander-head" id="eow-title"> Caramell - Caramelldansen (English Version) Official</span>
+    }
+    
+    //stupid parser wont load ムラサキ
+    public static String loadHtml(String urlp) throws UnsupportedEncodingException, IOException {
+    	URL url = new URL(urlp);
+    	URLConnection con = url.openConnection();
+//    	Pattern p = Pattern.compile("text/html;\\s+charset=([^\\s]+)\\s*");
+//    	Matcher m = p.matcher(con.getContentType());
+    	/* If Content-Type doesn't match this pre-conception, choose default and 
+    	 * hope for the best. */
+//    	String charset = m.matches() ? m.group(1) : "ISO-8859-1";
+    	Reader r = new InputStreamReader(con.getInputStream(), "UTF-8");
+    	StringBuilder buf = new StringBuilder();
+    	while (true) {
+    	  int ch = r.read();
+    	  if (ch < 0)
+    	    break;
+    	  buf.append((char) ch);
+    	}
+    	String str = buf.toString();
+    	return str;
     }
 }
 
