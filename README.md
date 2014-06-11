@@ -12,6 +12,7 @@ Features:
   * Giveaway commands
   * Chat filters
   * Basic response AI
+  * Click to tweet
 
 [Best SadBot Quotes](https://dl.dropboxusercontent.com/u/26842546/best%20sadbot%20quotes.txt "Best SadBot Quotes")
 
@@ -64,13 +65,19 @@ Will permit a user against one occurrence of a ban. Times out after 5 minutes.
 
 "!quote" will return a random quote.
 
-"!quote add (quote)" will add quote to quote list.
+"!quote add [quote]" will add quote to quote list.
 
-"!quote remove (phrase)" will search for phrase, and will remove quote if found.
+"!quote remove (phrase | #)" will search for phrase, and will remove quote if found. If number given, will remove numbered quote.
 
 "!quote list" will list all quotes to log file. DEBUG
 
-"!quote (quote)" will add quote to quote list.
+"!quote [#]" will return numbered quote
+
+**!tweet**
+
+"!tweet" Will generate a tweet filled with "Hang out with me at twitch.tv/channelname"
+
+"!tweet [message]" Will generate tweet filled with [message].
 
 **!link**
 
@@ -80,7 +87,7 @@ Will permit a user against one occurrence of a ban. Times out after 5 minutes.
 
 **!(botname)**
 
-"!(botname)" >> "I am <botName> v<botVersion>! Now with coffee! Do !commands for more."
+"!(botname)" >> "I am [botName] v[botVersion]! Now with coffee! Do !commands for more."
 
 "!(botname) command [add/remove/list]" manages commands. ~*Fancy*~
 
