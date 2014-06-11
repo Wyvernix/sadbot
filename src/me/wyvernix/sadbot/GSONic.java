@@ -105,35 +105,13 @@ public class GSONic {
     }
     
     public static String getYoutube(String videotag) {
-    	String title = "null";
-    	String user = "null";
-    	Document doc;
-		try {
-//			System.out.println(videotag);
-//			System.out.println("http://www.youtube.com/watch?v="+videotag);
-			//http://www.youtube.com/watch?v=A67ZkAd1wmI
-			//http://www.youtube.com/watch?v=A67ZkAd1w
-//			String url = "http://www.latijnengrieks.com/vertaling.php?id=5368";
-//			Document document = Jsoup.parse(new URL(url).openStream(), "ISO-8859-1", url);
-//			Element paragraph = document.select("div.kader p").first();
-//
-//			for (Node node : paragraph.childNodes()) {
-//			    if (node instanceof TextNode) {
-//			        System.out.println(((TextNode) node).text().trim());
-//			    }
-//			}
-			String url = "http://www.youtube.com/watch?v="+videotag;
-			
-			doc = Jsoup.parse(loadHtml(url));
-			
-			title = doc.select("span[id=eow-title]").first().attr("title");
-			user = doc.select("a[class*=g-hovercard]").first().ownText();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	
+		String url = "http://www.youtube.com/watch?v="+videotag;
+		
+		Document doc = Jsoup.parse(loadHtml(url));
+		
+		String title = doc.select("span[id=eow-title]").first().attr("title");
+		String user = doc.select("a[class*=g-hovercard]").first().ownText();
+		
 		if (title.equals("null")) {
 			return null;
 		}
@@ -144,24 +122,86 @@ public class GSONic {
     }
     
     //stupid parser wont load ムラサキ
-    public static String loadHtml(String urlp) throws UnsupportedEncodingException, IOException {
-    	URL url = new URL(urlp);
-    	URLConnection con = url.openConnection();
-//    	Pattern p = Pattern.compile("text/html;\\s+charset=([^\\s]+)\\s*");
-//    	Matcher m = p.matcher(con.getContentType());
-    	/* If Content-Type doesn't match this pre-conception, choose default and 
-    	 * hope for the best. */
-//    	String charset = m.matches() ? m.group(1) : "ISO-8859-1";
-    	Reader r = new InputStreamReader(con.getInputStream(), "UTF-8");
-    	StringBuilder buf = new StringBuilder();
-    	while (true) {
-    	  int ch = r.read();
-    	  if (ch < 0)
-    	    break;
-    	  buf.append((char) ch);
-    	}
-    	String str = buf.toString();
+    public static String loadHtml(String urlp) {
+    	String str = "cake";
+    	InputStream is = null;
+    	try {
+    		HttpURLConnection connection = (HttpURLConnection) new URL(urlp).openConnection();
+    		is = connection.getInputStream();
+    		BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+    		str = readAll(rd);
+    	} catch (MalformedURLException e) {
+            e.printStackTrace();
+            newGUI.logError(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            newGUI.logError(e);
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                newGUI.logError(e);
+            }
+        }
     	return str;
+    }
+    
+    public static String getTweet(String url) {
+    	//url likely https%3A%2F%2Ftwitter.com%2Fintent%2Ftweet%3Fstatus%3DHang%2Bout%2Bwith%2Bme%2Bat%2Btwitch.tv%252F
+    	String response = null;
+    	
+    	/////////////
+    	
+    	JsonElement je = null;
+    	InputStream is = null;
+    	String outo = "";
+//        String outo = "null";
+        try {
+        	HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        	is = connection.getInputStream();
+            
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = readAll(rd);
+
+            je = new JsonParser().parse(jsonText);
+        	
+        	/////////
+            
+
+            
+            System.out.println(je);
+            System.out.println("ko");
+            
+            if (je != null) {
+    			outo = getAtPath(getAtPath(je, "data"), "url").getAsString();
+    			
+    			response = "Tweet out the stream! "+outo;
+    		}
+            
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            newGUI.logError(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            newGUI.logError(e);
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                newGUI.logError(e);
+            }
+        }
+        
+    	/////////////
+        
+    	
+    	return response;
     }
 }
 

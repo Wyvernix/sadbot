@@ -5,24 +5,15 @@ Chat bot for Twitch.tv
 
 Features:
 
-  * Bot can manage a modlist. Sometimes Twitch eats join messages, any mods won't be able to do anything.
-  * Bot can Auto-Reconnect.
+  * Bot can manage a list of mods and active chatters.
+  * Bot can Auto-Reconnect. If it feels like it.
   * Has GUI.
-  * Can do global bans
-
-ChangeLog is in changelog.txt
+  * Can do global bans (not really)
+  * Giveaway commands
+  * Chat filters
+  * Basic response AI
 
 [Best SadBot Quotes](https://dl.dropboxusercontent.com/u/26842546/best%20sadbot%20quotes.txt "Best SadBot Quotes")
-
-****
-
-To Use:
--------
-1. Look at the SadBot.java or EnergyBot.java class.
-2. Delete one, and edit the other to fill your needs.
-3. Fix BotManager.java class
-4. (optional) edit newGUI.java to change name of window 
-
 
 ****
 
@@ -67,7 +58,7 @@ Automatically checks every 5 minutes, and on command. Will correct itself.
 
 **!permit**
 
-Will permit a user against one occurrence of a ban.
+Will permit a user against one occurrence of a ban. Times out after 5 minutes.
 
 **!quote**
 
@@ -95,7 +86,7 @@ Will permit a user against one occurrence of a ban.
 
 "!(botname) user [info/list]" gives user info. Try to only use list in bot's channel.
 
-"!(botname) permit (user)" will permit a user to one link?
+"!(botname) permit (user)" will permit a user to one link/ban
 
 ****
 
@@ -136,5 +127,5 @@ Non-random triggers:
   * do, does
   * are you
 
-AI will add any messages that are not command/spam to its database. AI builds sentences from database.
+AI will add any messages that are not command/spam to its database. AI builds sentences from database using a Markov chain.
 

@@ -487,16 +487,23 @@ public class MasterBot extends PircBot {
 			if (checkSpam(channel, sender, message)) {
 				return;
 			}
-			if (message.contains("/?") && message.contains("v=")) {
+			if (message.matches("^.*?youtu.*?(v=|/[0-9A-Za-z]{11}).*$")) {
 				System.out.println("match yt");
 				int vid = message.indexOf("v=");
-				String videoid = message.substring(vid+2, vid+13);
+				String videoid = "dQw4w9WgXcQ"; //never gonna give you up
+				if (vid > 0) {
+					videoid = message.substring(vid+2, vid+13);
+				} else {
+					vid = message.indexOf("e/");
+					videoid = message.substring(vid+2, vid+13);
+				}
+				
 				
 				String response = GSONic.getYoutube(videoid);
 				if (response != null) {
 					sendMessage(channel, "YouTube video linked: '" + response);
 				} else {
-					System.out.println("vid not found");
+//					System.out.println("vid not found");
 				}
 				
 			} else if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
@@ -771,7 +778,6 @@ public class MasterBot extends PircBot {
 	
 	public void leaveServer() throws InterruptedException {
 		if (this.isConnected()) {
-		Thread.sleep(100);
 		this.disconnect();
 		}
 	}

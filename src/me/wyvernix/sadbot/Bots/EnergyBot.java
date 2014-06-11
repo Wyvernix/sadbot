@@ -31,6 +31,7 @@ public class EnergyBot extends MasterBot {
 		sadCommands.add(new PermitCommand());
 		sadCommands.add(new LinkFilterCommand());
 		sadCommands.add(new RaffleCommand());
+		sadCommands.add(new TweetCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 		//Link filter is on by default

@@ -28,7 +28,7 @@ public class RaffleCommand implements BotCommand {
 		} else if (message.startsWith("open") && bot.getMods().contains(sender)) {
 			
 			isOpen = true;
-			bot.sendMessage(channel, "Raffle is now OPEN! Do /raffle to enter!");
+			bot.sendMessage(channel, "Raffle is now OPEN! Do !raffle to enter!");
 			
 		} else if (message.startsWith("close") && bot.getMods().contains(sender)) {
 			isOpen = false;
@@ -36,7 +36,7 @@ public class RaffleCommand implements BotCommand {
 				String winner = users.get((int)(Math.random() * ((users.size() - 1) + 1)));
 				bot.sendMessage(channel, winner + " is winrar! We had " + (new Integer(users.size())).toString() + " entries!");
 			} else {
-				bot.sendMessage(channel, "no entries BibleThump");
+				bot.sendMessage(channel, "no entries, no winner BibleThump");
 			}
 			
 			users.clear();
