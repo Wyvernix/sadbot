@@ -25,7 +25,8 @@ public class WinnerCommand implements BotCommand {
 		users.remove(bot.botName.toLowerCase()); //remove bot
 		
 		if (!message.contains("mods")) { //remove mods unless told not to
-			for (int i = 0; i < mods.size(); i++) {
+			int modSize = mods.size();
+			for (int i = 0; i < modSize; i++) {
 				users.remove(mods.get(i));
 			}
 		}

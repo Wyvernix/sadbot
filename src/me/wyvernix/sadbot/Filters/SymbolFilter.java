@@ -46,8 +46,9 @@ public class SymbolFilter implements ChatFilter{
         int symbols = 0;
         for (Pattern p : symbolsPatterns) {
             Matcher m = p.matcher(s);
-            while (m.find())
+            while (m.find()) {
                 symbols += 1;
+            }
         }
         return symbols;
     }

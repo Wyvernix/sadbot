@@ -19,12 +19,12 @@ public class TweetCommand implements BotCommand {
 		if (message.length() < 1) {
 			tweet = "https://api-ssl.bitly.com/v3/shorten?access_token=09e4f66b34f51a5aff3e711788fd707c92339a89&longUrl=" +
 					"https%3A%2F%2Ftwitter.com%2Fintent%2Ftweet%3Fstatus%3DHang%2Bout%2Bwith%2Bme%2Bat%2Btwitch.tv%252F" + channel.substring(1);
-			System.out.println(tweet);
+//			System.out.println(tweet);
 		} else {
 			try {
 				tweet = "https://api-ssl.bitly.com/v3/shorten?access_token=09e4f66b34f51a5aff3e711788fd707c92339a89&longUrl=" +
 						"https%3A%2F%2Ftwitter.com%2Fintent%2Ftweet%3Fstatus%3D" + URLEncoder.encode(message, "UTF-8");
-				System.out.println(tweet);
+//				System.out.println(tweet);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}

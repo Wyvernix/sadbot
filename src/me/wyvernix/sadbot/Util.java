@@ -12,11 +12,8 @@ import java.io.ObjectOutputStream;
 public class Util {
 	public static Object load(String fileName){
 		ObjectInputStream inp = null;
-		
-		
 		final String loadFile= "save\\"+fileName;
 		Object returns = null;
-		
 		try {
 			final File file = new File(loadFile);
 		    inp = new ObjectInputStream(new FileInputStream(file));
@@ -39,14 +36,12 @@ public class Util {
 				}
 			}
 		}
-		
 		return returns;
 	}
 	
 	public static boolean save(Object saveData, String fileName) {
 		final String saveFile= "save\\"+fileName;
 		ObjectOutput out = null;
-		
 		try {
 			out = new ObjectOutputStream(new FileOutputStream(saveFile));
 			out.writeObject(saveData);
@@ -66,7 +61,6 @@ public class Util {
 				}
 			}
 		}
-		
 		return true;
 	}
 }

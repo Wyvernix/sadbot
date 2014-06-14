@@ -93,7 +93,7 @@ public class BotManager {
 	}
 	
 	public static void globalBan(String name, String channel, String type) {
-		String line = "!! Issuing a ban on " + name + " in " + channel + " for " + type+"\n";
+		final String line = "!! Issuing a ban on " + name + " in " + channel + " for " + type+"\n";
 		newGUI.appendToPane(line, Color.red);
 		energybot.sendMessage("#activeenergylive", ".ban "+name);
 		energybot.sendMessage("#energybot", ".ban "+name);

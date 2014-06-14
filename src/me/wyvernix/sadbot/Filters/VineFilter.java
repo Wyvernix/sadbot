@@ -18,7 +18,7 @@ public class VineFilter implements ChatFilter {
       Matcher m = vinePattern.matcher(message.replaceAll(" ", ""));
       if (m.find()) {
           BotManager.globalBan(sender, channel, "VINE");
-          return ("!! VINEBAN: " + sender + " in " + channel + " : " + message);
+          return "!! VINEBAN: " + sender + " in " + channel + " : " + message;
       } else {
     	  return null;
       }

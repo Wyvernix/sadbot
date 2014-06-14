@@ -34,7 +34,8 @@ public class CapFilter implements ChatFilter {
 	
 	private int getCapsNumber(String s) {
         int caps = 0;
-        for (int i = 0; i < s.length(); i++) {
+        int len = s.length();
+        for (int i = 0; i < len; i++) {
             if (Character.isUpperCase(s.charAt(i))) {
                 caps++;
             }

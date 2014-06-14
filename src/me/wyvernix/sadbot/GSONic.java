@@ -167,13 +167,6 @@ public class GSONic {
             String jsonText = readAll(rd);
 
             je = new JsonParser().parse(jsonText);
-        	
-        	/////////
-            
-
-            
-            System.out.println(je);
-            System.out.println("ko");
             
             if (je != null) {
     			outo = getAtPath(getAtPath(je, "data"), "url").getAsString();

@@ -64,11 +64,7 @@ public class LinkFilter implements ChatFilter {
 	}
 	
 	public boolean removeLink(String ss) {
-		if (wlPatterns.remove(Pattern.compile(".*" + ss + ".*", Pattern.CASE_INSENSITIVE))) {
-			return true;
-		} else {
-			return false;
-		}
+		return wlPatterns.remove(Pattern.compile(".*" + ss + ".*", Pattern.CASE_INSENSITIVE));
 	}
 	
 	public void permitLinks(ArrayList<Pattern> pat) {

@@ -1,13 +1,5 @@
 package me.wyvernix.sadbot;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,32 +13,12 @@ public class UserStats {
 	@SuppressWarnings("unchecked")
 	public UserStats(String botName) {
 		this.botName = botName;
-		ObjectInputStream inp = null;
 		final String commandsFile= "save\\"+botName+"UserStats.dat";
-		try {
-			File file = new File(commandsFile);
-		    inp = new ObjectInputStream(new FileInputStream(file));
-		    users = (Map<String, Map<String, Object>>) inp.readObject();
-		} catch (FileNotFoundException e) {
-			System.err.println("Couldn't find the data ("+ commandsFile +") so will fix?");
-			saveData(users, commandsFile);
-		} catch (IOException e) {
-			System.err.println("Couldn't find the data ("+ commandsFile +") so will fix?");
-			saveData(users, commandsFile);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			if(inp != null) {
-				try {
-					inp.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-			if (users == null) {
-				users.put("shady1765", this.genUserStats());
-			}
+		users = (Map<String, Map<String, Object>>) Util.load(commandsFile);
+		if (users == null){
+			users.put("shady1765", this.genUserStats());
 		}
+		
 	}
 	
 	private Map<String,Object> genUserStats() {
@@ -105,7 +77,7 @@ public class UserStats {
 	public void add(String user) {
 		
 		users.put(user, genUserStats());
-		saveData(users,"save\\"+botName+"UserStats.dat");
+		Util.save(users,"save\\"+botName+"UserStats.dat");
 	}
 	
 	public boolean isNew(String user) {
@@ -134,19 +106,7 @@ public class UserStats {
 		}
 		
 		
-		saveData(users, "save\\"+botName+"UserStats.dat");
-	}
-	
-	private void saveData(Object saveData2, String fileName) {
-		try {
-			ObjectOutput out = new ObjectOutputStream(new FileOutputStream(fileName));
-			out.writeObject(saveData2);
-			out.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Util.save(users, "save\\"+botName+"UserStats.dat");
 	}
 	
 	public Map<String,Object> getData(String user) {

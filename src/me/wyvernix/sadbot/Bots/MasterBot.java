@@ -502,10 +502,7 @@ public class MasterBot extends PircBot {
 				String response = GSONic.getYoutube(videoid);
 				if (response != null) {
 					sendMessage(channel, "YouTube video linked: '" + response);
-				} else {
-//					System.out.println("vid not found");
 				}
-				
 			} else if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
 				
 				messageAI(channel, sender, message);
@@ -537,7 +534,7 @@ public class MasterBot extends PircBot {
 		}
 		message = message.trim();
 		if(channel.equalsIgnoreCase(mainChan)) {
-			if (activeUsers.contains(sender) == false) {
+			if (!activeUsers.contains(sender)) {
 				activeUsers.add(sender);
 				manageUserList(true, sender);
 			}
@@ -566,7 +563,7 @@ public class MasterBot extends PircBot {
 	public void onJoin(String channel, String sender, String login, String hostname) {
 		if (channel.equals(mainChan)) {
 //		if (sender.equals("activeenergylive")) {
-//			sendMessage(channel, "hi active :3");
+//			sendMessage(channel, "hi active :3 i am update! https://github.com/Wyvernix/sadbot/commits/master");
 //		}
 		
 		if (userStats.isNew(sender)) {
@@ -776,7 +773,7 @@ public class MasterBot extends PircBot {
 //        newGUI.tPane.replaceSelection(dateFormat.format(date) + " " + msg);
     }
 	
-	public void leaveServer() throws InterruptedException {
+	public void leaveServer() {
 		if (this.isConnected()) {
 		this.disconnect();
 		}
