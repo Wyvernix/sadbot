@@ -13,7 +13,7 @@ public class UserStats {
 	@SuppressWarnings("unchecked")
 	public UserStats(String botName) {
 		this.botName = botName;
-		final String commandsFile= "save\\"+botName+"UserStats.dat";
+		final String commandsFile= botName+"UserStats.dat";
 		users = (Map<String, Map<String, Object>>) Util.load(commandsFile);
 		if (users == null){
 			users.put("shady1765", this.genUserStats());
@@ -77,7 +77,7 @@ public class UserStats {
 	public void add(String user) {
 		
 		users.put(user, genUserStats());
-		Util.save(users,"save\\"+botName+"UserStats.dat");
+		Util.save(users,botName+"UserStats.dat");
 	}
 	
 	public boolean isNew(String user) {
@@ -106,7 +106,7 @@ public class UserStats {
 		}
 		
 		
-		Util.save(users, "save\\"+botName+"UserStats.dat");
+		Util.save(users, botName+"UserStats.dat");
 	}
 	
 	public Map<String,Object> getData(String user) {

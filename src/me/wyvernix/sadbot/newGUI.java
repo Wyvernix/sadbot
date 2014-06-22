@@ -196,7 +196,7 @@ public class newGUI extends JFrame {
         tPane.replaceSelection(dateFormat.format(date) + " " + msg);
         
 //        tPane.setText(tPane.getText() + "\n" + dateFormat.format(date) + " " + msg);
-//        tPane.setCaretPosition(tPane.getDocument().getLength());
+        tPane.setCaretPosition(tPane.getDocument().getLength());
         
         tPane.setEditable(false);
     }

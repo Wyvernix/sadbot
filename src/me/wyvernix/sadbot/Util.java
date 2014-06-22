@@ -7,12 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import java.io.ObjectOutputStream; 
 
 public class Util {
+	private static final String slash = System.getProperty("file.separator");
+	
 	public static Object load(String fileName){
 		ObjectInputStream inp = null;
-		final String loadFile= "save\\"+fileName;
+		final String loadFile= "save"+slash+fileName;
 		Object returns = null;
 		try {
 			final File file = new File(loadFile);
@@ -40,7 +42,7 @@ public class Util {
 	}
 	
 	public static boolean save(Object saveData, String fileName) {
-		final String saveFile= "save\\"+fileName;
+		final String saveFile= "save"+slash+fileName;
 		ObjectOutput out = null;
 		try {
 			out = new ObjectOutputStream(new FileOutputStream(saveFile));

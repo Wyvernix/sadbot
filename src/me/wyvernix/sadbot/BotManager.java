@@ -31,14 +31,10 @@ public class BotManager {
 		try {
 			sadbot.connect("199.9.253.210", 6667, args[0]);
 			sbOA = args[0];
-			
-			Thread.sleep(100);
 			//join channels
 			sadbot.joinChannel("#sad_bot");
-			
 			sadbot.joinChannel("#shady1765");
 			
-			Thread.sleep(3000);
 			sadbot.sendMessage("#sad_bot", "Sad_Bot has arrived! Kreygasm");
 			
 		} catch (NickAlreadyInUseException e) {
@@ -49,9 +45,6 @@ public class BotManager {
 			e.printStackTrace();
 			newGUI.logError(e);
 		} catch (IrcException e) {
-			e.printStackTrace();
-			newGUI.logError(e);
-		} catch (InterruptedException e) {
 			e.printStackTrace();
 			newGUI.logError(e);
 		}
@@ -67,13 +60,10 @@ public class BotManager {
 		try {
 			energybot.connect("199.9.253.199", 6667, args[1]);
 			ebOA = args[1];
-			
-			Thread.sleep(100);
 			//join channels
 			energybot.joinChannel("#activeenergylive");
 			energybot.joinChannel("#energybot");
 			
-			Thread.sleep(3000);
 			energybot.sendMessage("#energybot", "EnergyBot has arrived! Kreygasm");
 		} catch (NickAlreadyInUseException e) {
 			System.err.println("SOMEONE STEALS MAH USERNAME ENERGYBOT");
@@ -83,9 +73,6 @@ public class BotManager {
 			e.printStackTrace();
 			newGUI.logError(e);
 		} catch (IrcException e) {
-			e.printStackTrace();
-			newGUI.logError(e);
-		} catch (InterruptedException e) {
 			e.printStackTrace();
 			newGUI.logError(e);
 		}
@@ -110,7 +97,7 @@ public class BotManager {
 		Runnable r = new Runnable() {
             public void run() {
     	    	try {
-    				Thread.sleep(3000);
+    				Thread.sleep(2000);
     			} catch (InterruptedException e) {
     				e.printStackTrace();
     			}

@@ -25,8 +25,8 @@ import org.jibble.pircbot.*;
 
 
 public class MasterBot extends PircBot {
-	private static final String botVersion = "2.4.0";
-	public String botName = "Sad_Bot";
+	private static final String botVersion = "2.5.0";
+	public String botName;
 	protected String mainChan;
 	private Color inColor = Color.BLACK;
 	private Color outColor = Color.BLACK;
@@ -45,32 +45,6 @@ public class MasterBot extends PircBot {
 	private void firstRun() {
 		System.err.println("Couldn't find the brain so will use default data");
 		hal = new JMegaMegaHal();
-//		{
-//			/**
-//			 * 
-//			 */
-//			private static final long serialVersionUID = 1L;
-//			public static final String ENDY_CHARS = ".!?\n\r";
-//			
-//			@Override
-//			public void addDocument(String uri) throws IOException {
-//		        BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(uri).openStream()));
-//		        StringBuffer buffer = new StringBuffer();
-//		        int ch = 0;
-//		        while ((ch = reader.read()) != -1) {
-//		            buffer.append((char) ch);
-//		            if (ENDY_CHARS.indexOf((char) ch) >= 0) {
-//		                String sentence = buffer.toString();
-//		                sentence = sentence.replace('\r', ' ');
-//		                sentence = sentence.replace('\n', ' ');
-//		                add(sentence);
-//		                buffer = new StringBuffer();
-//		            }
-//		        }
-//		        add(buffer.toString());
-//		        reader.close();
-//		    }
-//		};
 		hal.add("Hello World");
 		hal.add("Can I have some coffee?");
 		hal.add("Please slap me");
@@ -81,7 +55,6 @@ public class MasterBot extends PircBot {
 		}
 	}
 	
-	//TODO
 	//// gets and sets for extends
 	void setBotName(String name) {
 		botName = name;
@@ -143,7 +116,7 @@ public class MasterBot extends PircBot {
 	/////////////END
 	
 	@SuppressWarnings("unchecked")
-	public void  init() {
+	public void init() {
 		userStats = new UserStats(botName);
 		linkFilter = new LinkFilter(botName);
 		System.out.println("Starting " + botName + ".");
@@ -153,39 +126,29 @@ public class MasterBot extends PircBot {
 		
 		//////////////////////////|load commands|
 		//load ccommands
-//		ccommands.put("Commands", "lol");
-		
 		ccommands = (Map<String, String>) Util.load(botName+"Commands.dat");
 		if (ccommands == null) {
 			ccommands = new HashMap<String,String>();
 		}
-		
 		//////////////////////END
-		
-		
 		// load brain
-		
-		
 		hal = (JMegaMegaHal) Util.load(botName+".ser");
 		if (hal == null) {
 			firstRun();
 		}
-
+		
 		this.setName(botName);
 		this.setVersion("Sad_Bot v"+botVersion); // visible to whois and CTCP version
 		this.setFinger("Get your hand off of me!");  // visible on CTCP finger
-		
 		this.setMessageDelay(2000); //plz don't ban me Twitch :P
-		
 		mods.add("shady1765"); //because twitch hates me.
 		
-		//TODO timer stuff.
+		//TODO scheduling, etc.
 //        TimedMessageTask tmt1 = new TimedMessageTask("save");
 //
 //        timer = new Timer();
 //        timer.schedule(tmt1, 0, 30 * 1000); // 30 secs
 //        timer.schedule(tmt1, 0, 20 * 60 * 1000);  // 15 min
-		
 		
 		timer.schedule(new TimerTask() {         
 		    @Override
@@ -215,7 +178,7 @@ public class MasterBot extends PircBot {
 			
 			//botName command start
 			if (message.startsWith(botName.toLowerCase())) {
-				if (message.length() < (botName+" ").length()) {//TODO check if it works
+				if (message.length() < (botName).length()) {
 					sendMessage(channel, "I am "+botName+" v" + botVersion + "! Now with coffee! Do !commands for more.");
 					return;
 				}
@@ -296,31 +259,25 @@ public class MasterBot extends PircBot {
 				}
 			}
 			//sender said something we dont know 
-			this.sendMessage(channel, sender + ", what? [command/user/pemit]");
+			this.sendMessage(channel, sender + ", what? [command/user/permit]");
 			System.out.println(message.startsWith("permit"));
 			return;
 			}
-			
 			//check commands?
 			if (!ccommands.isEmpty()) {
 				final String[] split = ccommands.keySet().toArray(new String[1]);
 				
 			for (int i = 0; i < split.length; i++) {
 				if (message.startsWith(split[i]) && (split[i].length() > 1)) {
-//					System.out.println(split[i] + " and message: "+message);
 					sendMessage(channel, "+ "+ccommands.get(split[i]));
 					return;
 				}
 			}
 			}
-			
 			/////////////
 		}
 		//commands in all channels:
 		for(BotCommand command : commands) {
-
-			// If the message starts with the command the BotCommand responds to, remove
-			// the command from the message and pass the event along to the BotCommand.
 			if(message.startsWith(command.getCommandName())) { //maybe add global shady1765 override?
 				command.handleMessage(this, channel, sender, message.replace(command.getCommandName(), "").trim());
 				return;
@@ -341,6 +298,7 @@ public class MasterBot extends PircBot {
 	
 	private void messageAI(String channel, String sender, String message) {
 			message = message.toLowerCase(); //makes bot more responsive
+			message = message.replaceAll("(?i)("+botName+")(, | |)", "");
 			if (message.contains("random")) {
 				sendMessage(channel, hal.getSentence());
 			}else 
@@ -363,24 +321,20 @@ public class MasterBot extends PircBot {
 //					e.printStackTrace();
 //				}
 //			}
-		} else if (message.startsWith("do") || message.contains("who") || message.contains("why") || message.contains("what") || message.contains("where") || message.contains("how") || message.contains("whose") || (message.startsWith("is")) || (message.startsWith("does"))) {
+		} else if (message.matches("(?i)^((do|is|does)|(who|why|what|where|how|whose)) .*$")) {
 			//message is a question
-			message = message.replaceAll("("+botName+")(, | )", "");
-			if (message.startsWith("why") || message.startsWith("Why")) {
+			if (message.matches("(?i)^why.*$")) {
 				sendMessage(channel, hal.getSentence("Because"));
-	
-			} else if (message.contains("do") || message.contains("does")) {
+			} else if (message.matches("(?i)^.*?do(|es) .*$")) {
 				if (Math.random() <0.5){
 					sendMessage(channel, "yes");	
 				} else {
 					sendMessage(channel, "no");
 				}
 			}else{
-				
-			message = message.replaceAll("(do|who|why|what|where|how|whose|do|does|like)(,| |\\?)", "").replace("?", "").replace(".", "").replace("!", "").replace(",", "")+" cake";
+			message = message.replaceAll("((do|who|why|what|where|how|whose|do|does|like)( |)|(\\?|\\.|\\!|,))", "")+" cake";
 	
 			String[] cleanBlock = message.split(" ");
-	
 			// "sadbot, what is x?"; responds with sentence(x), AND MORE!
 			String baja = "cake";
 			
@@ -390,10 +344,8 @@ public class MasterBot extends PircBot {
 					break;
 				}
 			}
-			
 	
 			sendMessage(channel, hal.getSentence(baja));
-	
 //			else {
 //				float baka = Math.round(cleanBlock.length/2);
 //				int baja;
@@ -435,8 +387,8 @@ public class MasterBot extends PircBot {
 //			sendMessage(channel, hal.getSentence("sadbot").replaceAll("sadbot", "energybot") + " Kappa");
 //		}
 		else {
-			String mesClean = message.replaceAll(botName, "").replaceAll("( is | are | a | an | the | some | few | that | this | those | these | much | enough | each | every | either | neither | any | many )", " ");
-			String[] cleanBlock = mesClean.replace("?", "").replace("!", "").replace(".", "").replace("\"","").split(" ");
+			String mesClean = message.replaceAll("( is | are | a | an | the | some | few | that | this | those | these | much | enough | each | every | either | neither | any | many )", " ");
+			String[] cleanBlock = mesClean.replaceAll("(\\?|!|\\.|\")", "").split(" ");
 			float baka = Math.round(cleanBlock.length>>1);
 			int baja;
 			baja=(int)baka;
@@ -457,7 +409,6 @@ public class MasterBot extends PircBot {
 					return true;
 				}
 			}
-    		
     		return checkLinkFilter(channel, sender, message);
         }
 		return false;
@@ -483,11 +434,10 @@ public class MasterBot extends PircBot {
 		return;
 		//if message doesnt START with '!', continue
 		} else {
-			//TODO spam filter
 			if (checkSpam(channel, sender, message)) {
 				return;
 			}
-			if (message.matches("^.*?youtu.*?(v=|/[0-9A-Za-z]{11}).*$")) {
+			if (message.matches("^.*?youtu.*?(v=|/[0-9A-Za-z]{11}).*?$")) { //youtube link matching
 				System.out.println("match yt");
 				int vid = message.indexOf("v=");
 				String videoid = "dQw4w9WgXcQ"; //never gonna give you up
@@ -501,26 +451,16 @@ public class MasterBot extends PircBot {
 				
 				String response = GSONic.getYoutube(videoid);
 				if (response != null) {
-					sendMessage(channel, "YouTube video linked: '" + response);
+					sendMessage(channel, "YouTube video linked: \"" + response);
 				}
 			} else if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
 				
 				messageAI(channel, sender, message);
 				return;
-			
-			} else {	//save message to AI
-		  		
-		  		
-		  		//TODO remove bad spam filter
-//				Pattern rer = Pattern.compile("((([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[\\-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9\\.\\-]+|(?:www\\.|[\\-;:&=\\+\\$,\\w]+@)[A-Za-z0-9\\.\\-]+)((?:\\/[\\+~%\\/\\.\\w\\-_]*)?\\??(?:[\\-\\+=&;%@\\.\\w_]*)#?(?:[\\.\\!\\/\\\\\\w]*))?)");
-//				Matcher match = rer.matcher(message);
-				//
-		  		
-//		  		if (!match.find()){
-		  			// add the new data to the brain
-//		  			sendMessage(channel, "not found: " + message);
-		  			hal.add(message.replace("\"", ""));
-//		  		}
+			} else if (message.matches("(?i)^.*?(hi|hey|good (evening|morning|afternoon)|sup|hello) .*?chat.*?$")) {
+				sendMessage(channel, "hi " + sender + " <3");
+			} else {	//not spam, etc, save message to AI
+		  		hal.add(message.replace("\"", ""));
 			}
 		}
 	}
@@ -557,18 +497,14 @@ public class MasterBot extends PircBot {
 		}
 	}
 	
-	
-	
 	@Override
 	public void onJoin(String channel, String sender, String login, String hostname) {
 		if (channel.equals(mainChan)) {
 //		if (sender.equals("activeenergylive")) {
 //			sendMessage(channel, "hi active :3 i am update! https://github.com/Wyvernix/sadbot/commits/master");
 //		}
-		
 		if (userStats.isNew(sender)) {
 			newBuffer.add(sender);
-			
 		} else {
 			userStats.updateLastSeen(sender);
 		}
@@ -593,6 +529,7 @@ public class MasterBot extends PircBot {
 	}
 	
 	protected void manageUserList(boolean mode, String user) {
+		//TODO
 		if (mode) {
 			//add user
 		} else {
@@ -611,7 +548,7 @@ public class MasterBot extends PircBot {
 				mods.add(spaz[2]);
 			}
 		}
-		//write mod list in permanent marker... twitch is terrible with mod orders
+		//writing mod list in permanent marker... twitch is terrible with mod orders
 //		else if (spaz[1].equals("-o")) {
 //			if (mods.contains(spaz[2])) {
 //				mods.remove(spaz[2]);				
@@ -684,6 +621,11 @@ public class MasterBot extends PircBot {
 	@Override
 	public void onDisconnect(){
 		appendToPane("OMG "+this.getName()+" got disconnected!"+System.getProperty("line.separator"), Color.RED);
+		tryReconnect();
+	}
+	
+	protected void tryReconnect(){
+		activeUsers.clear();
 		boolean notConnected = false;
 		int delay = 1;
 		while (notConnected) {
@@ -725,9 +667,6 @@ public class MasterBot extends PircBot {
 	@Override
     public void log(String line) {
 			if (line.startsWith(">>>") || line.startsWith("***")) {
-//				if (line.startsWith(">>>PASS")) {
-//					appendToPane(">>>PASS oauth:***"+System.getProperty("line.separator"), Color.BLUE.darker());
-//				}else 
 				if (!line.startsWith(">>>PONG")){
 					appendToPane(line+"\n", inColor);
 				}

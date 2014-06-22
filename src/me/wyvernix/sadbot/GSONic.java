@@ -116,7 +116,7 @@ public class GSONic {
 			return null;
 		}
 		
-    	return title + "' by " + user;
+    	return title + "\" by " + user;
     	//<h1 id="watch-headline-title" class="yt">
     	//<span title="Caramell - Caramelldansen (English Version) Official" dir="ltr" class="watch-title long-title yt-uix-expander-head" id="eow-title"> Caramell - Caramelldansen (English Version) Official</span>
     }
