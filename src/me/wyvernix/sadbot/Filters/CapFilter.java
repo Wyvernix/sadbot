@@ -1,7 +1,6 @@
 package me.wyvernix.sadbot.Filters;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import me.wyvernix.sadbot.Bots.MasterBot;
 
@@ -10,23 +9,27 @@ public class CapFilter implements ChatFilter {
 	int maxPercent = 70;
 
 	@Override
-	public String handleMessage(MasterBot bot, String channel, String sender,	String message, ArrayList<String> mods, Map<String, Object>special) {
+	public String handleMessage(MasterBot bot, String channel, String sender,	String message, ArrayList<String> mods, ArrayList<String> special) {
+		if (bot.userStats.isRegular(sender)) {
+			return null;
+		}
+		
 		String messageNoWS = message.replaceAll("\\s", "");
         int capsNumber = getCapsNumber(messageNoWS);
         double capsPercent = ((double) capsNumber / messageNoWS.length()) * 100;
         if (message.length() >= minChars && capsPercent >= maxPercent) {
-            int warningCount = bot.userStats.getWarnings(sender);
+        	bot.userStats.addWarning(sender);
+        	int warningCount = bot.userStats.getWarnings(sender);
             String returns; 
-            if (warningCount > 0) {
+            if (warningCount > 1) {
             	bot.tempBan(channel, sender, "CAPS", warningCount);
             	bot.sendMessage(channel, sender + ", please don't shout or talk in all caps - [temp ban]");
             	returns = "!T CAPSTIMEOUT: " + sender + " in " + channel + " : " + message;
             } else {
-            	bot.sendMessage(channel, sender + ", please don't shout or talk in all caps - [warning]");
+            	bot.purge(channel, sender, "CAPS");
+            	bot.sendMessage(channel, sender + ", please don't shout or talk in all caps - [purge]");
             	returns = "!T CAPSWARNING: " + sender + " in " + channel + " : " + message;
             }
-            bot.userStats.addWarning(sender);
-
             return returns;
         }
 		return null;

@@ -3,8 +3,6 @@ package me.wyvernix.sadbot.Bots;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
-
 import me.wyvernix.sadbot.newGUI;
 import me.wyvernix.sadbot.Commands.*;
 import me.wyvernix.sadbot.Filters.CapFilter;
@@ -13,7 +11,7 @@ import me.wyvernix.sadbot.Filters.SymbolFilter;
 import me.wyvernix.sadbot.Filters.VineFilter;
 
 public class EnergyBot extends MasterBot {
-	public EnergyBot() {
+	public EnergyBot(String oauth) {
 		setBotName("EnergyBot");
 		setMainChan("#activeenergylive");
 		//global commands
@@ -46,17 +44,7 @@ public class EnergyBot extends MasterBot {
 		
 		setColors(Color.RED.darker(), Color.ORANGE.darker());
 		
-		timer.schedule(new TimerTask() {         
-		    @Override
-		    public void run() {  
-		    	if (!isConnected()) {
-					tryReconnect();
-					sendMessage(mainChan, "stupid twitch keeps disconnecting me BibleThump");
-		    	}
-		    }
-		}, 1000 * 60, 1000 * 60);
-		
-		init();
+		init(oauth);
 	}
 	
 	@Override

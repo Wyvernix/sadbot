@@ -35,4 +35,6 @@ public class LinkFilterCommand implements BotCommand {
 		}
 	}
 
+	@Override
+	public String toString() { return getCommandName(); }
 }

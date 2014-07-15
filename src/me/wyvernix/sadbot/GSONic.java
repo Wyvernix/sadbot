@@ -43,14 +43,14 @@ public class GSONic {
 //    }
     
     
-    public static String getStatus(String url) {
+    public static String getStatus(String user) {
     	String outo = "null";
     	try {
-    		JsonElement je = getTwitch(url);
+    		JsonElement je = getTwitch("https://api.twitch.tv/kraken/channels/"+user);
     		if (je != null) {
     			outo = (getAtPath(je, "status").getAsString());
     		}
-    	} catch(Exception e) {
+    	} catch(Exception e) {;
     		outo = "null";
     	}
     	return outo;

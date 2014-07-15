@@ -1,7 +1,6 @@
 package me.wyvernix.sadbot.Filters;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,24 +17,24 @@ public class SymbolFilter implements ChatFilter{
 	}
 	
 	@Override
-	public String handleMessage(MasterBot bot, String channel, String sender, String message, ArrayList<String> mods, Map<String, Object>special) {
+	public String handleMessage(MasterBot bot, String channel, String sender, String message, ArrayList<String> mods, ArrayList<String> special) {
 		String messageNoWS = message.replaceAll("\\s", "");
 		int count = getSymbolsNumber(messageNoWS);
 		double percent = (double) count / messageNoWS.length();
 
 		if (count > symMin && (percent * 100 > symPercent)) {
-			String returns;
+			bot.userStats.addWarning(sender);
             int warningCount = bot.userStats.getWarnings(sender);
-            if (warningCount > 0) {
-            	bot.tempBan(channel, sender, "LINK", warningCount);
+			String returns;
+            if (warningCount > 1) {
+            	bot.tempBan(channel, sender, "SYMBOL", warningCount);
             	bot.sendMessage(channel, sender + ", please don't spam symbols - [temp ban]");
             	returns = "!T SYMTIMEOUT: " + sender + " in " + channel + " : " + message;
             } else {
-            	bot.sendMessage(channel, sender + ", please don't spam symbols - [warning]");
+            	bot.purge(channel, sender, "SYMBOL");
+            	bot.sendMessage(channel, sender + ", please don't spam symbols - [purge]");
             	returns = "!T SYMWARNING: " + sender + " in " + channel + " : " + message;
             }
-            bot.userStats.addWarning(sender);
-
             return returns;
 		}
 		
@@ -52,5 +51,5 @@ public class SymbolFilter implements ChatFilter{
         }
         return symbols;
     }
-	public String toString() { return "VineFilter"; }
+	public String toString() { return "SymbolFilter"; }
 }

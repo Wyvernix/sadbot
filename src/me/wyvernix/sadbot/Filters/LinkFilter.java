@@ -2,7 +2,6 @@ package me.wyvernix.sadbot.Filters;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,27 +30,25 @@ public class LinkFilter implements ChatFilter {
 	}
 	
 	@Override
-	public String handleMessage(MasterBot bot, String channel, String sender, String message, ArrayList<String> mods, Map<String, Object>special) {
+	public String handleMessage(MasterBot bot, String channel, String sender, String message, ArrayList<String> mods, ArrayList<String> special) {
 		if (containsLink(message)) {
-			Object sss = special.get(sender);
-			boolean ss = false;
-			if (sss != null){
-				ss = (boolean)sss;
-			}
-            if (ss) {
+            if (special.contains(sender)) {
             	special.remove(sender);
             	return "Link permitted ("+sender+")";
             } else {
-            	String returns;
             	bot.userStats.addWarning(sender);
             	int warningCount = bot.userStats.getWarnings(sender);
-//                if (warningCount > 0) {
-                	bot.tempBan(channel, sender, "LINK", warningCount);
-                	bot.sendMessage(channel, sender + ", please ask a moderator before posting links - [temp ban]");
-                	returns = "!T LINKTIMEOUT: " + sender + " in " + channel + " : " + message;
-//                }
-                
-
+            	
+            	String returns;
+            	if (warningCount <= 1) {
+            		bot.purge(channel, sender, "LINK");
+                    bot.sendMessage(channel, sender + ", please ask a moderator before posting links - [purge]");
+                    returns = "!T LINKWARNING: " + sender + " in " + channel + " : " + message;
+            	} else {
+            		bot.tempBan(channel, sender, "LINK", warningCount);
+            		bot.sendMessage(channel, sender + ", please ask a moderator before posting links - [temp ban]");
+            		returns = "!T LINKTIMEOUT: " + sender + " in " + channel + " : " + message;
+            	}
                 return returns;
             }
 

@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.wyvernix.sadbot.Bots.MasterBot;
+
 public class UserStats {
 	public Map<String, Map<String,Object>> users = new HashMap<String, Map<String,Object>>();
 	private String botName;
@@ -37,8 +39,23 @@ public class UserStats {
 	
 	public void addWarning(String user) {
 		Map<String,Object> ussr = users.get(user);
+		if (ussr == null) {
+			add(user);
+			ussr = users.get(user);
+		}
 		ussr.put("int1", (int)ussr.get("int1") + 1);
 		users.put(user, ussr);
+	}
+	
+	public void setRegular(String name, String status) {
+		Map<String,Object> ussr = users.get(name);
+		ussr.put("string1", status);
+		users.put(name, ussr);
+	}
+	
+	public boolean isRegular(String name) {
+		Map<String,Object> ussr = users.get(name);
+		return ussr.get("string1") == "reg";
 	}
 	
 	public void addWin(String user) {
@@ -56,7 +73,13 @@ public class UserStats {
 	}
 	
 	public int getWarnings(String user) {
-		return (int)users.get(user).get("int1");
+		Map<String, Object> ss = users.get(user);
+		if (ss != null) {
+			return (int) ss.get("int1");
+		} else {
+			return 0;
+		}
+		
 	}
 	
 	public String lastSeen(String user) {
@@ -84,7 +107,7 @@ public class UserStats {
 		return !users.containsKey(user);
 	}
 	
-	public void updateStats(ArrayList<String> viewers, Map<String, Integer> chatters) {
+	public void updateStats(ArrayList<String> viewers, Map<String, Integer> chatLines, MasterBot bot) {
 		int sz = viewers.size();
 		Map<String,Object> viewerStats;
 		String user;
@@ -94,9 +117,17 @@ public class UserStats {
 			if (users.get(user) != null) {
 				viewerStats = users.get(user);
 				
-				viewerStats.put("viewTime", (int)viewerStats.get("viewTime")+1);
-				if (chatters.get(user) != null) {
-					viewerStats.put("chatLines", (int)viewerStats.get("chatLines") + chatters.get(user));
+				int vt = (int)viewerStats.get("viewTime")+1;
+				
+				viewerStats.put("viewTime", vt);
+				if (chatLines.get(user) != null) {
+					int lines = (int)viewerStats.get("chatLines") + chatLines.get(user);
+					if (lines > 200 && (lines/(vt*5) >= 0.45)) {
+						setRegular(user, "reg");
+						bot.sendMessage(bot.mainChan, user.toUpperCase() + " IS A REGULAR!");
+					}
+					
+					viewerStats.put("chatLines", lines);
 				}
 				
 				users.put(viewers.get(i), viewerStats);

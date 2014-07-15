@@ -25,20 +25,23 @@ import org.jibble.pircbot.*;
 
 
 public class MasterBot extends PircBot {
-	private static final String botVersion = "2.5.0";
+	private static final String botVersion = "2.5.2";
 	public String botName;
-	protected String mainChan;
+	public String mainChan;
 	private Color inColor = Color.BLACK;
 	private Color outColor = Color.BLACK;
+	private MasterBot me = this;
 	
 	private ArrayList<String> mods = new ArrayList<String>();
 	private ArrayList<String> activeUsers = new ArrayList<String>();
 	private ArrayList<String> newBuffer = new ArrayList<String>();
 	public UserStats userStats;
-	private Map<String, Integer> chatters = new HashMap<String, Integer>(); 
-	private Map<String, Object> specialUsers = new HashMap<String, Object>();
-	public Timer timer = new Timer();
+	private Map<String, Integer> chatLines = new HashMap<String, Integer>(32, 0.75f); 
+	public ArrayList<String> specialUsers = new ArrayList<String>(); 
+	public Timer timer = new Timer("Background Tasks");
 	public LinkFilter linkFilter;
+	public boolean shutdown = false;
+	private String oauth = "";
 	
 	private JMegaMegaHal hal;
 	
@@ -100,13 +103,6 @@ public class MasterBot extends PircBot {
 	public ArrayList<String> getActiveUsers() {
 		return activeUsers;
 	}
-	public Map<String, Object> getSpecialUsers() {
-		return specialUsers;
-	}
-
-	public void setSpecialUsers(Map<String, Object> specialUsers) {
-		this.specialUsers = specialUsers;
-	}
 	//// end
 	////////////|commands|
 	private List<BotCommand> commands;
@@ -116,9 +112,10 @@ public class MasterBot extends PircBot {
 	/////////////END
 	
 	@SuppressWarnings("unchecked")
-	public void init() {
+	public void init(String oa) {
 		userStats = new UserStats(botName);
 		linkFilter = new LinkFilter(botName);
+		oauth = oa;
 		System.out.println("Starting " + botName + ".");
 		appendToPane("Starting "+botName+"\n", inColor);
 		appendToPane("Commands: "+sadCommands.toString()+ "\n", inColor);
@@ -128,7 +125,7 @@ public class MasterBot extends PircBot {
 		//load ccommands
 		ccommands = (Map<String, String>) Util.load(botName+"Commands.dat");
 		if (ccommands == null) {
-			ccommands = new HashMap<String,String>();
+			ccommands = new HashMap<String,String>(16, 0.80f);
 		}
 		//////////////////////END
 		// load brain
@@ -153,10 +150,12 @@ public class MasterBot extends PircBot {
 		timer.schedule(new TimerTask() {         
 		    @Override
 		    public void run() {  
-		    	System.out.println("Updated "+botName+" Stats.");
-				userStats.updateStats(activeUsers, chatters);
-				chatters.clear();
-				Util.save(hal, botName+".ser");
+				userStats.updateStats(activeUsers, chatLines, me);
+				if (!chatLines.isEmpty()) {
+					Util.save(hal, botName+".ser");
+				}
+				chatLines.clear();
+				System.out.println("Updated "+botName+" Stats.");
 		    }
 		}, 3000, 1000 * 60 * 5);
 	}
@@ -245,23 +244,22 @@ public class MasterBot extends PircBot {
 					return;
 				} else {
 					final String[] split = message.split(" ");
-					specialUsers.put(split[1].toLowerCase(), true);
-					sendMessage(channel, "Permitting user: "+split[1]+" for one [banType] or 5 mins.");
-					timer.schedule(new TimerTask() {          
-					    @Override
-					    public void run() {
-					        if (specialUsers.containsKey(split[1])) {
-					        	specialUsers.remove(split[1]);
-					        }
-					    }
-					}, 1000 * 60 * 5); //reset after 5 mins
+					permitUser(channel, split[1]);
 					return;
 				}
 			}
 			//sender said something we dont know 
 			this.sendMessage(channel, sender + ", what? [command/user/permit]");
-			System.out.println(message.startsWith("permit"));
+			//System.out.println(message.startsWith("permit"));
 			return;
+			}
+			//lazy, here is reg check
+			if (message.startsWith("amireg")) {
+				if (userStats.isRegular(sender)) {
+					sendMessage(channel, sender + " is a regular!");
+				} else {
+					sendMessage(channel, sender + " is not a regular.");
+				}
 			}
 			//check commands?
 			if (!ccommands.isEmpty()) {
@@ -298,7 +296,7 @@ public class MasterBot extends PircBot {
 	
 	private void messageAI(String channel, String sender, String message) {
 			message = message.toLowerCase(); //makes bot more responsive
-			message = message.replaceAll("(?i)("+botName+")(, | |)", "");
+			message = message.replaceAll("(?i)(hey |)("+botName+")(, | |)", "");
 			if (message.contains("random")) {
 				sendMessage(channel, hal.getSentence());
 			}else 
@@ -325,11 +323,15 @@ public class MasterBot extends PircBot {
 			//message is a question
 			if (message.matches("(?i)^why.*$")) {
 				sendMessage(channel, hal.getSentence("Because"));
-			} else if (message.matches("(?i)^.*?do(|es) .*$")) {
+			} else if (message.matches("(?i)^(do(|es)|is|are) .*$")) {
 				if (Math.random() <0.5){
 					sendMessage(channel, "yes");	
 				} else {
-					sendMessage(channel, "no");
+					if (Math.random() >0.1){
+						sendMessage(channel, "no");
+						} else {
+							sendMessage(channel, "idk cake :3");
+						}
 				}
 			}else{
 			message = message.replaceAll("((do|who|why|what|where|how|whose|do|does|like)( |)|(\\?|\\.|\\!|,))", "")+" cake";
@@ -356,17 +358,18 @@ public class MasterBot extends PircBot {
 //				sendMessage(channel, hal.getSentence(cleanBlock[baja]));
 //			}
 			}
-		} else if (message.contains("are you")) {
-			if (Math.random() <0.5){
-				sendMessage(channel, "yes");	
-			} else {
-				if (Math.random() >0.1){
-				sendMessage(channel, "no");
-				} else {
-					sendMessage(channel, "i am cake :3");
-				}
-			}
 		}
+//		else if (message.contains("are you")) {
+//			if (Math.random() <0.5){
+//				sendMessage(channel, "yes");	
+//			} else {
+//				if (Math.random() >0.1){
+//				sendMessage(channel, "no");
+//				} else {
+//					sendMessage(channel, "i am cake :3");
+//				}
+//			}
+//		}
 //		else if (message.contains("sadbot is ") || message.contains("sad_bot is ") || message.contains("energybot is ")) {
 //			sendMessage(channel, hal.getSentence("sadbot").replaceAll("sadbot is", "I am") + " Kappa");
 //			
@@ -424,10 +427,10 @@ public class MasterBot extends PircBot {
 	}
 	
 	private void messageHandle(String channel, String sender, String message) {
-		if (!chatters.containsKey(sender)) {
-			chatters.put(sender, 0);
+		if (!chatLines.containsKey(sender)) {
+			chatLines.put(sender, 0);
 		}
-		chatters.put(sender, chatters.get(sender) + 1);
+		chatLines.put(sender, chatLines.get(sender) + 1);
 		
 		if (message.charAt(0) == "!".charAt(0)){ //is a command, handle it
 			messageCommand(channel, sender, message);
@@ -438,7 +441,7 @@ public class MasterBot extends PircBot {
 				return;
 			}
 			if (message.matches("^.*?youtu.*?(v=|/[0-9A-Za-z]{11}).*?$")) { //youtube link matching
-				System.out.println("match yt");
+				//System.out.println("match yt");
 				int vid = message.indexOf("v=");
 				String videoid = "dQw4w9WgXcQ"; //never gonna give you up
 				if (vid > 0) {
@@ -457,14 +460,13 @@ public class MasterBot extends PircBot {
 				
 				messageAI(channel, sender, message);
 				return;
-			} else if (message.matches("(?i)^.*?(hi|hey|good (evening|morning|afternoon)|sup|hello) .*?chat.*?$")) {
+			} else if (message.matches("(?i)^.*?(hi|hey|good (evening|morning|afternoon)|sup|hello) (chat|everyone).*?$")) {
 				sendMessage(channel, "hi " + sender + " <3");
 			} else {	//not spam, etc, save message to AI
 		  		hal.add(message.replace("\"", ""));
 			}
 		}
 	}
-	
 	
 	@Override
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
@@ -529,7 +531,7 @@ public class MasterBot extends PircBot {
 	}
 	
 	protected void manageUserList(boolean mode, String user) {
-		//TODO
+		//template. this must be overridden
 		if (mode) {
 			//add user
 		} else {
@@ -621,17 +623,25 @@ public class MasterBot extends PircBot {
 	@Override
 	public void onDisconnect(){
 		appendToPane("OMG "+this.getName()+" got disconnected!"+System.getProperty("line.separator"), Color.RED);
-		tryReconnect();
+		if (!shutdown) {
+			tryReconnect();
+		}
 	}
 	
-	protected void tryReconnect(){
+	public void tryReconnect(){
 		activeUsers.clear();
-		boolean notConnected = false;
+		boolean notConnected = true;
 		int delay = 1;
+		String[] servers = {"199.9.250.229","199.9.250.239","199.9.253.199","199.9.253.210"};
+		
 		while (notConnected) {
 		    try {
+		    	System.out.println("Trying to reconnect "+botName+" "+delay);
+				log("! ! Trying to reconnect "+botName+" "+delay);
 		    	Thread.sleep(300*delay);
-				reconnect();
+//				reconnect();
+		    	connect(servers[delay % 4], 6667, oauth);
+		    	System.out.println("Trying "+ servers[delay % 4]);
 				Thread.sleep(300);
 				notConnected = !isConnected();
 				if (delay < 200) {
@@ -694,7 +704,16 @@ public class MasterBot extends PircBot {
     public void tempBan(final String channel, final String name, String type, int time) {
         String line = "!! Issuing a tempBan on " + name + " in " + channel + " for " + type;
         log(line);
+        if (time <= 0){
+        	time = 1;
+        }
         sendMessage(channel, ".timeout "+name+" "+time*60);
+    }
+    
+    public void purge(final String channel, final String name, String type) {
+    	String line = "!! Issuing a purge on " + name + " in " + channel + " for "+type;
+        log(line);
+        sendMessage(channel, ".timeout "+name+" 1");
     }
 	
 	private void appendToPane(String msg, Color c) {
@@ -716,5 +735,25 @@ public class MasterBot extends PircBot {
 		if (this.isConnected()) {
 		this.disconnect();
 		}
+	}
+	
+	public void permitUser(String channel, final String user) {
+		specialUsers.add(user.toLowerCase());
+		sendMessage(channel, "Permitting user: "+user+" for one [banType] or 5 mins.");
+		timer.schedule(new TimerTask() {          
+		    @Override
+		    public void run() {
+		        if (specialUsers.contains(user)) {
+		        	specialUsers.remove(user);
+		        }
+		    }
+		}, 1000 * 60 * 5); //reset after 5 mins
+	}
+	
+	public void cleanUp() {
+		System.out.println("Saving "+botName+" Stats.");
+		userStats.updateStats(activeUsers, chatLines, me);
+		chatLines.clear();
+		Util.save(hal, botName+".ser");
 	}
 }

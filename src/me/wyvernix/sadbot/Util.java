@@ -23,12 +23,15 @@ public class Util {
 		    System.out.println("Loaded "+loadFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			System.err.println("Couldn't find the data ("+ loadFile +")");
+			System.err.println("File not found ("+ loadFile +")");
+			me.wyvernix.sadbot.newGUI.logError(e);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.err.println("Couldn't find the data ("+ loadFile +")");
+			System.err.println("Data corrupt ("+ loadFile +")");
+			me.wyvernix.sadbot.newGUI.logError(e);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			me.wyvernix.sadbot.newGUI.logError(e);
 		} finally {
 			if(inp != null) {
 				try {
@@ -50,9 +53,11 @@ public class Util {
 			System.out.println("Saved "+saveFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			me.wyvernix.sadbot.newGUI.logError(e);
 			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
+			me.wyvernix.sadbot.newGUI.logError(e);
 			return false;
 		} finally {
 			if(out != null) {

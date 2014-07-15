@@ -16,12 +16,13 @@ public class IPCommand implements BotCommand {
 	
 	public IPCommand(String chan){
 		mainChan = chan;
-		mainChanStatus = GSONic.getStatus("https://api.twitch.tv/kraken/channels/" + mainChan);
+		mainChanStatus = GSONic.getStatus(mainChan);
 		getResponse();
 		new Timer().schedule(new TimerTask() {		 
 			@Override
 			public void run() {
-				mainChanStatus = GSONic.getStatus("https://api.twitch.tv/kraken/channels/" + mainChan);
+				mainChanStatus = GSONic.getStatus(mainChan);
+				getResponse();
 				System.out.println("Updated IP for "+mainChan);
 			}
 		}, 3000, 1000 * 60 * 15);
@@ -60,17 +61,17 @@ public class IPCommand implements BotCommand {
 		if (message.length() < "ip ".length()){
 			if (mainChan.equals("sad_bot")){
 				bot.sendMessage(channel, "Let me find that for you...");
-				mainChanStatus = GSONic.getStatus("https://api.twitch.tv/kraken/channels/" + fixedChan); 
+				mainChanStatus = GSONic.getStatus(fixedChan); 
 				mainChan = fixedChan;
 				getResponse();
 			}
 			
-			if (mainChanStatus.contains("null")) {
+			if (mainChanStatus.equals("null")) {
 				bot.sendMessage(channel, "hey shady, chanStatus failed...");
 			} else {
 				bot.sendMessage(channel, response);
 
-				mainChanStatus = GSONic.getStatus("https://api.twitch.tv/kraken/channels/" + fixedChan); 
+				mainChanStatus = GSONic.getStatus(fixedChan); 
 				final String ss = response; 
 				getResponse();
 				if (!ss.equals(response)) {

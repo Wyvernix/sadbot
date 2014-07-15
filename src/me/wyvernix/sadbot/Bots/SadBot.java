@@ -3,8 +3,6 @@ package me.wyvernix.sadbot.Bots;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
-
 import me.wyvernix.sadbot.newGUI;
 import me.wyvernix.sadbot.Commands.BotCommand;
 import me.wyvernix.sadbot.Commands.CommandsCommand;
@@ -23,7 +21,7 @@ import me.wyvernix.sadbot.Filters.ChatFilter;
 import me.wyvernix.sadbot.Filters.VineFilter;
 
 public class SadBot extends MasterBot {
-	public SadBot() {
+	public SadBot(String oauth) {
 		setBotName("Sad_Bot");
 		setMainChan("#shady1765");
 		//global commands
@@ -56,17 +54,7 @@ public class SadBot extends MasterBot {
 		
 		setColors(Color.BLUE.darker(), Color.GREEN.darker());
 		
-		timer.schedule(new TimerTask() {         
-		    @Override
-		    public void run() {  
-		    	if (!isConnected()) {
-					tryReconnect();
-					sendMessage(mainChan, "stupid twitch keeps disconnecting me BibleThump");
-		    	}
-		    }
-		}, 1000 * 60, 1000 * 60);
-		
-		init();
+		init(oauth);
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package me.wyvernix.sadbot;
 import java.awt.Color;
 import java.io.IOException;
-
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 
@@ -18,18 +17,19 @@ public class BotManager {
 //	private static GUI currentGUI = new GUI("SadBot PWNS");
 	public static void main(String[] args) {
 		gui = new newGUI();
+//		String[] servers = {"199.9.250.229","199.9.250.239","199.9.253.199","199.9.253.210"};
 		
 		newGUI.alert("Starting Bots!");
 		
 		//start bot
-		sadbot = new SadBot();
+		sadbot = new SadBot(args[0]);
 		
 		//debug!
 		sadbot.setVerbose(true);
 		
 		//connect to irc
 		try {
-			sadbot.connect("199.9.253.210", 6667, args[0]);
+			sadbot.connect("199.9.250.229", 6667, args[0]);
 			sbOA = args[0];
 			//join channels
 			sadbot.joinChannel("#sad_bot");
@@ -51,14 +51,14 @@ public class BotManager {
 		
 		
 		
-		energybot = new EnergyBot();
+		energybot = new EnergyBot(args[1]);
 		
 		//debug!
 		energybot.setVerbose(true);
 		
 		//connect to irc
 		try {
-			energybot.connect("199.9.253.199", 6667, args[1]);
+			energybot.connect("199.9.250.229", 6667, args[1]);
 			ebOA = args[1];
 			//join channels
 			energybot.joinChannel("#activeenergylive");
@@ -77,6 +77,19 @@ public class BotManager {
 			newGUI.logError(e);
 		}
 		
+//		timer.schedule(new TimerTask() {         
+//		    @Override
+//		    public void run() {
+//		    	if (!sadbot.isConnected()) {
+//					sadbot.tryReconnect();
+//					sadbot.sendMessage("#shady1765", "stupid twitch keeps disconnecting me BibleThump");
+//		    	}
+//		    	if (!energybot.isConnected()) {
+//		    		energybot.tryReconnect();
+//					energybot.sendMessage("#activeenergylive", "stupid twitch keeps disconnecting me BibleThump");
+//		    	}
+//		    }
+//		}, 1000 * 60, 1000 * 60);
 	}
 	
 	public static void globalBan(String name, String channel, String type) {
@@ -90,9 +103,17 @@ public class BotManager {
 	
 	public static void shutdown() {
 		newGUI.appendToPane("Shutting down...\n", Color.red);
+		newGUI.alert("Stopping!");
+		energybot.timer.cancel();
+		sadbot.timer.cancel();
+		energybot.shutdown = true;
+		sadbot.shutdown = true;
 		energybot.disconnect();
 		sadbot.disconnect();
-		newGUI.alert("Stopping!");
+		
+		
+		energybot.cleanUp();
+		sadbot.cleanUp();
 		
 		Runnable r = new Runnable() {
             public void run() {
