@@ -96,9 +96,9 @@ public class BotManager {
 		final String line = "!! Issuing a ban on " + name + " in " + channel + " for " + type+"\n";
 		newGUI.appendToPane(line, Color.red);
 		energybot.sendMessage("#activeenergylive", ".ban "+name);
-		energybot.sendMessage("#energybot", ".ban "+name);
+//		energybot.sendMessage("#energybot", ".ban "+name);
 		sadbot.sendMessage("#shady1765", ".ban "+name);
-		sadbot.sendMessage("#sad_bot", ".ban "+name);
+//		sadbot.sendMessage("#sad_bot", ".ban "+name);
 	}
 	
 	public static void shutdown() {

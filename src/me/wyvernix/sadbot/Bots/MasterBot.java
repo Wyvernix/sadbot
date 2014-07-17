@@ -227,7 +227,8 @@ public class MasterBot extends PircBot {
 								Integer.toString((int)userData.get("viewTime")*5) + " minutes watched, " + 
 								Integer.toString((int)userData.get("chatLines")) + " chat lines, " + 
 								Integer.toString((int)userData.get("contestWins")) + " contest wins, and was last seen " 
-								+userStats.lastSeen(split[2]));
+								+userStats.lastSeen(split[2]) + ". and is " +
+								userData.get("string1"));
 						return;
 						} else {
 							this.sendMessage(channel, "User: "+split[2]+" not found.");
@@ -260,6 +261,21 @@ public class MasterBot extends PircBot {
 				} else {
 					sendMessage(channel, sender + " is not a regular.");
 				}
+			}
+			
+			if (message.startsWith("testo")) {
+				String[] spaz = message.split(" ");
+				spaz[1] = spaz[1].toLowerCase();
+				System.out.println(spaz[1]);
+				Map<String, Object> vs = userStats.users.get(spaz[1]);
+				
+				int lines = (int)vs.get("chatLines");// + chatLines.get(spaz[1]);
+				int vt = (int)vs.get("viewTime");
+				sendMessage(channel, spaz[1] +": "+ ((vt*5 > 500) && ((float)lines/((float)vt*5f) >= 0.45f) && (!userStats.isRegular(spaz[1]))) + "*, vt: " +vt*5+ ", vt>500: "+ (vt*5>500) +
+						", raito: " + ((float)lines/((float)vt*5f) >= 0.45f)+", is not reg: "+(!userStats.isRegular(spaz[1])) + ", ratio is: " + (float)lines/((float)vt*5f));
+				
+//				((vt > 500) && ((float)lines/((float)vt*5f) >= 0.45f) && (!isRegular(user)))
+				
 			}
 			//check commands?
 			if (!ccommands.isEmpty()) {
@@ -456,6 +472,27 @@ public class MasterBot extends PircBot {
 				if (response != null) {
 					sendMessage(channel, "YouTube video linked: \"" + response);
 				}
+			} else if (message.matches("^.*?twitch\\.tv/.*?/\\w{1}/\\d{7}.*?$")) {
+				String[] url = message.split("/");
+				String des = "", code = "", user = "";
+				for (int i = 0; i < url.length; i++) {
+					if (url[i].matches("\\w{1}")) {
+						des = url[i];
+						user = url[i-1];
+					} else if (url[i].matches("\\d{7}( *?|)")) {
+						code = url[i].replace(" ", "");
+					}
+				}
+//				System.out.println(des + code);
+				if ((des+code).length() == 8) {
+					System.out.println(des + code + " is ok");
+					String title = GSONic.getVideo(des+code);
+					if (!title.equals("null")) {
+						sendMessage(channel, "Twitch VoD linked: \"" + title + "\" by "+user);
+					}
+					
+				}
+				
 			} else if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
 				
 				messageAI(channel, sender, message);
@@ -503,7 +540,7 @@ public class MasterBot extends PircBot {
 	public void onJoin(String channel, String sender, String login, String hostname) {
 		if (channel.equals(mainChan)) {
 //		if (sender.equals("activeenergylive")) {
-//			sendMessage(channel, "hi active :3 i am update! https://github.com/Wyvernix/sadbot/commits/master");
+//			sendMessage(channel, "hi active :3 fun fact: 10% of followers are viewers! 10% of viewers are subscribers!");
 //		}
 		if (userStats.isNew(sender)) {
 			newBuffer.add(sender);

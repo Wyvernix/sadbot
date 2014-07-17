@@ -55,6 +55,10 @@ public class UserStats {
 	
 	public boolean isRegular(String name) {
 		Map<String,Object> ussr = users.get(name);
+		if (ussr == null) {
+			add(name);
+			ussr = users.get(name);
+		}
 		return ussr.get("string1") == "reg";
 	}
 	
@@ -122,9 +126,11 @@ public class UserStats {
 				viewerStats.put("viewTime", vt);
 				if (chatLines.get(user) != null) {
 					int lines = (int)viewerStats.get("chatLines") + chatLines.get(user);
-					if (lines > 200 && (lines/(vt*5) >= 0.45)) {
+//					System.out.println(user +": "+ (float)lines/((float)vt*5));
+					if ((vt*5 > 500) && ((float)lines/((float)vt*5f) >= 0.45f) && (!isRegular(user))) {
 						setRegular(user, "reg");
-						bot.sendMessage(bot.mainChan, user.toUpperCase() + " IS A REGULAR!");
+						bot.sendMessage(bot.mainChan, user.toUpperCase() + " IS A REGULAR! CONGRATS!");
+//						System.err.println(user.toUpperCase() + "is reg now.");
 					}
 					
 					viewerStats.put("chatLines", lines);

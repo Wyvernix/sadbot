@@ -27,7 +27,7 @@ public class CapFilter implements ChatFilter {
             	returns = "!T CAPSTIMEOUT: " + sender + " in " + channel + " : " + message;
             } else {
             	bot.purge(channel, sender, "CAPS");
-            	bot.sendMessage(channel, sender + ", please don't shout or talk in all caps - [purge]");
+            	bot.sendMessage(channel, sender + ", please don't shout or talk in all caps - [warning]");//purge
             	returns = "!T CAPSWARNING: " + sender + " in " + channel + " : " + message;
             }
             return returns;

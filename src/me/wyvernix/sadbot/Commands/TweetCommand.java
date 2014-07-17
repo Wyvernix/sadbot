@@ -15,6 +15,9 @@ public class TweetCommand implements BotCommand {
 
 	@Override
 	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
+		if (!bot.getMods().contains(sender)) {
+			return;
+		}
 		String tweet = null;
 		if (message.length() < 1) {
 			tweet = "https://api-ssl.bitly.com/v3/shorten?access_token=09e4f66b34f51a5aff3e711788fd707c92339a89&longUrl=" +

@@ -14,6 +14,9 @@ public class LinkFilterCommand implements BotCommand {
 	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		// TODO Auto-generated method stub
 		final String[] mesBlock = message.split(" ");
+		if (!bot.getMods().contains(sender)) {
+			return;
+		}
 		if (mesBlock.length > 1) {
 			if (mesBlock[0].equals("add")) {
 				bot.linkFilter.permitLink(mesBlock[1].toLowerCase());

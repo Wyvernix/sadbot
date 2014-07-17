@@ -32,7 +32,7 @@ public class SymbolFilter implements ChatFilter{
             	returns = "!T SYMTIMEOUT: " + sender + " in " + channel + " : " + message;
             } else {
             	bot.purge(channel, sender, "SYMBOL");
-            	bot.sendMessage(channel, sender + ", please don't spam symbols - [purge]");
+            	bot.sendMessage(channel, sender + ", please don't spam symbols - [warning]");//purge
             	returns = "!T SYMWARNING: " + sender + " in " + channel + " : " + message;
             }
             return returns;

@@ -45,7 +45,7 @@ public class IPCommand implements BotCommand {
 		} else if (containStr("hive", mainChanStatus)) {
 			response = "play.hivemc.com";
 		} else if (containStr("mineplex", mainChanStatus)) {
-			response = "us.mineplex.com";
+			response = "us.mineplex.com lobby 9";
 		} else if (containStr("single", mainChanStatus) || containStr("ssp", mainChanStatus)) {
 			response = "this is single player! :3";
 		} else {

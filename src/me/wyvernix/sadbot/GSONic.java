@@ -42,6 +42,18 @@ public class GSONic {
 //    	return outo;
 //    }
     
+    public static String getVideo(String videoID) {
+    	String outo = "null";
+    	try {
+    		JsonElement je = getTwitch("https://api.twitch.tv/kraken/videos/"+videoID);
+    		if (je != null) {
+    			outo = (getAtPath(je, "title").getAsString());
+    		}
+    	} catch(Exception e) {;
+    		outo = "null";
+    	}
+    	return outo;
+    }
     
     public static String getStatus(String user) {
     	String outo = "null";

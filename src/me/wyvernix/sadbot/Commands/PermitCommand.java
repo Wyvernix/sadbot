@@ -11,6 +11,9 @@ public class PermitCommand implements BotCommand {
 
 	@Override
 	public void handleMessage(final MasterBot bot, String channel, String sender, String message) {
+		if (!bot.getMods().contains(sender)) {
+			return;
+		}
 		final String[] split = message.split(" ");
 		System.out.println("::"+message+"::");
 		if (split.length < 1){
