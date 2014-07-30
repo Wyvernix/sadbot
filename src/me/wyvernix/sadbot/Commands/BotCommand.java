@@ -22,5 +22,5 @@ public interface BotCommand {
 	public void handleMessage(MasterBot bot, String channel, String sender, String message);
 	
 	@Override
-	String toString();
+	public String toString();
 }

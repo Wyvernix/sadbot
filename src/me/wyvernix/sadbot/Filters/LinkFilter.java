@@ -42,7 +42,7 @@ public class LinkFilter implements ChatFilter {
             	String returns;
             	if (warningCount <= 1) {
             		bot.purge(channel, sender, "LINK");
-                    bot.sendMessage(channel, sender + ", please ask a moderator before posting links - [warning]");//purge
+                    bot.sendMessage(channel, sender + ", please ask a moderator before posting links - [purge]");//purge
                     returns = "!T LINKWARNING: " + sender + " in " + channel + " : " + message;
             	} else {
             		bot.tempBan(channel, sender, "LINK", warningCount);

@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 public class Util {
 	private static final String slash = System.getProperty("file.separator");
 	
-	public static Object load(String fileName){
+	public synchronized static Object load(String fileName){
 		ObjectInputStream inp = null;
 		final String loadFile= "save"+slash+fileName;
 		Object returns = null;
@@ -20,14 +20,14 @@ public class Util {
 			final File file = new File(loadFile);
 		    inp = new ObjectInputStream(new FileInputStream(file));
 		    returns = inp.readObject();
-		    System.out.println("Loaded "+loadFile);
+		    System.out.println(">Loaded "+loadFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			System.err.println("File not found ("+ loadFile +")");
+			System.err.println(">File not found ("+ loadFile +")");
 			me.wyvernix.sadbot.newGUI.logError(e);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.err.println("Data corrupt ("+ loadFile +")");
+			System.err.println(">Data corrupt ("+ loadFile +")");
 			me.wyvernix.sadbot.newGUI.logError(e);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -44,13 +44,13 @@ public class Util {
 		return returns;
 	}
 	
-	public static boolean save(Object saveData, String fileName) {
+	public synchronized static boolean save(Object saveData, String fileName) {
 		final String saveFile= "save"+slash+fileName;
 		ObjectOutput out = null;
 		try {
 			out = new ObjectOutputStream(new FileOutputStream(saveFile));
 			out.writeObject(saveData);
-			System.out.println("Saved "+saveFile);
+			System.out.println(">Saved "+saveFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			me.wyvernix.sadbot.newGUI.logError(e);

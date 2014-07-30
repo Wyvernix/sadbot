@@ -26,7 +26,7 @@ public class QuoteCommand implements BotCommand {
 		if (message.length() < 1){
 			try{
 				int qt = (int) (Math.random() * ((quotes.size() - 1) + 1));
-				bot.sendMessage(channel, "Quote #"+ (new Integer(qt+1)).toString() + ": "+ quotes.get(qt));
+				bot.sendMessage(channel, "Quote #"+ Integer.toString(qt+1) + ": "+ quotes.get(qt));
 			} catch (IndexOutOfBoundsException e){
 				//ok. there are no quotes
 				bot.sendMessage(channel, "huh. there aren't any quotes. try !quote add \"debx2 is derpy\" -Shady");					

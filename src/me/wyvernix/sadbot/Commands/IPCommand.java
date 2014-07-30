@@ -1,10 +1,10 @@
 package me.wyvernix.sadbot.Commands;
 
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 
+import me.wyvernix.sadbot.BotManager;
 import me.wyvernix.sadbot.GSONic;
 import me.wyvernix.sadbot.Bots.MasterBot;
 
@@ -18,7 +18,7 @@ public class IPCommand implements BotCommand {
 		mainChan = chan;
 		mainChanStatus = GSONic.getStatus(mainChan);
 		getResponse();
-		new Timer().schedule(new TimerTask() {		 
+		BotManager.timer.schedule(new TimerTask() {		 
 			@Override
 			public void run() {
 				mainChanStatus = GSONic.getStatus(mainChan);
@@ -48,6 +48,10 @@ public class IPCommand implements BotCommand {
 			response = "us.mineplex.com lobby 9";
 		} else if (containStr("single", mainChanStatus) || containStr("ssp", mainChanStatus)) {
 			response = "this is single player! :3";
+		} else if (containStr("party", mainChanStatus)) {
+			response = "minecraftparty.com";
+		} else if (containStr("mcbrawl", mainChanStatus)) {
+			response = "mcbrawl.com";
 		} else {
 			response = "wyv.mcph.co [1.7.4]";
 		}

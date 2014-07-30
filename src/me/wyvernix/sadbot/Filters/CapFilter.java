@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import me.wyvernix.sadbot.Bots.MasterBot;
 
 public class CapFilter implements ChatFilter {
-	int minChars = 15;
-	int maxPercent = 70;
+	private static final int minChars = 15;
+	private static final int maxPercent = 70;
 
 	@Override
 	public String handleMessage(MasterBot bot, String channel, String sender,	String message, ArrayList<String> mods, ArrayList<String> special) {

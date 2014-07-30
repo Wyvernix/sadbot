@@ -31,6 +31,8 @@ public class EnergyBot extends MasterBot {
 		sadCommands.add(new LinkFilterCommand());
 		sadCommands.add(new RaffleCommand());
 		sadCommands.add(new TweetCommand());
+		sadCommands.add(new BitrateCommand());
+		sadCommands.add(new FlipCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 		//Link filter is on by default
@@ -55,7 +57,11 @@ public class EnergyBot extends MasterBot {
 			newGUI.splitPane.setResizeWeight(0.5);
 		} else {
 			//remove user
-			newGUI.ebUsers.removeElement(user);
+			if (user.equals("*")) {
+				newGUI.ebUsers.removeAllElements();
+			} else {
+				newGUI.ebUsers.removeElement(user);
+			}
 			newGUI.splitPane.setResizeWeight(0.5);
 		}
 	}

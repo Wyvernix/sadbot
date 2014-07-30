@@ -1,6 +1,9 @@
 package me.wyvernix.sadbot;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -10,6 +13,7 @@ import java.util.Date;
 import javax.swing.*;
 
 import javax.swing.text.AttributeSet;
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -29,9 +33,32 @@ public class newGUI extends JFrame {
 
 	private Font proFont = new Font("ProFontWindows", Font.PLAIN, 12);
 	
+	private static PrintStream logfile;
+	
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public newGUI() {
     	super("SadBot x EnergyBot");
+    	
+//    	String filee = "output-"+new Date().getTime()+".log";
+    	
+    	
+//		Path file = java.nio.file.FileSystems.getDefault().getPath("logs", filee);
+//		try {
+//		    // Create the empty file with default permissions, etc.
+//		    Files.createFile(file);
+//		} catch (FileAlreadyExistsException x) {
+////			    System.err.format("file named %s" +
+////			        " already exists%n", file);
+//		} catch (IOException x) {
+//		    // Some other sort of failure, such as permissions.
+//		    System.err.format("createFile error: %s%n", x);
+//		}
+		
+		try {
+			logfile = new PrintStream(new FileOutputStream("logs\\output-"+new Date().getTime()+".bot.log"));
+		} catch (FileNotFoundException e2) {
+			System.err.println("this failed, the world is over");
+		}
     	
     	////////////
     	
@@ -91,18 +118,21 @@ public class newGUI extends JFrame {
                     	    	
                     	    	
                     	    	        tPane = new JTextPane();
-                    	    	        tPane.setToolTipText("Nothing to see here");
+//                    	    	        tPane.setToolTipText("Nothing to see here");
                     	    	        
                     	    	        //tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 //                    	    	        tPane.setMargin(new Insets(5, 5, 0, 5));
+                    	    	        DefaultCaret caret = (DefaultCaret)tPane.getCaret();
+                    	    	        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+                    	    	        
                     	    	        
                     	    	        tPane.setEditable(false);
                     	    	        
                     	    	jsp = new JScrollPane(tPane);
                     	    	
                     	    	
-                    	    	jsp.setAutoscrolls(true);
-                    	    	tPane.setAutoscrolls(true);
+//                    	    	jsp.setAutoscrolls(true);
+//                    	    	tPane.setAutoscrolls(true);
                     	    	
                     	    	jsp.getVerticalScrollBar().setUnitIncrement(12);
                     	    	jsp.getHorizontalScrollBar().setUnitIncrement(12);
@@ -178,8 +208,8 @@ public class newGUI extends JFrame {
         
     }
     
-    public static void appendToPane(String msg, Color c) {
-    	Date date = new Date();
+    public synchronized static void appendToPane(String msg, Color c) {
+//    	Date date = new Date();
 
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
@@ -193,12 +223,18 @@ public class newGUI extends JFrame {
         
         tPane.setCaretPosition(tPane.getDocument().getLength());
         tPane.setCharacterAttributes(aset, false);
-        tPane.replaceSelection(dateFormat.format(date) + " " + msg);
+        tPane.replaceSelection(dateFormat.format(new Date()) + " " + msg);
+        
+        logfile.println(dateFormat.format(new Date()) + " " + msg);
         
 //        tPane.setText(tPane.getText() + "\n" + dateFormat.format(date) + " " + msg);
         tPane.setCaretPosition(tPane.getDocument().getLength());
         
-        tPane.setEditable(false);
+        try {
+        	tPane.setEditable(false);
+        } catch (Exception e) {
+        	//swing is lame
+        }
     }
     
     public static void logError(Exception e) {
@@ -208,7 +244,7 @@ public class newGUI extends JFrame {
     	alert("EXCEPTION!");
     }
     
-    public static void alert(final String msg) {
+    public synchronized static void alert(final String msg) {
 //    	new Thread() {
 //    		@Override
 //    		public void run() {    
@@ -238,16 +274,16 @@ public class newGUI extends JFrame {
             }
         };
 
-        new Thread(r).start();
+        new Thread(r, "Alert").start();
     	
     }
 
-    public static void initGui() {
-        SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run() {
-                    new newGUI();
-                }
-            });
-    }
+//    public static void initGui() {
+//        SwingUtilities.invokeLater(new Runnable()
+//            {
+//                public void run() {
+//                    new newGUI();
+//                }
+//            });
+//    }
 }

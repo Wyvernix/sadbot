@@ -79,6 +79,10 @@ Will permit a user against one occurrence of a ban. Times out after 5 minutes.
 
 "!tweet [message]" Will generate tweet filled with [message].
 
+**!bitrate**
+
+Returns current bitrate if online
+
 **!link**
 
 !link (add/remove)

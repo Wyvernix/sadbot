@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import me.wyvernix.sadbot.newGUI;
+import me.wyvernix.sadbot.Commands.BitrateCommand;
 import me.wyvernix.sadbot.Commands.BotCommand;
 import me.wyvernix.sadbot.Commands.CommandsCommand;
+import me.wyvernix.sadbot.Commands.FlipCommand;
 import me.wyvernix.sadbot.Commands.HelloCommand;
 import me.wyvernix.sadbot.Commands.HelpCommand;
 import me.wyvernix.sadbot.Commands.IPCommand;
@@ -41,6 +43,8 @@ public class SadBot extends MasterBot {
 		sadCommands.add(new LinkFilterCommand());
 		sadCommands.add(new RaffleCommand());
 		sadCommands.add(new TweetCommand());
+		sadCommands.add(new BitrateCommand());
+		sadCommands.add(new FlipCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 		//Link filter is on by default
@@ -65,7 +69,11 @@ public class SadBot extends MasterBot {
 			newGUI.splitPane.setResizeWeight(0.5);
 		} else {
 			//remove user
-			newGUI.sbUsers.removeElement(user);
+			if (user.equals("*")) {
+				newGUI.sbUsers.removeAllElements();
+			} else {
+				newGUI.sbUsers.removeElement(user);
+			}
 			newGUI.splitPane.setResizeWeight(0.5);
 		}
 	}

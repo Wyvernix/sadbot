@@ -26,6 +26,7 @@ public class GSONic {
         for (int i = 0; i < ss.length; i++) {
             current = current.getAsJsonObject().get(ss[i]);
         }
+        
         return current;
     }
 
@@ -43,30 +44,33 @@ public class GSONic {
 //    }
     
     public static String getVideo(String videoID) {
+    	return getJson("https://api.twitch.tv/kraken/videos/"+videoID, "title");
+    }
+    
+    public static String getStatus(String user) {
+    	return getJson("https://api.twitch.tv/kraken/channels/"+user, "status");
+    }
+    
+    public static String getBitrate(String user) {
+    	return getJson("https://api.justin.tv/api/stream/list.json?channel="+user, "video_bitrate");
+    }
+    
+    public static String getJson(String url, String tag) {
     	String outo = "null";
+//    	System.out.println(url+"  "+tag);
     	try {
-    		JsonElement je = getTwitch("https://api.twitch.tv/kraken/videos/"+videoID);
-    		if (je != null) {
-    			outo = (getAtPath(je, "title").getAsString());
+    		JsonElement je = getTwitch(url);
+    		if (je.isJsonObject()) {
+    			outo = (getAtPath(je, tag).getAsString());
     		}
-    	} catch(Exception e) {;
-    		outo = "null";
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    		outo = "error";
     	}
     	return outo;
     }
     
-    public static String getStatus(String user) {
-    	String outo = "null";
-    	try {
-    		JsonElement je = getTwitch("https://api.twitch.tv/kraken/channels/"+user);
-    		if (je != null) {
-    			outo = (getAtPath(je, "status").getAsString());
-    		}
-    	} catch(Exception e) {;
-    		outo = "null";
-    	}
-    	return outo;
-    }
+    
     
     public static boolean isStreaming(String url) {
     	JsonElement je = getTwitch(url);
@@ -89,6 +93,10 @@ public class GSONic {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
 
+            if (jsonText.charAt(0) == "[".charAt(0)) {
+            	jsonText = jsonText.substring(1, jsonText.length()-1);
+            }
+            
             je = new JsonParser().parse(jsonText);
 //
 //            try {

@@ -11,7 +11,6 @@ public class RaffleCommand implements BotCommand {
 
 	@Override
 	public String getCommandName() {
-		// TODO Auto-generated method stub
 		return "raffle";
 	}
 
@@ -19,7 +18,6 @@ public class RaffleCommand implements BotCommand {
 	public void handleMessage(MasterBot bot, String channel, String sender,
 			String message) {
 		if (message.length() < 1){
-			//TODO add to list
 			if (isOpen) {
 				if (!users.contains(sender)) {
 					users.add(sender);
@@ -34,7 +32,7 @@ public class RaffleCommand implements BotCommand {
 			isOpen = false;
 			if (users.size() > 0) {
 				String winner = users.get((int)(Math.random() * ((users.size() - 1) + 1)));
-				bot.sendMessage(channel, winner + " is winrar! We had " + (new Integer(users.size())).toString() + " entries!");
+				bot.sendMessage(channel, winner + " is winrar! We had " + Integer.toString(users.size()) + " entries!");
 			} else {
 				bot.sendMessage(channel, "no entries, no winner BibleThump");
 			}

@@ -12,7 +12,6 @@ public class LinkFilterCommand implements BotCommand {
 
 	@Override
 	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
-		// TODO Auto-generated method stub
 		final String[] mesBlock = message.split(" ");
 		if (!bot.getMods().contains(sender)) {
 			return;
