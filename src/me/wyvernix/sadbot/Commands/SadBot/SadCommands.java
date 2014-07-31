@@ -10,6 +10,8 @@ public class SadCommands implements BotCommand {
 //		
 //	}
 
+	
+	//TODO bonus commands
 	public String getCommandName() {
 		return "!";
 	}

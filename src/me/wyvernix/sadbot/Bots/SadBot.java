@@ -35,7 +35,7 @@ public class SadBot extends MasterBot {
 		sadCommands.add(new HelpCommand());
 		sadCommands.add(new HelloCommand());
 		sadCommands.add(new WyvNetCommand());
-		sadCommands.add(new IPCommand("shady1765"));
+		sadCommands.add(new IPCommand("shady1765", "Sad_Bot"));
 		sadCommands.add(new CommandsCommand());
 		sadCommands.add(new QuoteCommand("sadQ.dat"));
 		sadCommands.add(new WinnerCommand());

@@ -143,9 +143,9 @@ public class JMegaMegaHal implements Serializable {
                 
             }
         }
-        else {
-            // Didn't learn anything.
-        }
+//        else {
+//            // Didn't learn anything.
+//        }
         
     }
     

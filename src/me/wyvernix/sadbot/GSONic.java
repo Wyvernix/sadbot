@@ -17,6 +17,7 @@ public class GSONic {
         while ((line = reader.readLine()) != null) {
             sb.append(line);
         }
+        reader.close();
         return sb.toString();
     }
 
@@ -43,27 +44,27 @@ public class GSONic {
 //    	return outo;
 //    }
     
-    public static String getVideo(String videoID) {
+    public static String getVideo(final String videoID) {
     	return getJson("https://api.twitch.tv/kraken/videos/"+videoID, "title");
     }
     
-    public static String getStatus(String user) {
+    public static String getStatus(final String user) {
     	return getJson("https://api.twitch.tv/kraken/channels/"+user, "status");
     }
     
-    public static String getBitrate(String user) {
+    public static String getBitrate(final String user) {
     	return getJson("https://api.justin.tv/api/stream/list.json?channel="+user, "video_bitrate");
     }
     
-    public static String getJson(String url, String tag) {
+    public static String getJson(final String url, final String tag) {
     	String outo = "null";
 //    	System.out.println(url+"  "+tag);
     	try {
-    		JsonElement je = getTwitch(url);
+    		final JsonElement je = getTwitch(url);
     		if (je.isJsonObject()) {
     			outo = (getAtPath(je, tag).getAsString());
     		}
-    	} catch(Exception e) {
+    	} catch(final Exception e) {
     		e.printStackTrace();
     		outo = "error";
     	}
@@ -92,6 +93,7 @@ public class GSONic {
             
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
+            rd.close();
 
             if (jsonText.charAt(0) == "[".charAt(0)) {
             	jsonText = jsonText.substring(1, jsonText.length()-1);
@@ -150,10 +152,11 @@ public class GSONic {
     		is = connection.getInputStream();
     		BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
     		str = readAll(rd);
-    	} catch (MalformedURLException e) {
+    		rd.close();
+    	} catch (final MalformedURLException e) {
             e.printStackTrace();
             newGUI.logError(e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
             newGUI.logError(e);
         } finally {
@@ -161,7 +164,7 @@ public class GSONic {
                 if (is != null) {
                     is.close();
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
                 newGUI.logError(e);
             }
@@ -185,6 +188,7 @@ public class GSONic {
             
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
+            rd.close();
 
             je = new JsonParser().parse(jsonText);
             
@@ -194,10 +198,10 @@ public class GSONic {
     			response = "Tweet out the stream! "+outo;
     		}
             
-        } catch (MalformedURLException e) {
+        } catch (final MalformedURLException e) {
             e.printStackTrace();
             newGUI.logError(e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
             newGUI.logError(e);
         } finally {
@@ -205,7 +209,7 @@ public class GSONic {
                 if (is != null) {
                     is.close();
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
                 newGUI.logError(e);
             }

@@ -16,6 +16,13 @@ Features:
 
 [Best SadBot Quotes](https://dl.dropboxusercontent.com/u/26842546/best%20sadbot%20quotes.txt "Best SadBot Quotes")
 
+**Libraries:**
+
+- PircBot
+- jsoup 1.7.3+
+- JMegaHal
+- gson 2.2.4+
+
 ****
 
 Commands
@@ -45,13 +52,21 @@ Returns random user in channel as winner. Removes mods from list. If use "mods" 
 
 **!ip**
 
-Triggers: [hypixel] [hive] [mineplex] [single, ssp]
+"add [trigger] [ip]" Adds trigger and IP to IP list.
 
-Will return related ip, or WyvNet if none found.
+"remove [trigger]" Removes trigger and IP from list.
+
+"list" Lists triggers.
+
+"[trigger]" If it can find it, will return related IP.  
+
+"" Will return related IP, or WyvNet if none found.
 
 Checks title of broadcast for triggers.
 
 Automatically checks every 5 minutes, and on command. Will correct itself.
+
+If you want multiple triggers, do "trigger1.*?trigger2", replacing trigger1 and trigger2. (Uses regex, but don't use spaces) 
 
 **!commands**
 
@@ -85,9 +100,9 @@ Returns current bitrate if online
 
 **!link**
 
-!link (add/remove)
+"!link (add/remove)" Manages link whitelist. 
 
-!link list" will output list in bot's channel
+"!link list" will output list in logs
 
 **!(botname)**
 

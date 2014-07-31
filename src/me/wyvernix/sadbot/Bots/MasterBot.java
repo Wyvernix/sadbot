@@ -207,8 +207,8 @@ public class MasterBot extends PircBot {
 					return;
 				} else {
 					final String[] split = message.split(" ");
-					split[2] = split[2].toLowerCase();
 					if (split[1].equals("info") && (message.length() > "user info ".length())) {
+						split[2] = split[2].toLowerCase();
 						final Map<String,Object> userData = userStats.users.get(split[2]);
 						if (userData != null) {
 						this.sendMessage(channel, split[2]+": " + 
@@ -223,7 +223,8 @@ public class MasterBot extends PircBot {
 							return;
 						}
 					} else if (split[1].equals("list")) {
-						this.sendMessage(channel, userStats.users.keySet().toString());
+						this.sendMessage(channel, "not enough space in chat, check logs");
+						System.out.println(userStats.users.keySet().toString());
 						return;
 					}
 				}
@@ -751,7 +752,7 @@ public class MasterBot extends PircBot {
         sendMessage(channel, ".timeout "+name+" 1");
     }
 	
-	private synchronized void appendToPane(String msg, Color c) {
+	private void appendToPane(String msg, Color c) {
 		newGUI.appendToPane(msg, c);
     }
 	
