@@ -20,8 +20,6 @@ public class EnergyBot extends MasterBot {
 		commands.add(new LeaveCommand());
 		//channel commands
 		List<BotCommand> sadCommands = new ArrayList<BotCommand>();
-		sadCommands.add(new HelpCommand());
-		sadCommands.add(new HelloCommand());
 		sadCommands.add(new WyvNetCommand());
 		sadCommands.add(new IPCommand("activeenergylive", "EnergyBot"));
 		sadCommands.add(new CommandsCommand());
@@ -32,7 +30,6 @@ public class EnergyBot extends MasterBot {
 		sadCommands.add(new RaffleCommand());
 		sadCommands.add(new TweetCommand());
 		sadCommands.add(new BitrateCommand());
-		sadCommands.add(new FlipCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 		//Link filter is on by default

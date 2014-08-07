@@ -28,14 +28,6 @@ Features:
 Commands
 --------
 
-**!help**
-
->"lurk more."
-
-**!hello**
-
->"Welcome to the channel! Follow or die! R)"
-
 **!wyvnet**
 
 >"Build server: wyv.mcph.co [1.7.4]"
@@ -96,7 +88,9 @@ Will permit a user against one occurrence of a ban. Times out after 5 minutes.
 
 **!bitrate**
 
-Returns current bitrate if online
+--Returns current bitrate if online--
+
+****************JTV IS DEAD, DOESNT WORK
 
 **!link**
 
@@ -108,7 +102,13 @@ Returns current bitrate if online
 
 "!(botname)" >> "I am [botName] v[botVersion]! Now with coffee! Do !commands for more."
 
-"!(botname) command [add/remove/list]" manages commands. ~*Fancy*~
+"!(botname) command [add/remove/list]" manages commands.
+
+
+
+- *Dynamic* - replaces "\_\_sender" and "\_\_message"
+
+- Try "!bot command add flip (ノ｀Д´)ノ彡 \_\_message" 
 
 "!(botname) user [info/list]" gives user info. Try to only use list in bot's channel.
 

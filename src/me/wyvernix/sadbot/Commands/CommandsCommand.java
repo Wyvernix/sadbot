@@ -9,7 +9,7 @@ public class CommandsCommand implements BotCommand {
 	}
 
 	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
-		bot.sendMessage(channel, "Bot commands: !hello, !ip, !help, !wyvnet, !quote, and some secret ones. Check the wiki.");
+		bot.sendMessage(channel, "Bot commands: !ip, !help, !quote, !flip, and some secret ones. Check the !wiki.");
 	}
 	
 	public String toString() { return getCommandName(); }

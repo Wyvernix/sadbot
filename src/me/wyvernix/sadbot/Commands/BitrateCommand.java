@@ -14,8 +14,8 @@ public class BitrateCommand implements BotCommand {
 	public void handleMessage(MasterBot bot, String channel, String sender, String message) {
 		String bitrate = GSONic.getBitrate(channel.replace("#", ""));
 		
-		if (bitrate.equals("null")) {
-			bot.sendMessage(channel, "Stream not online");
+		if (bitrate.equals("null") || bitrate.equals("error")) {
+			bot.sendMessage(channel, "JUSTIN.TV IS DEAD BibleThump");
 		} else {
 			Integer bits = Integer.parseInt(bitrate.replaceAll("\\..*", ""));
 			

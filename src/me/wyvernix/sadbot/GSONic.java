@@ -53,7 +53,9 @@ public class GSONic {
     }
     
     public static String getBitrate(final String user) {
-    	return getJson("https://api.justin.tv/api/stream/list.json?channel="+user, "video_bitrate");
+    	return "error";
+    			//getJson("https://api.justin.tv/api/stream/list.json?channel="+user, "video_bitrate");
+    			//jtv is dead
     }
     
     public static String getJson(final String url, final String tag) {

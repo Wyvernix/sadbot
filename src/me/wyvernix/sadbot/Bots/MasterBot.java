@@ -38,7 +38,7 @@ public class MasterBot extends PircBot {
 	//variables to be loaded 
 	private List<BotCommand> commands; //Global/admin commands
 	private List<BotCommand> sadCommands; //Channel commands, hard coded
-	private Map<String,String> ccommands; //Custom Commands, "soft coded"
+	private Map<String,String> ccommands; //Custom Commands, loaded
 	public List<ChatFilter> filters;
 	public UserStats userStats;
 	public LinkFilter linkFilter;
@@ -274,7 +274,13 @@ public class MasterBot extends PircBot {
 				
 			for (int i = 0; i < split.length; i++) {
 				if (message.startsWith(split[i]) && (split[i].length() > 1)) {
-					sendMessage(channel, "+ "+ccommands.get(split[i]));
+					String output = ccommands.get(split[i]);
+					if (output.contains("__")) {
+						output = output.replace("__sender", sender).replace("__message", message.replace(split[i]+" ", ""));
+						sendMessage(channel, output);
+					} else {
+					     sendMessage(channel, "+ "+ccommands.get(split[i]));
+					}
 					return;
 				}
 			}
