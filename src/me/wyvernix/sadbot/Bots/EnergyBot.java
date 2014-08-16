@@ -30,6 +30,8 @@ public class EnergyBot extends MasterBot {
 		sadCommands.add(new RaffleCommand());
 		sadCommands.add(new TweetCommand());
 		sadCommands.add(new BitrateCommand());
+		sadCommands.add(new ViewersCommand());
+		sadCommands.add(new PollCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 		//Link filter is on by default

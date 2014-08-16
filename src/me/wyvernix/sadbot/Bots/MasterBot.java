@@ -115,11 +115,12 @@ public class MasterBot extends PircBot {
 	@SuppressWarnings("unchecked")
 	public void init(String oa) {
 		//this is run after all variables above are set.
+		System.out.println("Starting " + botName + ".");
+		appendToPane("Starting "+botName+"\n", inColor);
 		userStats = new UserStats(botName);
 		linkFilter = new LinkFilter(botName);
 		oauth = oa;
-		System.out.println("Starting " + botName + ".");
-		appendToPane("Starting "+botName+"\n", inColor);
+		mods.add(mainChan);
 		appendToPane("Commands: "+sadCommands.toString()+ "\n", inColor);
 		appendToPane("Chat filters: "+filters.toString()+"\n", inColor);
 		
@@ -172,11 +173,11 @@ public class MasterBot extends PircBot {
 				message = message.replaceFirst(botName.toLowerCase()+" ", "");
 				
 			if (message.startsWith("command") && (mods.contains(sender))) {
-				if (message.length() < "command ".length()){
+				final String[] split = message.split(" ");
+				if (split.length < 2) {
 					sendMessage(channel, sender + ", you are derp! Try add or remove");
 					return;
 				} else {
-					final String[] split = message.split(" ");
 					if (split[1].equals("add") && (message.length() > "command add".length())) {
 						ccommands.put(split[2], message.replace("command add "+split[2]+" ", "").trim());
 						sendMessage(channel, "Command: !"+ split[2] + " > " + message.replace("command add "+split[2]+" ", "").trim());

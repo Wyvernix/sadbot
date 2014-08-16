@@ -4,18 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import me.wyvernix.sadbot.newGUI;
-import me.wyvernix.sadbot.Commands.BitrateCommand;
-import me.wyvernix.sadbot.Commands.BotCommand;
-import me.wyvernix.sadbot.Commands.CommandsCommand;
-import me.wyvernix.sadbot.Commands.IPCommand;
-import me.wyvernix.sadbot.Commands.JoinCommand;
-import me.wyvernix.sadbot.Commands.LeaveCommand;
-import me.wyvernix.sadbot.Commands.LinkFilterCommand;
-import me.wyvernix.sadbot.Commands.QuoteCommand;
-import me.wyvernix.sadbot.Commands.RaffleCommand;
-import me.wyvernix.sadbot.Commands.TweetCommand;
-import me.wyvernix.sadbot.Commands.WinnerCommand;
-import me.wyvernix.sadbot.Commands.WyvNetCommand;
+import me.wyvernix.sadbot.Commands.*;
 import me.wyvernix.sadbot.Filters.ChatFilter;
 import me.wyvernix.sadbot.Filters.VineFilter;
 
@@ -39,6 +28,8 @@ public class SadBot extends MasterBot {
 		sadCommands.add(new RaffleCommand());
 		sadCommands.add(new TweetCommand());
 		sadCommands.add(new BitrateCommand());
+		sadCommands.add(new ViewersCommand());
+		sadCommands.add(new PollCommand());
 		
 		List<ChatFilter> filters = new ArrayList<ChatFilter>();
 		//Link filter is on by default

@@ -98,6 +98,20 @@ Will permit a user against one occurrence of a ban. Times out after 5 minutes.
 
 "!link list" will output list in logs
 
+**!viewers**
+
+Returns chatters -1 (excludes bot)
+
+**!poll**
+
+"!poll open [choice1] | [choice2]" - uses " | " to seperate choices
+
+"!poll close"
+
+"!poll" - lists choices if open
+
+"!poll [choice]"
+
 **!(botname)**
 
 "!(botname)" >> "I am [botName] v[botVersion]! Now with coffee! Do !commands for more."
