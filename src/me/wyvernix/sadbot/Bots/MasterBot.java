@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import me.wyvernix.sadbot.BotManager;
+import me.wyvernix.sadbot.ChatBot;
 import me.wyvernix.sadbot.GSONic;
 import me.wyvernix.sadbot.JMegaMegaHal;
 import me.wyvernix.sadbot.UserStats;
@@ -28,6 +29,7 @@ public class MasterBot extends PircBot {
 	private MasterBot me = this;
 	public boolean shutdown = false;
 	private String oauth = "";
+	private ChatBot clever;
 	
 	//variables to be overridden
 	public String botName;
@@ -47,6 +49,7 @@ public class MasterBot extends PircBot {
 	private ArrayList<String> mods = new ArrayList<String>();
 	private ArrayList<String> activeUsers = new ArrayList<String>();
 	private ArrayList<String> newBuffer = new ArrayList<String>(); //buffer for new viewers, so userStats doesn't get flooded with lurkers
+	private ArrayList<String> twitchyUsers = new ArrayList<String>(); //sometimes twitch doesnt send join messages. this will auto-remove users
 	private Map<String, Integer> chatLines = new HashMap<String, Integer>(32, 0.75f); 
 	public ArrayList<String> specialUsers = new ArrayList<String>(); 
 	
@@ -119,6 +122,10 @@ public class MasterBot extends PircBot {
 		appendToPane("Starting "+botName+"\n", inColor);
 		userStats = new UserStats(botName);
 		linkFilter = new LinkFilter(botName);
+		try {
+			clever = new ChatBot();
+		} catch (Exception e) {
+		}
 		oauth = oa;
 		mods.add(mainChan);
 		appendToPane("Commands: "+sadCommands.toString()+ "\n", inColor);
@@ -152,7 +159,7 @@ public class MasterBot extends PircBot {
 	private void messageCommand(String channel, String sender, String message) {
 		message = message.replaceFirst("!", "");
 		if (channel.equalsIgnoreCase(mainChan) || channel.equalsIgnoreCase("#"+botName.toLowerCase())) {
-			appendToPane(message+""+System.getProperty("line.separator"), Color.BLACK);
+			appendToPane(message+System.getProperty("line.separator"), Color.BLACK);
 			
 			for(BotCommand command : sadCommands) {
 				// If the message starts with the command the BotCommand responds to, remove
@@ -439,6 +446,8 @@ public class MasterBot extends PircBot {
 		return false;
 	}
 	
+	private String cleverUser = "";
+	
 	private void messageHandle(String channel, String sender, String message) {
 		if (!chatLines.containsKey(sender)) {
 			chatLines.put(sender, 0);
@@ -469,6 +478,7 @@ public class MasterBot extends PircBot {
 				if (response != null) {
 					sendMessage(channel, "YouTube video linked: \"" + response);
 				}
+				return;
 			} else if (message.matches("^.*?twitch\\.tv/.*?/\\w{1}/\\d{7}.*?$")) {  //twitch vod matching
 				String[] url = message.split("/");
 				String des = "", code = "", user = "";
@@ -489,9 +499,45 @@ public class MasterBot extends PircBot {
 					}
 					
 				}
+				return;
+			}
+			
+			if (activeUsers.size() == 2) {
+				if (sender.equalsIgnoreCase(cleverUser)) {
+					final String chan = channel;
+					final String mes = message;
+					
+					new Thread(){
+						@Override
+						public void run() {
+							try {
+								me.sendMessage(chan, clever.getResponse(mes.replaceAll("(?i)"+botName, "Cleverbot")).replaceAll("(C|c)lever(b|B)ot", botName));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							
+						}
+					}.start();
+				}
+				else {
+					clever.newSession();
+					cleverUser = sender;
+					appendToPane("New cleverbot session started"+System.getProperty("line.separator"), Color.BLACK);
+					try {
+						this.sendMessage(channel, clever.getResponse(message));
+					} catch (Exception e) {
+						e.printStackTrace();
+						
+					}
+				}
 				
-			} else if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
 				
+				return;
+			}
+			
+			
+			
+			if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
 				messageAI(channel, sender, message);
 				return;
 			} else if (message.matches("(?i)^.*?(hi|hey|good (evening|morning|afternoon)|sup|hello) (chat|everyone).*?$")) {
@@ -510,9 +556,21 @@ public class MasterBot extends PircBot {
 		}
 		message = message.trim();
 		if(channel.equalsIgnoreCase(mainChan)) {
-			if (!activeUsers.contains(sender)) {
+			if (!activeUsers.contains(sender)) { //user sent message before joining (blame twitch). if they dont join, remove them.
 				activeUsers.add(sender);
 				manageUserList(true, sender);
+				final String user = sender;
+				BotManager.timer.schedule(new TimerTask() {
+				    @Override
+				    public void run() {
+				        if (twitchyUsers.contains(user)) {
+				        	twitchyUsers.remove(user);
+				        	activeUsers.remove(user);
+				        	manageUserList(false, user);
+				        }
+				    }
+				}, 1000 * 60 * 5); //reset after 5 mins
+				
 			}
 			if (newBuffer.contains(sender)) {
 				newBuffer.remove(sender);
@@ -544,6 +602,9 @@ public class MasterBot extends PircBot {
 		} else {
 			userStats.updateLastSeen(sender);
 		}
+		if (twitchyUsers.contains(sender)) {
+        	twitchyUsers.remove(sender);
+		}
 		if (activeUsers.contains(sender) == false) {
 			activeUsers.add(sender);
 			manageUserList(true, sender);
@@ -564,7 +625,7 @@ public class MasterBot extends PircBot {
 		}
 	}
 	
-	protected void manageUserList(boolean mode, String user) {
+	protected synchronized void manageUserList(boolean mode, String user) {
 		//template. this must be overridden
 		System.err.println("WARNING: USERLIST IS NOT OVERRIDDEN");
 		if (mode) {
@@ -771,7 +832,7 @@ public class MasterBot extends PircBot {
 	
 	public void permitUser(String channel, final String user) {
 		specialUsers.add(user.toLowerCase());
-		sendMessage(channel, "Permitting user: "+user+" for one [banType] or 5 mins.");
+		sendMessage(channel, "Permitting user: "+user+" for one link or 5 mins.");
 		BotManager.timer.schedule(new TimerTask() {          
 		    @Override
 		    public void run() {

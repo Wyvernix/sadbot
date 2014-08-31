@@ -49,7 +49,7 @@ public class EnergyBot extends MasterBot {
 	}
 	
 	@Override
-	protected void manageUserList(boolean mode, String user) {
+	protected synchronized void manageUserList(boolean mode, String user) {
 		if (mode) {
 			//add user
 			newGUI.ebUsers.addElement(user);
