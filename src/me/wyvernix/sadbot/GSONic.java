@@ -10,7 +10,6 @@ import com.google.gson.*;
 
 public class GSONic {
 	private static String readAll(Reader rd) throws IOException {
-
         BufferedReader reader = new BufferedReader(rd);
         StringBuilder sb = new StringBuilder();
         String line = null;
@@ -27,7 +26,6 @@ public class GSONic {
         for (int i = 0; i < ss.length; i++) {
             current = current.getAsJsonObject().get(ss[i]);
         }
-        
         return current;
     }
 
@@ -89,7 +87,7 @@ public class GSONic {
 //        String outo = "null";
         try {
         	HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        	connection.setRequestProperty("Client-ID", "df0s6sdx3ef3g1o20y1ovrqi5f6lc7o");
+        	connection.addRequestProperty("Client-ID", "df0s6sdx3ef3g1o20y1ovrqi5f6lc7o");
         	connection.addRequestProperty("Accept", "application/vnd.twitchtv.v2+json");
         	is = connection.getInputStream();
             
@@ -97,9 +95,11 @@ public class GSONic {
             String jsonText = readAll(rd);
             rd.close();
 
-            if (jsonText.charAt(0) == "[".charAt(0)) {
-            	jsonText = jsonText.substring(1, jsonText.length()-1);
-            }
+//            if (jsonText.charAt(0) == "[".charAt(0)) {
+//            	jsonText = jsonText.substring(1, jsonText.length()-1);
+//            }
+            jsonText = jsonText.replaceAll("\\[|\\]", "");
+            
             
             je = new JsonParser().parse(jsonText);
 //
@@ -129,17 +129,26 @@ public class GSONic {
     }
     
     public static String getYoutube(String videotag) {
-		String url = "http://www.youtube.com/watch?v="+videotag;
-		
-		Document doc = Jsoup.parse(loadHtml(url));
-		
-		String title = doc.select("span[id=eow-title]").first().attr("title");
-		String user = doc.select("a[class*=g-hovercard]").first().ownText();
-		
-		if (title.equals("null")) {
-			return null;
-		}
-		
+    	String title = "";
+		String user = "";
+    	
+    	try {
+    		final JsonElement je = getTwitch("https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+videotag+"&key=AIzaSyAQwDshSTe_MdY06Ps1LguR7lAJTo0clqs");
+    		if (je.isJsonObject()) {
+    			title = (getAtPath(je, "items/snippet/title").getAsString());
+    			user = (getAtPath(je, "items/snippet/channelTitle").getAsString());
+    		}
+    	} catch(final Exception e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+    	
+//    	getJson("www.googleapis.com/youtube/v3/videos?part=snippet&id="+videotag+"&key=AIzaSyAQwDshSTe_MdY06Ps1LguR7lAJTo0clqs",""); //replace key with yours
+//		String url = "http://www.youtube.com/watch?v="+videotag;
+//		
+//		Document doc = Jsoup.parse(loadHtml(url));
+//		String title = doc.select("span[id=eow-title]").first().attr("title");
+//		String user = doc.select("a[class*=g-hovercard]").first().ownText();
     	return title + "\" by " + user;
     	//<h1 id="watch-headline-title" class="yt">
     	//<span title="Caramell - Caramelldansen (English Version) Official" dir="ltr" class="watch-title long-title yt-uix-expander-head" id="eow-title"> Caramell - Caramelldansen (English Version) Official</span>

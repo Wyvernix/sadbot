@@ -549,7 +549,7 @@ public class MasterBot extends PircBot {
 	}
 	
 	@Override
-	public void onMessage(String channel, String sender, String login, String hostname, String message) {
+	public void onMessage(final String channel, final String sender, String login, String hostname, String message) {
 		log(sender + ": " + message);
 		if (sender.equalsIgnoreCase(botName.toLowerCase())) {
 			return;
@@ -559,18 +559,15 @@ public class MasterBot extends PircBot {
 			if (!activeUsers.contains(sender)) { //user sent message before joining (blame twitch). if they dont join, remove them.
 				activeUsers.add(sender);
 				manageUserList(true, sender);
-				final String user = sender;
 				BotManager.timer.schedule(new TimerTask() {
 				    @Override
 				    public void run() {
-				        if (twitchyUsers.contains(user)) {
-				        	twitchyUsers.remove(user);
-				        	activeUsers.remove(user);
-				        	manageUserList(false, user);
+				        if (twitchyUsers.contains(sender)) {
+				        	twitchyUsers.remove(sender);
+				        	onPart(channel, sender, "", "");
 				        }
 				    }
-				}, 1000 * 60 * 5); //reset after 5 mins
-				
+				}, 1000 * 60); //remove user after 1 min
 			}
 			if (newBuffer.contains(sender)) {
 				newBuffer.remove(sender);
@@ -663,6 +660,7 @@ public class MasterBot extends PircBot {
 	@Override
 	public void onUserList(String channel, User[] users)  {
 		if (channel.equals(mainChan)) {
+			appendToPane(botName+" users: "+users.length+"\n", Color.black);
 		for (User ussr : users) {
 			String sender = ussr.getNick();
 			if (userStats.isNew(sender)) {
