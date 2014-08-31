@@ -3,8 +3,6 @@ package me.wyvernix.sadbot;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import com.google.gson.*;
 
 
@@ -24,6 +22,10 @@ public class GSONic {
         JsonElement current = e;
         String[] ss = path.split("/");
         for (int i = 0; i < ss.length; i++) {
+        	String reformat = current.toString(); 
+        	if (reformat.charAt(0) == "[".charAt(0)) {
+        		current = new JsonParser().parse(reformat.substring(1, reformat.length()-1));
+        	}
             current = current.getAsJsonObject().get(ss[i]);
         }
         return current;
@@ -98,7 +100,7 @@ public class GSONic {
 //            if (jsonText.charAt(0) == "[".charAt(0)) {
 //            	jsonText = jsonText.substring(1, jsonText.length()-1);
 //            }
-            jsonText = jsonText.replaceAll("\\[|\\]", "");
+//            jsonText = jsonText.replaceAll("\\[|\\]", "");
             
             
             je = new JsonParser().parse(jsonText);

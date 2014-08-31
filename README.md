@@ -6,20 +6,20 @@ Chat bot for Twitch.tv
 Features:
 
   * Bot can manage a list of mods and active chatters.
-  * Bot can Auto-Reconnect. If it feels like it.
+  * Bot can Auto-Reconnect. If it feels like it...
   * Has GUI.
   * Can do global bans (not really)
   * Giveaway commands
   * Chat filters
   * Basic response AI
   * Click to tweet
+  * Link previewing (for YouTube and Twitch)
 
 [Best SadBot Quotes](https://dl.dropboxusercontent.com/u/26842546/best%20sadbot%20quotes.txt "Best SadBot Quotes")
 
 **Libraries:**
 
 - PircBot
-- jsoup 1.7.3+
 - JMegaHal
 - gson 2.2.4+
 
@@ -44,15 +44,15 @@ Returns random user in channel as winner. Removes mods from list. If use "mods" 
 
 **!ip**
 
-"add [trigger] [ip]" Adds trigger and IP to IP list.
+"!ip add [trigger] [ip]" Adds trigger and IP to IP list.
 
-"remove [trigger]" Removes trigger and IP from list.
+"!ip remove [trigger]" Removes trigger and IP from list.
 
-"list" Lists triggers.
+"!ip list" Lists triggers.
 
-"[trigger]" If it can find it, will return related IP.  
+"!ip [trigger]" If it can find it, will return related IP.  
 
-"" Will return related IP, or WyvNet if none found.
+"!ip" Will return related IP, or WyvNet if none found.
 
 Checks title of broadcast for triggers.
 
@@ -169,3 +169,4 @@ Non-random triggers:
 
 AI will add any messages that are not command/spam to its database. AI builds sentences from database using a Markov chain.
 
+Try to find the easter egg?
