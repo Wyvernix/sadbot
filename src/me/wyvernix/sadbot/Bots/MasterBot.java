@@ -503,6 +503,9 @@ public class MasterBot extends PircBot {
 			}
 			
 			if (activeUsers.size() == 2) {
+				if (message.startsWith("p ") || message.startsWith("P ")) {
+					return;
+				}
 				if (sender.equalsIgnoreCase(cleverUser)) {
 					final String chan = channel;
 					final String mes = message;
@@ -530,8 +533,6 @@ public class MasterBot extends PircBot {
 						
 					}
 				}
-				
-				
 				return;
 			}
 			
@@ -543,6 +544,9 @@ public class MasterBot extends PircBot {
 			} else if (message.matches("(?i)^.*?(hi|hey|good (evening|morning|afternoon)|sup|hello) (chat|everyone).*?$")) {
 				sendMessage(channel, "hi " + sender + " <3");
 			} else {	//not spam, etc, save message to AI
+				if (message.startsWith("p ") || message.startsWith("P ")) {
+					return;
+				}
 		  		hal.add(message.replace("\"", ""));
 			}
 		}

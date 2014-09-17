@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.swing.*;
 
 import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -185,8 +186,16 @@ public class newGUI extends JFrame {
         tPane.setCaretPosition(tPane.getDocument().getLength());
         tPane.setCharacterAttributes(aset, false);
         tPane.replaceSelection(dateFormat.format(new Date()) + " " + msg);
+        logfile.println(       dateFormat.format(new Date()) + " " + msg);
         
-        logfile.println(dateFormat.format(new Date()) + " " + msg);
+        if (tPane.getText().length() > 50000) {
+        	try {
+				tPane.getDocument().remove(0, msg.length());
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+        }
+        
 //        tPane.setCaretPosition(tPane.getDocument().getLength());
         try {
         	tPane.setEditable(false);
