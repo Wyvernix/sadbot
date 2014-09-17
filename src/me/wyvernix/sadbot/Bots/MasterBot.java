@@ -501,11 +501,14 @@ public class MasterBot extends PircBot {
 				}
 				return;
 			}
+
+			//ignore message rules
+			if (message.matches("(?i)^p .*") || sender.equals("activeenergy")) {
+				return;
+			}
 			
+			//clever AI
 			if (activeUsers.size() == 2) {
-				if (message.startsWith("p ") || message.startsWith("P ")) {
-					return;
-				}
 				if (sender.equalsIgnoreCase(cleverUser)) {
 					final String chan = channel;
 					final String mes = message;
@@ -527,7 +530,7 @@ public class MasterBot extends PircBot {
 					cleverUser = sender;
 					appendToPane("New cleverbot session started"+System.getProperty("line.separator"), Color.BLACK);
 					try {
-						this.sendMessage(channel, clever.getResponse(message));
+						this.sendMessage(channel, clever.getResponse(message.replaceAll("(?i)"+botName, "Cleverbot")).replaceAll("(C|c)lever(b|B)ot", botName));
 					} catch (Exception e) {
 						e.printStackTrace();
 						
@@ -535,18 +538,15 @@ public class MasterBot extends PircBot {
 				}
 				return;
 			}
-			
-			
-			
+			//normal AI
 			if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
 				messageAI(channel, sender, message);
 				return;
+			//greetings
 			} else if (message.matches("(?i)^.*?(hi|hey|good (evening|morning|afternoon)|sup|hello) (chat|everyone).*?$")) {
 				sendMessage(channel, "hi " + sender + " <3");
-			} else {	//not spam, etc, save message to AI
-				if (message.startsWith("p ") || message.startsWith("P ")) {
-					return;
-				}
+			//not spam, etc, save message to AI
+			} else {
 		  		hal.add(message.replace("\"", ""));
 			}
 		}
