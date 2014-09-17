@@ -762,17 +762,7 @@ public class MasterBot extends PircBot {
 		    }
 		}
 		joinChannel("#"+botName.toLowerCase());
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
     	joinChannel(mainChan);
-    	try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
     	sendMessage("#"+botName.toLowerCase(), "im back BibleThump");
 	}
 	

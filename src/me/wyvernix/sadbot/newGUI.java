@@ -31,37 +31,19 @@ public class newGUI extends JFrame {
 	public static DefaultListModel<String> ebUsers = new DefaultListModel<String>();
 	public static JSplitPane splitPane;
 
-	private Font proFont = new Font("ProFontWindows", Font.PLAIN, 12);
+	private Font proFont = new Font("DejaVu Sans Mono", Font.PLAIN, 10);
 	
 	private static PrintStream logfile;
 	
-    @SuppressWarnings({ "unchecked", "rawtypes" })
 	public newGUI() {
     	super("SadBot x EnergyBot");
-    	
-//    	String filee = "output-"+new Date().getTime()+".log";
-    	
-    	
-//		Path file = java.nio.file.FileSystems.getDefault().getPath("logs", filee);
-//		try {
-//		    // Create the empty file with default permissions, etc.
-//		    Files.createFile(file);
-//		} catch (FileAlreadyExistsException x) {
-////			    System.err.format("file named %s" +
-////			        " already exists%n", file);
-//		} catch (IOException x) {
-//		    // Some other sort of failure, such as permissions.
-//		    System.err.format("createFile error: %s%n", x);
-//		}
 		
 		try {
 			logfile = new PrintStream(new FileOutputStream("logs\\output-"+new Date().getTime()+".bot.log"));
 		} catch (FileNotFoundException e2) {
 			System.err.println("this failed, the world is over");
 		}
-    	
     	////////////
-    	
     	UIManager.put("Button.font", proFont);
     	UIManager.put("ToggleButton.font", proFont);
     	UIManager.put("RadioButton.font", proFont);
@@ -93,7 +75,6 @@ public class newGUI extends JFrame {
     	UIManager.put("ToolBar.font", proFont);
     	UIManager.put("ToolTip.font", proFont);
     	UIManager.put("Tree.font", proFont);
-    	
     	/////////////
     	
     	ImageIcon img = new ImageIcon("res\\img\\ico.png");
@@ -109,14 +90,9 @@ public class newGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        
-
         getContentPane().add(topPanel);
 
         pack();
-                
-                    	    	
-                    	    	
                     	    	        tPane = new JTextPane();
 //                    	    	        tPane.setToolTipText("Nothing to see here");
                     	    	        
@@ -125,18 +101,15 @@ public class newGUI extends JFrame {
                     	    	        DefaultCaret caret = (DefaultCaret)tPane.getCaret();
                     	    	        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
                     	    	        
-                    	    	        
                     	    	        tPane.setEditable(false);
                     	    	        
                     	    	jsp = new JScrollPane(tPane);
-                    	    	
                     	    	
 //                    	    	jsp.setAutoscrolls(true);
 //                    	    	tPane.setAutoscrolls(true);
                     	    	
                     	    	jsp.getVerticalScrollBar().setUnitIncrement(12);
                     	    	jsp.getHorizontalScrollBar().setUnitIncrement(12);
-                    	    	
                     	    	
                     	    	JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 //                    	    	tabbedPane.setFont(new Font("ProFontWindows", Font.PLAIN, 12));
@@ -179,14 +152,9 @@ public class newGUI extends JFrame {
                     	    	txtrAlertsGoHere.setText("ALERTS GO HERE :3");
                     	    	panel.add(txtrAlertsGoHere);
                     	    	
+								JList<String> sadbotUsers = new JList<String>(sbUsers);
                     	    	
-                    	    	
-                    	    	
-                    	    	
-                    	    	
-								JList sadbotUsers = new JList(sbUsers);
-                    	    	
-                    	    	JList energybotUsers = new JList(ebUsers);
+                    	    	JList<String> energybotUsers = new JList<String>(ebUsers);
                     	    	
                     	    	JScrollPane sscroll = new JScrollPane(sadbotUsers);
                     	    	JScrollPane escroll = new JScrollPane(energybotUsers);
@@ -196,12 +164,9 @@ public class newGUI extends JFrame {
                     	    	splitPane.setResizeWeight(0.5);
                     	    	tabbedPane.addTab("Users", null, splitPane, null);
                     	    	
-                    	    	
-                    	    	
                     	    	jsp.setPreferredSize(new Dimension(650, 250));
                     	    	jsp.setSize(650, 250);
                     	    	topPanel.add(jsp);
-        
                     	    	
                     	    	appendToPane("Starting Program!\n", Color.RED);
         setVisible(true);   
@@ -209,15 +174,11 @@ public class newGUI extends JFrame {
     }
     
     public synchronized static void appendToPane(String msg, Color c) {
-//    	Date date = new Date();
-
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
 //        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "ProFontWindows");
 //        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
-
-//        int len = tPane.getDocument().getLength();
 
         tPane.setEditable(true);
         
@@ -226,15 +187,13 @@ public class newGUI extends JFrame {
         tPane.replaceSelection(dateFormat.format(new Date()) + " " + msg);
         
         logfile.println(dateFormat.format(new Date()) + " " + msg);
-        
-//        tPane.setText(tPane.getText() + "\n" + dateFormat.format(date) + " " + msg);
-        tPane.setCaretPosition(tPane.getDocument().getLength());
-        
+//        tPane.setCaretPosition(tPane.getDocument().getLength());
         try {
         	tPane.setEditable(false);
         } catch (Exception e) {
-        	//swing is lame
+        	System.err.println("Swing is lame");
         }
+        jsp.scrollRectToVisible(new Rectangle(tPane.getBounds().height-1, 10, 1, 1));
     }
     
     public static void logError(Exception e) {
@@ -245,21 +204,7 @@ public class newGUI extends JFrame {
     }
     
     public synchronized static void alert(final String msg) {
-//    	new Thread() {
-//    		@Override
-//    		public void run() {    
-//    			txtrAlertsGoHere.setText(msg);
-//    	    	txtrAlertsGoHere.setBackground(Color.red);
-//    	    	try {
-//    				Thread.sleep(3000);
-//    			} catch (InterruptedException e) {
-//    				e.printStackTrace();
-//    			}
-//    	    	txtrAlertsGoHere.setText("None :3");
-//    	    	txtrAlertsGoHere.setBackground(Color.white);
-//        }
-//    	}.run();
-    	
+    	//TODO persistant
     	Runnable r = new Runnable() {
             public void run() {
             	txtrAlertsGoHere.setText(msg);
@@ -273,17 +218,6 @@ public class newGUI extends JFrame {
     	    	txtrAlertsGoHere.setBackground(Color.white);
             }
         };
-
         new Thread(r, "Alert").start();
-    	
     }
-
-//    public static void initGui() {
-//        SwingUtilities.invokeLater(new Runnable()
-//            {
-//                public void run() {
-//                    new newGUI();
-//                }
-//            });
-//    }
 }
