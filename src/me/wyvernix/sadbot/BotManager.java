@@ -146,58 +146,5 @@ public class BotManager {
 		newGUI.appendToPane("Reconnecting Bots...\n", Color.red);
 		energybot.disconnect();
 		sadbot.disconnect();
-//		energybot.tryReconnect();
-//		sadbot.tryReconnect();
-		
-//		
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e1) {
-//			e1.printStackTrace();
-//		}
-//		
-//		try {
-//			sadbot.connect("199.9.253.210", 6667, sbOA);
-//			
-//			Thread.sleep(100);
-//			//join channels
-//			sadbot.joinChannel("#sad_bot");
-//			sadbot.joinChannel("#shady1765");
-//		} catch (NickAlreadyInUseException e) {
-//			System.err.println("SOMEONE STEALS MAH USERNAME SADBOT");
-//			e.printStackTrace();
-//			newGUI.logError(e);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			newGUI.logError(e);
-//		} catch (IrcException e) {
-//			e.printStackTrace();
-//			newGUI.logError(e);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//			newGUI.logError(e);
-//		}
-//		
-//		try {
-//			energybot.connect("199.9.253.199", 6667, ebOA);
-//
-//			Thread.sleep(100);
-//			//join channels
-//			energybot.joinChannel("#activeenergylive");
-//			energybot.joinChannel("#energybot");
-//		} catch (NickAlreadyInUseException e) {
-//			System.err.println("SOMEONE STEALS MAH USERNAME ENERGYBOT");
-//			e.printStackTrace();
-//			newGUI.logError(e);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			newGUI.logError(e);
-//		} catch (IrcException e) {
-//			e.printStackTrace();
-//			newGUI.logError(e);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//			newGUI.logError(e);
-//		}
 	}
 }

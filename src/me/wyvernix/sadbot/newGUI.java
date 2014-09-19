@@ -174,35 +174,40 @@ public class newGUI extends JFrame {
         
     }
     
-    public synchronized static void appendToPane(String msg, Color c) {
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+    public synchronized static void appendToPane(final String msg, final Color c) {
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				StyleContext sc = StyleContext.getDefaultStyleContext();
+		        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
-//        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "ProFontWindows");
-//        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+//		        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "ProFontWindows");
+//		        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
 
-        tPane.setEditable(true);
-        
-        tPane.setCaretPosition(tPane.getDocument().getLength());
-        tPane.setCharacterAttributes(aset, false);
-        tPane.replaceSelection(dateFormat.format(new Date()) + " " + msg);
-        logfile.println(       dateFormat.format(new Date()) + " " + msg);
-        
-        if (tPane.getText().length() > 50000) {
-        	try {
-				tPane.getDocument().remove(0, msg.length());
-			} catch (BadLocationException e) {
-				e.printStackTrace();
+		        tPane.setEditable(true);
+		        
+		        tPane.setCaretPosition(tPane.getDocument().getLength());
+		        tPane.setCharacterAttributes(aset, false);
+		        tPane.replaceSelection(dateFormat.format(new Date()) + " " + msg);
+		        logfile.println(       dateFormat.format(new Date()) + " " + msg);
+		        
+		        if (tPane.getText().length() > 50000) {
+		        	try {
+						tPane.getDocument().remove(0, msg.length());
+					} catch (BadLocationException e) {
+						e.printStackTrace();
+					}
+		        }
+		        
+//		        tPane.setCaretPosition(tPane.getDocument().getLength());
+		        try {
+		        	tPane.setEditable(false);
+		        } catch (Exception e) {
+		        	System.err.println("Swing is lame");
+		        }
+		        jsp.scrollRectToVisible(new Rectangle(tPane.getBounds().height-1, 10, 1, 1));
 			}
-        }
-        
-//        tPane.setCaretPosition(tPane.getDocument().getLength());
-        try {
-        	tPane.setEditable(false);
-        } catch (Exception e) {
-        	System.err.println("Swing is lame");
-        }
-        jsp.scrollRectToVisible(new Rectangle(tPane.getBounds().height-1, 10, 1, 1));
+    	});
     }
     
     public static void logError(Exception e) {
@@ -213,20 +218,22 @@ public class newGUI extends JFrame {
     }
     
     public synchronized static void alert(final String msg) {
-    	//TODO persistant
-    	Runnable r = new Runnable() {
-            public void run() {
-            	txtrAlertsGoHere.setText(msg);
-    	    	txtrAlertsGoHere.setBackground(Color.red);
-    	    	try {
-    				Thread.sleep(3000);
-    			} catch (InterruptedException e) {
-    				e.printStackTrace();
-    			}
-    	    	txtrAlertsGoHere.setText("None :3");
-    	    	txtrAlertsGoHere.setBackground(Color.white);
-            }
-        };
-        new Thread(r, "Alert").start();
+    	return;
+//    	
+//    	//TODO persistant
+//    	Runnable r = new Runnable() {
+//            public void run() {
+//            	txtrAlertsGoHere.setText(msg);
+//    	    	txtrAlertsGoHere.setBackground(Color.red);
+//    	    	try {
+//    				Thread.sleep(3000);
+//    			} catch (InterruptedException e) {
+//    				e.printStackTrace();
+//    			}
+//    	    	txtrAlertsGoHere.setText("None :3");
+//    	    	txtrAlertsGoHere.setBackground(Color.white);
+//            }
+//        };
+//        new Thread(r, "Alert").start();
     }
 }
