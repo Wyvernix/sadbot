@@ -27,10 +27,12 @@ public class Util {
 			me.wyvernix.sadbot.newGUI.logError(e);
 		} catch (IOException e) {
 			e.printStackTrace();
+			returns = null;
 			System.err.println(">Data corrupt ("+ loadFile +")");
 			me.wyvernix.sadbot.newGUI.logError(e);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			returns = null;
 			me.wyvernix.sadbot.newGUI.logError(e);
 		} finally {
 			if(inp != null) {

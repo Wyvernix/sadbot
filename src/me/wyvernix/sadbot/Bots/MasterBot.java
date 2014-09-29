@@ -125,6 +125,7 @@ public class MasterBot extends PircBot {
 		try {
 			clever = new ChatBot();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		oauth = oa;
 		mods.add(mainChan);
@@ -412,9 +413,9 @@ public class MasterBot extends PircBot {
 		else {
 			String mesClean = message.replaceAll("( is | are | a | an | the | some | few | that | this | those | these | much | enough | each | every | either | neither | any | many )", " ");
 			String[] cleanBlock = mesClean.replaceAll("(\\?|!|\\.|\")", "").split(" ");
-			float baka = Math.round(cleanBlock.length>>1);
+//			float baka = Math.round(cleanBlock.length>>1);
 			int baja;
-			baja=(int)baka;
+			baja=cleanBlock.length>>1;
 			if(baja > cleanBlock.length){
 				baja--;
 			}
@@ -503,7 +504,7 @@ public class MasterBot extends PircBot {
 			}
 
 			//ignore message rules
-			if (message.matches("(?i)^p .*") || sender.equals("activeenergy")) {
+			if (sender.equals("activeenergy") || message.matches("(?i)^p .*")) {
 				return;
 			}
 			
@@ -539,7 +540,7 @@ public class MasterBot extends PircBot {
 				return;
 			}
 			//normal AI
-			if((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
+			if(Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find()) {
 				messageAI(channel, sender, message);
 				return;
 			//greetings
@@ -584,7 +585,7 @@ public class MasterBot extends PircBot {
 			if (message.charAt(0) == "!".charAt(0)){ //is a command, handle it
 				messageCommand(channel, sender, message);
 				return;
-			} else if ((Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find())) {
+			} else if (Pattern.compile(Pattern.quote(botName), Pattern.CASE_INSENSITIVE).matcher(message).find()) {
 				
 				messageAI(channel, sender, message);
 				return;
@@ -606,7 +607,7 @@ public class MasterBot extends PircBot {
 		if (twitchyUsers.contains(sender)) {
         	twitchyUsers.remove(sender);
 		}
-		if (activeUsers.contains(sender) == false) {
+		if (!activeUsers.contains(sender)) {
 			activeUsers.add(sender);
 			manageUserList(true, sender);
 		}
@@ -629,15 +630,15 @@ public class MasterBot extends PircBot {
 	protected synchronized void manageUserList(boolean mode, String user) {
 		//template. this must be overridden
 		System.err.println("WARNING: USERLIST IS NOT OVERRIDDEN");
-		if (mode) {
-			//add user to gui
-		} else {
-			if (user.equals("*")) {
-				//remove all users from gui
-			} else {
-				//remove user from gui
-			}
-		}
+//		if (mode) {
+//			//add user to gui
+//		} else {
+//			if (user.equals("*")) {
+//				//remove all users from gui
+//			} else {
+//				//remove user from gui
+//			}
+//		}
 	}
 	
 	
@@ -646,10 +647,8 @@ public class MasterBot extends PircBot {
 		//Manage mods list
 		String[] spaz = mode.split(" ");
 		if (spaz[0].equals(mainChan)) {
-		if (spaz[1].equals("+o")){
-			if (!mods.contains(spaz[2])) {
-				mods.add(spaz[2]);
-			}
+		if (spaz[1].equals("+o") && !mods.contains(spaz[2])){
+			mods.add(spaz[2]);
 		}
 		//writing mod list in permanent marker... twitch is terrible with mod orders
 		//if twitch fixes TMI, uncomment following code
@@ -672,7 +671,7 @@ public class MasterBot extends PircBot {
 			} else {
 				userStats.updateLastSeen(sender);
 			}
-			if (activeUsers.contains(sender) == false) {
+			if (!activeUsers.contains(sender)) {
 				activeUsers.add(sender);
 				manageUserList(true, sender);
 			}

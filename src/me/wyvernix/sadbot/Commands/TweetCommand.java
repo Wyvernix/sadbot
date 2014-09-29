@@ -32,8 +32,8 @@ public class TweetCommand implements BotCommand {
 				e.printStackTrace();
 			}
 		}
-
-		bot.sendMessage(channel, GSONic.getTweet(tweet));
+		if (tweet != null)
+			bot.sendMessage(channel, GSONic.getTweet(tweet));
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 import com.google.gson.*;
 
 
-public class GSONic {
+public abstract class GSONic {
 	private static String readAll(Reader rd) throws IOException {
         BufferedReader reader = new BufferedReader(rd);
         StringBuilder sb = new StringBuilder();

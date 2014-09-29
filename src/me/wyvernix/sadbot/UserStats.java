@@ -9,7 +9,7 @@ import java.util.Map;
 import me.wyvernix.sadbot.Bots.MasterBot;
 
 public class UserStats {
-	public Map<String, Map<String,Object>> users = new HashMap<String, Map<String,Object>>();
+	public Map<String, Map<String,Object>> users;
 	private String botName;
 	
 	@SuppressWarnings("unchecked")
@@ -18,6 +18,7 @@ public class UserStats {
 		final String commandsFile= botName+"UserStats.dat";
 		users = (Map<String, Map<String, Object>>) Util.load(commandsFile);
 		if (users == null){
+			users = new HashMap<String, Map<String,Object>>();
 			users.put("shady1765", this.genUserStats());
 		}
 		

@@ -43,7 +43,6 @@ public class BotManager {
 			sadbot.sendMessage("#sad_bot", "Sad_Bot has arrived! Kreygasm");
 			
 		} catch (NickAlreadyInUseException e) {
-			System.err.println("SOMEONE STEALS MAH USERNAME SADBOT");
 			e.printStackTrace();
 			newGUI.logError(e);
 		} catch (IOException e) {
@@ -71,7 +70,6 @@ public class BotManager {
 			
 			energybot.sendMessage("#energybot", "EnergyBot has arrived! Kreygasm");
 		} catch (NickAlreadyInUseException e) {
-			System.err.println("SOMEONE STEALS MAH USERNAME ENERGYBOT");
 			e.printStackTrace();
 			newGUI.logError(e);
 		} catch (IOException e) {
@@ -106,7 +104,7 @@ public class BotManager {
 //		}, 1000 * 60, 1000 * 60);
 	}
 	
-	public static void globalBan(String name, String channel, String type) {
+	public static void globalBan(final String name, final String channel, final String type) {
 		final String line = "!! Issuing a ban on " + name + " in " + channel + " for " + type+"\n";
 		newGUI.appendToPane(line, Color.red);
 		energybot.sendMessage("#activeenergylive", ".ban "+name);
@@ -128,7 +126,7 @@ public class BotManager {
 		energybot.saveAll();
 		sadbot.saveAll();
 		
-		Runnable r = new Runnable() {
+		final Runnable runnable = new Runnable() {
 			@Override
             public void run() {
     	    	try {
@@ -139,7 +137,7 @@ public class BotManager {
     	    	System.exit(0);
             }
         };
-        new Thread(r, "Sleep").start();
+        new Thread(runnable, "Sleep").start();
 	}
 	
 	public static void reconnect() {

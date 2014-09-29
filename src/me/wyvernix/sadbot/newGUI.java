@@ -32,7 +32,7 @@ public class newGUI extends JFrame {
 	public static DefaultListModel<String> ebUsers = new DefaultListModel<String>();
 	public static JSplitPane splitPane;
 
-	private Font proFont = new Font("DejaVu Sans Mono", Font.PLAIN, 10);
+	private static final Font proFont = new Font("DejaVu Sans Mono", Font.PLAIN, 10);
 	
 	private static PrintStream logfile;
 	

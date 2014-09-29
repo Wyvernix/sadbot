@@ -19,7 +19,7 @@ public class CapFilter implements ChatFilter {
         double capsPercent = ((double) capsNumber / messageNoWS.length()) * 100;
         if (message.length() >= minChars && capsPercent >= maxPercent) {
         	bot.userStats.addWarning(sender);
-        	int warningCount = bot.userStats.getWarnings(sender);
+        	final int warningCount = bot.userStats.getWarnings(sender);
             String returns; 
             if (warningCount > 1) {
             	bot.tempBan(channel, sender, "CAPS", warningCount);
@@ -37,7 +37,7 @@ public class CapFilter implements ChatFilter {
 	
 	private int getCapsNumber(String s) {
         int caps = 0;
-        int len = s.length();
+        final int len = s.length();
         for (int i = 0; i < len; i++) {
             if (Character.isUpperCase(s.charAt(i))) {
                 caps++;

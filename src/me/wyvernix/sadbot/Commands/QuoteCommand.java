@@ -8,7 +8,7 @@ import me.wyvernix.sadbot.Bots.MasterBot;
 
 public class QuoteCommand implements BotCommand {
 	private ArrayList<String> quotes = new ArrayList<String>();
-	private static String quoteFile;
+	private String quoteFile;
 	
 	@Override
 	public String getCommandName() {
@@ -36,7 +36,7 @@ public class QuoteCommand implements BotCommand {
 		} else if (message.startsWith("add ")) {
 			if (!(message.replace("add ", "").charAt(0) == ".".charAt(0))){
 			quotes.add(message.replace("add " , ""));
-			bot.sendMessage(channel, "Added quote #"+ (new Integer(quotes.size())) +": "+message.replace("add " , ""));
+			bot.sendMessage(channel, "Added quote #"+ Integer.valueOf(quotes.size()) +": "+message.replace("add " , ""));
 			Util.save(quotes, quoteFile);
 			} else {
 				bot.sendMessage(channel, sender + " is trying to hack me! BibleThump");
